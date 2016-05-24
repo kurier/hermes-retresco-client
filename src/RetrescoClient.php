@@ -24,6 +24,14 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class RetrescoClient extends Client {
 
+  const RESPONSE_OK             = '200';
+  const RESPONSE_CREATED        = '201';
+  const RESPONSE_BAD_REQUEST    = '400';
+  const RESPONSE_UNAUTHORIZED   = '401';
+  const RESPONSE_NOT_FOUND      = '404';
+  const RESPONSE_CONFLICT       = '409';
+  const RESPONSE_INTERNAL_ERROR = '500';
+
   /**
    * The serializer to use.
    *
@@ -137,22 +145,36 @@ class RetrescoClient extends Client {
     return $this->serializer;
   }
 
+  /**
+   * @param $id
+   * @param array $content
+   *
+   * @return mixed|\Psr\Http\Message\ResponseInterface
+   */
   public function putFile($id, $content = array()) {
     $body = $this->getSerializer()->serialize($content, 'json');
 
     $request = new Request('PUT', "/api/documents/$id", ['Content-Type' => 'application/json'], $body);
     $response = $this->send($request);
 
-    $json = $response->getBody()->getContents();
-
-    return $json;
+    return $response;
   }
 
+  /**
+   * @param $id
+   *
+   * @return \Psr\Http\Message\ResponseInterface
+   */
   public function getFile($id) {
     $response = $this->get("/api/documents/$id");
     return $response;
   }
 
+  /**
+   * @param $id
+   *
+   * @return \Psr\Http\Message\ResponseInterface
+   */
   public function deleteFile($id) {
     $response = $this->delete("/api/documents/$id");
     return $response;
