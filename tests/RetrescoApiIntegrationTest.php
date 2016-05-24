@@ -59,7 +59,7 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
   public static function setUpBeforeClass() {
     $swagger_file = dirname(__FILE__) . '/../swagger.json';
     static::$schemaManager = new SchemaManager($swagger_file);
-    static::$config['password'] = getenv('RETRESCO_PASSWORD');
+    static::$config['password'] = $_ENV['RETRESCO_PASSWORD'];
 
     static::$retrescoClientCache = RetrescoClient::create(static::$config);
     // @todo: Assert request and response matches via client middleware.
