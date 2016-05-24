@@ -140,9 +140,8 @@ class RetrescoClient extends Client {
   public function putFile($id, $content = array()) {
     $body = $this->getSerializer()->serialize($content, 'json');
 
-    $request = new Request('PUT', "/api/documents/$id", ['Content-Type', 'application/json'], json_encode($content));
+    $request = new Request('PUT', "/api/documents/$id", ['Content-Type' => 'application/json'], $body);
     $response = $this->send($request);
-    // $response = $this->put("/api/documents/$id", $data);
 
     $json = $response->getBody()->getContents();
 
