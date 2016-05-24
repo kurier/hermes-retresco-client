@@ -6,7 +6,7 @@
         "version": "?"
     },
     "host": "kurier-stage01.rtrsupport.de",
-    "basePath": "/api/documents",
+    "basePath": "/api",
     "schemes": [
         "https"
     ],

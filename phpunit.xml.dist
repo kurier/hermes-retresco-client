@@ -2,7 +2,10 @@
 <phpunit bootstrap="vendor/autoload.php"
          colors="true"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd">
+           xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd">
+  <!-- Copy file to phpunit.xml and set password below: -->
+  <env name="RETRESCO_PASSWORD" value=""/>
+
     <testsuites>
         <testsuite name="tests">
             <directory suffix=".php">tests/</directory>
