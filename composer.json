@@ -1,0 +1,43 @@
+{
+    "name": "drunomics/retresco-client",
+    "require": {
+        "php": ">=5.5",
+        "symfony/serializer": "~2.8",
+        "symfony/property-access": "~2.3|~3.0.0",
+        "guzzlehttp/guzzle": "~6.1"
+    },
+    "require-dev": {
+        "jane/open-api": "1.*",
+        "fr3d/swagger-assertions": "^0.4.0",
+        "phpunit/phpunit": "~4.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "drunomics\\RetrescoClient\\": "src/",
+            "drunomics\\RetrescoClient\\Model\\": "generated/Model/"
+        }
+    },
+    "scripts": {
+        "generate": [
+            "rm -rf generated/* && ./vendor/bin/jane-openapi generate swagger.json drunomics\\\\RetrescoClient generated",
+            "@clean-generated-code"
+        ],
+        "clean-generated-code": "rm -rf generated/Resource generated/Normalizer",
+        "swagger-ui": [
+            "bower --version  >/dev/null 2>&1 || (echo 'This command requires bower.\n Follow the instructions of http://bower.io/#install-bower.'>&2 && exit 1)",
+            "bower install",
+            "cp -r bower_components/swagger-ui/dist swagger-ui",
+            "cp swagger.json swagger-ui/",
+            "cp swagger-ui.html swagger-ui/index.html",
+            "(xdg-open http://localhost:8123&); php -S localhost:8123 -t swagger-ui"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "config": {
+        "process-timout": 0
+    }
+}

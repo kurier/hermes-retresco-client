@@ -1,0 +1,17 @@
+{
+  "name": "xtrf-rest-client",
+  "authors": [
+    "drunomics GmbH <office@drunomics.com>"
+  ],
+  "description": "XTRF REST client library",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "swagger-ui": "~2.1.4"
+  }
+}
