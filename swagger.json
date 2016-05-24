@@ -30,391 +30,147 @@
         }
     },
     "paths": {
-        "/system/login": {
-            "post": {
-                "security": [],
-                "tags": [
-                    "Authentication"
-                ],
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
+        "/documents/{documentId}" : {
+            "put": {
+                "summary": "Saves a document.",
+                "description": "Saves a document.",
                 "parameters": [
                     {
-                        "name": "username",
-                        "in": "formData",
+                        "name": "documentId",
+                        "in": "path",
                         "required": true,
-                        "type": "string"
+                        "type": "integer"
                     },
                     {
-                        "name": "password",
-                        "in": "formData",
-                        "required": true,
-                        "type": "string"
+                        "name": "enrich",
+                        "in": "query",
+                        "description": "Use semantic enrichment (default: true)",
+                        "type": "integer",
+                        "required": false
+                    },
+                    {
+                        "name": "in_text_links",
+                        "in": "query",
+                        "description": "Add in-text links, only when enrich=true (default: false)",
+                        "type": "integer",
+                        "required": false
+                    },
+                    {
+                        "name": "index",
+                        "in": "query",
+                        "description": "Index documents (default: true)",
+                        "type": "integer",
+                        "required": false
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "The session ID.",
+                        "description": "The document was created.",
                         "schema": {
-                            "$ref": "#/definitions/XtrfLoginResponse"
+                            "$ref": "#/definitions/RetrescoDocument"
                         }
                     },
-                    "default": {
-                        "description": "Unexpected error",
+                    "201": {
+                        "description": "The document was created.",
                         "schema": {
-                            "$ref": "#/definitions/XtrfError"
+                            "$ref": "#/definitions/RetrescoDocument"
                         }
-                    }
-                }
-            }
-        },
-        "/quotes": {
-            "post": {
-                "summary": "Creates a quote.",
-                "description": "Creates quote with language combinations and tasks according to given request. Available workflows, specializations and languages can be retrieved via /system/values/workflows, /system/values/specializations, /system/values/languages. Specifying priceProfile is optional when currently logged in customer has only one price profile. Otherwise you can obtain list of price profiles under path /customers/{customerId}/sales/priceProfiles First contact person from persons list will be set as main contact person of a quote. The second will be set as Send Back contact person. Other persons will be treated as Additional Contacts. Possible contact persons are available under /customers/{customerId}/persons. Files can be attached by sending them to /system/session/files. They will receive ids which you can put in files or referenceFiles list. As a result you will receive an object representing created quote if everything is correct. Otherwise you will receive a response with error code. Reason of the error will be present in header X-Error-Message.\n",
-                "tags": [
-                    "Quotes"
-                ],
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
+                    },
+                    "400": {
+                        "description": "Bad request/validation error.",
                         "schema": {
-                            "$ref": "#/definitions/XtrfQuoteRequest"
+                            "$ref": "#/definitions/RetrescoClientError"
                         }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
+                    },
+                    "409": {
+                        "description": "The document id (parameter) doesn't match the doc_id field in the body of the request.",
+                        "schema": {
+                            "$ref": "#/definitions/RetrescoClientError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "schema": {
+                            "$ref": "#/definitions/RetrescoClientError"
+                        }
                     },
                     "default": {
                         "description": "Unexpected error.",
                         "schema": {
-                            "$ref": "#/definitions/XtrfError"
+                            "$ref": "#/definitions/RetrescoClientError"
                         }
                     }
                 }
             },
             "get": {
-                "summary": "Returns a list of quotes.",
-                "tags": [
-                    "Quotes"
-                ],
+                "summary": "Gets a document.",
+                "description": "Gets a document.",
                 "parameters": [
                     {
-                        "name": "status",
-                        "in": "query",
-                        "type": "string",
-                        "description": "restircts result to quotes with given status (REQUESTED, PENDING, SENT, ACCEPTED, ACCEPTED_BY_CUSTOMER, REJECTED or SPLITTED), multiple values allowed (e.g. status=REQUESTED&status=WAITING_FOR_APPROVAL)\n"
-                    },
-                    {
-                        "name": "start",
-                        "in": "query",
-                        "type": "integer",
-                        "description": "offset of the first retrieved quote"
-                    },
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "type": "integer",
-                        "description": "maximum number of quotes to be returned, at most 50"
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "type": "string",
-                        "description": "restricts result to quotes with at least one of properties(idNumber, refNumber, name) containing given string\n"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "An array of quotes.",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/XtrfQuote"
-                            }
-                        }
-                    },
-                    "default": {
-                        "description": "Unexpected error",
-                        "schema": {
-                            "$ref": "#/definitions/XtrfError"
-                        }
-                    }
-                }
-            }
-        },
-        "/quotes/{quoteId}": {
-            "get": {
-                "summary": "Gets a quote",
-                "description": "Returns quote details.\n",
-                "parameters": [
-                    {
-                        "name": "quoteId",
+                        "name": "documentId",
                         "in": "path",
                         "required": true,
                         "type": "integer"
                     }
                 ],
-                "tags": [
-                    "Quotes"
-                ],
                 "responses": {
                     "200": {
-                        "description": "The quote.",
+                        "description": "The document was fetched.",
                         "schema": {
-                            "$ref": "#/definitions/XtrfQuote"
+                            "$ref": "#/definitions/RetrescoDocument"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request/validation error.",
+                        "schema": {
+                            "$ref": "#/definitions/RetrescoClientError"
                         }
                     },
                     "404": {
-                        "description": "Quote not found."
-                    },
-                    "default": {
-                        "description": "Unexpected error",
+                        "description": "Invalid document id.",
                         "schema": {
-                            "$ref": "#/definitions/XtrfError"
+                            "$ref": "#/definitions/RetrescoClientError"
                         }
-                    }
-                }
-            }
-        },
-        "/offices/default": {
-            "get": {
-                "summary": "Gets default office",
-                "description": "Returns default office.\n",
-                "tags": [
-                    "Offices"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "The default office",
+                    },
+                    "500": {
+                        "description": "Internal server error.",
                         "schema": {
-                            "$ref": "#/definitions/XtrfOffice"
+                            "$ref": "#/definitions/RetrescoClientError"
                         }
                     },
                     "default": {
-                        "description": "Unexpected error",
+                        "description": "Unexpected error.",
                         "schema": {
-                            "$ref": "#/definitions/XtrfError"
-                        }
-                    }
-                }
-            }
-        },
-        "/projects": {
-            "get": {
-                "summary": "Returns a list of projects.",
-                "tags": [
-                    "Projects"
-                ],
-                "parameters": [
-                    {
-                        "name": "status",
-                        "in": "query",
-                        "type": "string",
-                        "description": "restricts result to projects with given status (OPENED, CLOSED, CLAIM or CANCELLED), multiple values allowed (e.g. status=CLOSED&status=CANCELLED)\n"
-                    },
-                    {
-                        "name": "surveyStatus",
-                        "in": "query",
-                        "type": "string",
-                        "description": "restricts result to projects with given survey status (SURVEYED, NOT_SURVEYED, ANY), default ANY\n"
-                    },
-                    {
-                        "name": "start",
-                        "in": "query",
-                        "type": "integer",
-                        "description": "offset of the first retrieved project"
-                    },
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "type": "integer",
-                        "description": "maximum number of projects to be returned, at most 50"
-                    },
-                    {
-                        "name": "customerProjectNumber",
-                        "in": "query",
-                        "type": "string",
-                        "description": "customer's project number"
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "type": "string",
-                        "description": "restricts result to projects with at least one of properties(idNumber, refNumber, name) containing given string\n"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "An array of projects.",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/XtrfProject"
-                            }
-                        }
-                    },
-                    "default": {
-                        "description": "Unexpected error",
-                        "schema": {
-                            "$ref": "#/definitions/XtrfError"
-                        }
-                    }
-                }
-            }
-        },
-        "/projects/{projectId}": {
-            "get": {
-                "summary": "Gets a project",
-                "description": "Returns project information for given id.\n",
-                "parameters": [
-                    {
-                        "name": "projectId",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "tags": [
-                    "Projects"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "The project.",
-                        "schema": {
-                            "$ref": "#/definitions/XtrfProject"
-                        }
-                    },
-                    "404": {
-                        "description": "Project not found."
-                    },
-                    "default": {
-                        "description": "Unexpected error",
-                        "schema": {
-                            "$ref": "#/definitions/XtrfError"
-                        }
-                    }
-                }
-            }
-        },
-        "/projects/{projectId}/files/outputFilesAsZip": {
-            "get": {
-                "summary": "Opens a stream to zip file containing output files from given project.",
-                "parameters": [
-                    {
-                        "name": "projectId",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "tags": [
-                    "Projects"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "The zip file.",
-                        "schema": {
-                            "type": "file"
-                        }
-                    },
-                    "404": {
-                        "description": "Project not found."
-                    },
-                    "default": {
-                        "description": "Unexpected error",
-                        "schema": {
-                            "$ref": "#/definitions/XtrfError"
-                        }
-                    }
-                }
-            }
-        },
-        "/system/session/languages": {
-            "get": {
-                "summary": "Returns list of available languages.",
-                "tags": [
-                    "System"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "The available languages.",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/XtrfLanguage"
-                            }
-                        }
-                    },
-                    "default": {
-                        "description": "Unexpected error",
-                        "schema": {
-                            "$ref": "#/definitions/XtrfError"
-                        }
-                    }
-                }
-            }
-        },
-        "/system/session/files": {
-            "get": {
-                "summary": "Returns list of files uploaded during current session.",
-                "tags": [
-                    "Files"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "The files.",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/XtrfFile"
-                            }
-                        }
-                    },
-                    "default": {
-                        "description": "Unexpected error",
-                        "schema": {
-                            "$ref": "#/definitions/XtrfError"
+                            "$ref": "#/definitions/RetrescoClientError"
                         }
                     }
                 }
             },
-            "post": {
-                "summary": "Upload a file",
-                "description": "Accepts files encoded as multipart/form-data and stores them temporarily (they are available only within current session). Each file gets its own id and basic statistics: number of characters (with and without spaces), words, lines, pages. \n",
-                "tags": [
-                    "Files"
-                ],
-                "consumes": [
-                    "multipart/form-data"
-                ],
+            "delete": {
+                "summary": "Deletes a document.",
+                "description": "Deletes a document.",
                 "parameters": [
                     {
-                        "name": "file",
-                        "in": "formData",
-                        "type": "file",
-                        "required": true
+                        "name": "documentId",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "The files.",
+                        "description": "The document was deleted."
+                    },
+                    "500": {
+                        "description": "Internal server error.",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/XtrfFile"
-                            }
+                            "$ref": "#/definitions/RetrescoClientError"
                         }
                     },
                     "default": {
-                        "description": "Unexpected error",
+                        "description": "Unexpected error.",
                         "schema": {
-                            "$ref": "#/definitions/XtrfError"
+                            "$ref": "#/definitions/RetrescoClientError"
                         }
                     }
                 }
@@ -422,479 +178,103 @@
         }
     },
     "definitions": {
-        "XtrfCustomFields": {
+        "RetrescoDocument": {
             "type": "object",
             "properties": {
-                "key": {
+                "doc_id": {
+                    "type": "string",
+                    "required": true
+                },
+                "title": {
+                    "type": "string",
+                    "required": true
+                },
+                "supertitle": {
                     "type": "string"
                 },
-                "name": {
+                "teaser": {
+                    "type": "string",
+                    "required": true
+                },
+                "teaser_img_url": {
                     "type": "string"
                 },
-                "value": {
-                    "type": "string"
-                }
-            }
-        },
-        "XtrfContact": {
-            "description": "Note - INCOMPLETE",
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                }
-            }
-        },
-        "XtrfDate": {
-            "type": "object",
-            "properties": {
-                "formatted": {
+                "teaser_img_subline": {
                     "type": "string"
                 },
-                "millisGMT": {
-                    "type": "integer"
-                }
-            }
-        },
-        "XtrfFile": {
-            "type": "object",
-            "properties": {
-                "deleteType": {
+                "body": {
                     "type": "string"
                 },
-                "deleteUrl": {
+                "author": {
                     "type": "string"
                 },
-                "fileStats": {
-                    "$ref": "#/definitions/XtrfFileStats"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "size": {
-                    "type": "integer"
+                "doc_type": {
+                    "type": "string",
+                    "required": true
                 },
                 "url": {
+                    "type": "string",
+                    "required": true
+                },
+                "section": {
                     "type": "string"
+                },
+                "date": {
+                    "type": "string",
+                    "required": true
+                },
+                "startdate": {
+                    "type": "string"
+                },
+                "enddate": {
+                    "type": "string"
+                },
+                "rtr_persons": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "rtr_locations": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "rtr_organisations": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "rtr_products": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "rtr_events": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "rtr_keywords": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
-        "XtrfFileStats": {
-            "type": "object",
-            "properties": {
-                "charactersWithoutSpaces": {
-                    "type": "integer"
-                },
-                "charactersWithSpaces": {
-                    "type": "integer"
-                },
-                "lines": {
-                    "type": "integer"
-                },
-                "pages": {
-                    "type": "integer"
-                },
-                "words": {
-                    "type": "integer"
-                }
-            }
-        },
-        "XtrfError": {
+        "RetrescoClientError": {
             "type": "object",
             "properties": {
                 "status": {
                     "type": "integer",
                     "format": "int32"
-                }
-            }
-        },
-        "XtrfLanguage": {
-            "type": "object",
-            "properties": {
-                "displayName": {
-                    "type": "string"
                 },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "symbol": {
-                    "type": "string"
-                }
-            }
-        },
-        "XtrfLanguageCombinations": {
-            "type": "object",
-            "properties": {
-                "hasAssociatedTask": {
-                    "type": "boolean"
-                },
-                "sourceLanguage": {
-                    "$ref": "#/definitions/XtrfLanguage"
-                },
-                "targetLanguage": {
-                    "$ref": "#/definitions/XtrfLanguage"
-                }
-            }
-        },
-        "XtrfLoginResponse": {
-            "type": "object",
-            "properties": {
-                "jsessionid": {
-                    "type": "string"
-                }
-            }
-        },
-        "XtrfOffice": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "persons": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/XtrfPerson"
-                    }
-                }
-            }
-        },
-        "XtrfMoneyAmount": {
-            "type": "object",
-            "properties": {
-                "amount": {
-                    "type": "number"
-                },
-                "currency": {
-                    "type": "string"
-                },
-                "formattedAmount": {
-                    "type": "string"
-                }
-            }
-        },
-        "XtrfPerson": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "position": {
-                    "type": "string"
-                },
-                "version": {
-                    "type": "integer"
-                }
-            }
-        },
-        "XtrfPriceProfile": {
-            "type": "object",
-            "properties": {
-                "defaultContactPerson": {
-                    "$ref": "#/definitions/XtrfPerson"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "XtrfProject": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "idNumber": {
-                    "type": "string"
-                },
-                "refNumber": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "tmSavings": {
-                    "$ref": "#/definitions/XtrfMoneyAmount"
-                },
-                "totalAgreed": {
-                    "$ref": "#/definitions/XtrfMoneyAmount"
-                },
-                "languageCombinations": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/XtrfLanguageCombinations"
-                    }
-                },
-                "startDate": {
-                    "$ref": "#/definitions/XtrfDate"
-                },
-                "deadline": {
-                    "$ref": "#/definitions/XtrfDate"
-                },
-                "hasInputWorkfiles": {
-                    "type": "boolean"
-                },
-                "hasInputResources": {
-                    "type": "boolean"
-                },
-                "office": {
-                    "$ref": "#/definitions/XtrfOffice"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "projectManager": {
-                    "$ref": "#/definitions/XtrfUser"
-                },
-                "hasOutputFiles": {
-                    "type": "boolean"
-                },
-                "contactPersons": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/XtrfPerson"
-                    }
-                },
-                "additionalContacts": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/XtrfPerson"
-                    }
-                },
-                "customFields": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/XtrfCustomFields"
-                    }
-                },
-                "awaitingCustomerReview": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "XtrfQuote": {
-            "type": "object",
-            "properties": {
-                "accepter": {
-                    "$ref": "#/definitions/XtrfUser"
-                },
-                "autoAccept": {
-                    "type": "boolean"
-                },
-                "customerNotes": {
-                    "type": "string"
-                },
-                "deadline": {
-                    "$ref": "#/definitions/XtrfDate"
-                },
-                "estimatedDeliveryDate": {
-                    "$ref": "#/definitions/XtrfDate"
-                },
-                "expiryDate": {
-                    "$ref": "#/definitions/XtrfDate"
-                },
-                "hasInputResources": {
-                    "type": "boolean"
-                },
-                "hasInputWorkfiles": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "idNumber": {
-                    "type": "string"
-                },
-                "languageCombinations": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/XtrfLanguageCombinations"
-                    }
-                },
-                "name": {
-                    "type": "string"
-                },
-                "office": {
-                    "$ref": "#/definitions/XtrfOffice"
-                },
-                "projectManager": {
-                    "$ref": "#/definitions/XtrfUser"
-                },
-                "refNumber": {
-                    "type": "string"
-                },
-                "salesPerson": {
-                    "$ref": "#/definitions/XtrfUser"
-                },
-                "service": {
-                    "type": "string"
-                },
-                "specialization": {
-                    "type": "string"
-                },
-                "startDate": {
-                    "$ref": "#/definitions/XtrfDate"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "tmSavings": {
-                    "$ref": "#/definitions/XtrfMoneyAmount"
-                },
-                "totalAgreed": {
-                    "$ref": "#/definitions/XtrfMoneyAmount"
-                },
-                "workflow": {
-                    "type": "string"
-                }
-            }
-        },
-        "XtrfQuoteRequest": {
-            "type": "object",
-            "properties": {
-                "additionalPersons": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/XtrfPerson"
-                    }
-                },
-                "autoAccept": {
-                    "type": "boolean"
-                },
-                "customerProjectNumber": {
-                    "type": "string"
-                },
-                "customFields": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/XtrfCustomFields"
-                    }
-                },
-                "deliveryDate": {
-                    "$ref": "#/definitions/XtrfDate"
-                },
-                "files": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/XtrfFile"
-                    }
-                },
-                "name": {
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "string"
-                },
-                "office": {
-                    "$ref": "#/definitions/XtrfOffice"
-                },
-                "person": {
-                    "$ref": "#/definitions/XtrfPerson"
-                },
-                "persons": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/XtrfPerson"
-                    }
-                },
-                "priceProfile": {
-                    "items": {
-                        "$ref": "#/definitions/XtrfPriceProfile"
-                    }
-                },
-                "referenceFiles": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/XtrfFile"
-                    }
-                },
-                "sendBackTo": {
-                    "$ref": "#/definitions/XtrfPerson"
-                },
-                "service": {
-                    "$ref": "#/definitions/XtrfWorkflow"
-                },
-                "sourceLanguage": {
-                    "$ref": "#/definitions/XtrfLanguage"
-                },
-                "specialization": {
-                    "$ref": "#/definitions/XtrfSpecialization"
-                },
-                "targetLanguages": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/XtrfLanguage"
-                    }
-                },
-                "workflow": {
-                    "$ref": "#/definitions/XtrfWorkflow"
-                }
-            }
-        },
-        "XtrfSpecialization": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "localizedName": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "XtrfUser": {
-            "type": "object",
-            "properties": {
-                "contact": {
-                    "$ref": "#/definitions/XtrfContact"
-                },
-                "firstName": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "lastName": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "position": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "XtrfWorkflow": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "localizedName": {
-                    "type": "string"
-                },
-                "name": {
+                "message": {
                     "type": "string"
                 }
             }

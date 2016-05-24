@@ -9,10 +9,8 @@ namespace drunomics\RetrescoClient;
 
 use drunomics\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
-use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
