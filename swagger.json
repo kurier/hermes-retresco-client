@@ -3,7 +3,7 @@
     "info": {
         "title": "Retresco Documents-API",
         "description": "Retresco Documents-API",
-        "version": "?"
+        "version": "0.9"
     },
     "host": "kurier-stage01.rtrsupport.de",
     "basePath": "/api",

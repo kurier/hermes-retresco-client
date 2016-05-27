@@ -7,11 +7,13 @@
 
 namespace drunomics\RetrescoClient;
 
+use drunomics\RetrescoClient\Model\RetrescoDocument;
 use drunomics\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -55,9 +57,7 @@ class RetrescoClient extends Client {
   protected $config;
 
   /**
-   * Creates an Retresco client instance with pre-configured middleware.
-   *
-   * The pre-configured middleware takes care of authentication and logging.
+   * Creates an Retresco client instance.
    *
    * @param array $config
    *   An array of configuration settings. The following keys are required,
@@ -76,8 +76,6 @@ class RetrescoClient extends Client {
     $config['handler'] = $stack;
     $client = new static($config);
 
-    // $middleware = new AuthenticationMiddleware($client);
-    // $stack->push($middleware);
     return $client;
   }
 
@@ -126,7 +124,7 @@ class RetrescoClient extends Client {
   /**
    * The serializer to use.
    *
-   * @return \Symfony\Component\Serializer\SerializerInterface
+   * @return \Symfony\Component\Serializer\Serializer
    *   The serializer.
    */
   public function getSerializer() {
@@ -135,8 +133,8 @@ class RetrescoClient extends Client {
       $encoders = [new JsonEncoder()];
       $normalizers = [
         new ArrayDenormalizer(),
-        (new SwaggerSchemaNormalizer())->setSwaggerSchema('drunomics\RetrescoClient\Model', $schema),
-        new ObjectNormalizer(),
+        (new SwaggerSchemaNormalizer(null, new CamelCaseToSnakeCaseNameConverter()))->setSwaggerSchema('drunomics\RetrescoClient\Model', $schema),
+        new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter()),
       ];
       $this->serializer = new Serializer($normalizers, $encoders);
     }
@@ -144,36 +142,84 @@ class RetrescoClient extends Client {
   }
 
   /**
-   * @param $id
-   * @param array $content
+   * Puts the document on the server.
+   *
+   * @param \drunomics\RetrescoClient\Model\RetrescoDocument $document
+   *   The Retresco document.
+   * @param bool $enrich
+   *   Enables semantic enrichment (default: true).
+   * @param bool $inTextLinks
+   *   Enables calculation of In-Text-Links, only available if $enrich = true.
+   *   (default: false).
+   * @param bool $index
+   *   Index document (default: true).
    *
    * @return mixed|\Psr\Http\Message\ResponseInterface
    */
-  public function putFile($id, $content = array()) {
-    $body = $this->getSerializer()->serialize($content, 'json');
+  public function putDocument(RetrescoDocument $document, $enrich = TRUE, $inTextLinks = FALSE, $index = TRUE) {
+    $body = $this->getSerializer()->serialize($document, 'json');
 
-    $request = new Request('PUT', "/api/documents/$id", ['Content-Type' => 'application/json'], $body);
+    $header = array(
+      'Content-Type' => 'application/json'
+    );
+
+    if ($enrich == FALSE) {
+      $inTextLinks = FALSE; // dependency on enrich
+    }
+
+    $params = array(
+      'enrich'        => (int) $enrich,
+      'in_text_links' => (int) $inTextLinks,
+      'index'         => (int) $index
+    );
+
+    $uri = "/api/documents/" . $document->getDocId() . "?" . http_build_query($params);
+
+    $request = new Request('PUT', $uri, $header, $body);
     $response = $this->send($request);
 
     return $response;
   }
 
   /**
-   * @param $id
+   * Gets the document for the given remote id.
+   *
+   * @param int $id
+   *   The remote id of the document.
+   *
+   * @return \drunomics\RetrescoClient\Model\RetrescoDocument
+   */
+  public function getDocumentById($id) {
+    $response = $this->get("/api/documents/$id");
+    $data = $response->getBody()->getContents();
+
+    /** @var RetrescoDocument $document */
+    $document = $this->getSerializer()->deserialize($data, RetrescoDocument::class, 'json');
+
+    return $document;
+  }
+
+  /**
+   * Deletes the document.
+   *
+   * @param \drunomics\RetrescoClient\Model\RetrescoDocument $document
    *
    * @return \Psr\Http\Message\ResponseInterface
    */
-  public function getFile($id) {
-    $response = $this->get("/api/documents/$id");
+  public function deleteDocument(RetrescoDocument $document) {
+    $response = $this->deleteDocumentById($document->getDocId());
     return $response;
   }
 
   /**
-   * @param $id
+   * Deletes the document for the given remote id.
+   *
+   * @param int $id
+   *   The remote document id.
    *
    * @return \Psr\Http\Message\ResponseInterface
    */
-  public function deleteFile($id) {
+  public function deleteDocumentById($id) {
     $response = $this->delete("/api/documents/$id");
     return $response;
   }

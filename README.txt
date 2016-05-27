@@ -1,4 +1,4 @@
-# XTRF REST client library
+# Retresco Client Library
 REST client library based on Guzzle.
 
 Notes on using swagger-UI:
