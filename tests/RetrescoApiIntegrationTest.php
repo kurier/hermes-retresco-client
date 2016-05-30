@@ -36,10 +36,11 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
    * @var mixed[]
    */
   protected static $config = [
-    'base_uri' => 'https://kurier-stage01.rtrsupport.de',
-    'username' => 'kurier',
-    'password' => 'CHANGE-ME',
-    'basePath' => '/api/documents',
+    'base_uri'     => 'https://kurier-stage01.rtrsupport.de',
+    'username'     => 'kurier',
+    'password'     => 'CHANGE-ME',
+    'basePath'     => '/api/documents',
+    'documentPath' => '/api/documents',
   ];
 
   /**
@@ -80,12 +81,9 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
    */
   protected function setUp() {
     parent::setUp();
-    // Keep a shared Retresco-client instance, so it's middleware keeps a single
-    // session up and we uploaded files kept in session can be re-used across
-    // test methods, @see testCreateQuote().
     $this->retrescoClient = static::$retrescoClientCache;
 
-    $testFile = dirname(__FILE__) . '/data/putFile01.json';
+    $testFile = dirname(__FILE__) . '/data/putFile01.yml';
     $this->testDocument = $this->createRetrescoDocumentFromFile($testFile);
 
     // Initial delete for clean state.
@@ -112,12 +110,14 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
    */
   public function testGetDocument() {
     $putResponse = $this->putDocument($this->testDocument);
+    $this->assertEquals(RetrescoClient::RESPONSE_CREATED, $putResponse->getStatusCode(), "File couldn't be written.");
 
-    if( $putResponse->getStatusCode() != RetrescoClient::RESPONSE_CREATED ) {
-      $this->fail("Document couldn't be saved on remote location.");
+    try {
+      $document = $this->retrescoClient->getDocumentById($this->testDocument->getDocId());
     }
-
-    $document = $this->retrescoClient->getDocumentById($this->testDocument->getDocId());
+    catch (ClientException $e) {
+      $this->fail($e->getMessage());
+    }
 
     $this->assertInstanceOf(RetrescoDocument::class, $document, 'Unexpected type.');
     $this->assertEquals($this->testDocument->getDocId(), $document->getDocId(), "Document id from fetched document should equal the id of the put document.");
@@ -134,9 +134,7 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
    */
   public function testDeleteDocument() {
     $putResponse = $this->putDocument($this->testDocument);
-    if( $putResponse->getStatusCode() != RetrescoClient::RESPONSE_CREATED ) {
-      $this->fail("Document couldn't be created on remote host.");
-    }
+    $this->assertEquals(RetrescoClient::RESPONSE_CREATED, $putResponse->getStatusCode(), "File couldn't be written.");
 
     $deleteResponse = $this->retrescoClient->deleteDocument($this->testDocument);
     $this->assertEquals(RetrescoClient::RESPONSE_OK, $deleteResponse->getStatusCode(), 'File was not deleted.');
@@ -148,7 +146,7 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals(RetrescoClient::RESPONSE_NOT_FOUND, $e->getCode(), 'File not found exception expected.');
     }
 
-    $this->assertInstanceOf(ClientException::class, $e, 'Guzzle\ClientException for file not found expected.');
+    $this->assertInstanceOf(ClientException::class, $e, '\GuzzleHttp\Exception\ClientException for file not found expected.');
   }
 
   /**
@@ -157,10 +155,17 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
    * @param RetrescoDocument $document
    *  The test document.
    *
-   * @return mixed|\Psr\Http\Message\ResponseInterface
+   * @return \Psr\Http\Message\ResponseInterface
    */
   protected function putDocument(RetrescoDocument $document) {
-    return $this->retrescoClient->putDocument($document);
+    try{
+      $response = $this->retrescoClient->putDocument($document);
+    }
+    catch (ClientException $e) {
+      $this->fail($e->getMessage());
+    }
+
+    return $response;
   }
 
   /**

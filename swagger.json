@@ -16,19 +16,6 @@
     "produces": [
         "application/json"
     ],
-    "security": [
-        {
-            "session": []
-        }
-    ],
-    "securityDefinitions": {
-        "session": {
-            "type": "apiKey",
-            "name": "Cookie",
-            "in": "header",
-            "description": "The session ID value as returned from /login, pre-prended with \"JSESSIONID=\"."
-        }
-    },
     "paths": {
         "/documents/{documentId}" : {
             "put": {

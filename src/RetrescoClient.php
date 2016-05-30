@@ -51,6 +51,7 @@ class RetrescoClient extends Client {
    *   - password: The Retresco password.
    *   - format: (optional) Format of the returned data, allowed values 'json',
    *     'xml'; 'json' by default.
+   *   - documentPath: The path for the document api.
    *
    * @var array
    */
@@ -155,6 +156,8 @@ class RetrescoClient extends Client {
    *   Index document (default: true).
    *
    * @return mixed|\Psr\Http\Message\ResponseInterface
+   *
+   * @throws \GuzzleHttp\Exception\ClientException
    */
   public function putDocument(RetrescoDocument $document, $enrich = TRUE, $inTextLinks = FALSE, $index = TRUE) {
     $body = $this->getSerializer()->serialize($document, 'json');
@@ -163,8 +166,8 @@ class RetrescoClient extends Client {
       'Content-Type' => 'application/json'
     );
 
-    if ($enrich == FALSE) {
-      $inTextLinks = FALSE; // dependency on enrich
+    if ($inTextLinks == TRUE) {
+      $enrich = TRUE; // dependency on inTextLinks
     }
 
     $params = array(
@@ -173,7 +176,7 @@ class RetrescoClient extends Client {
       'index'         => (int) $index
     );
 
-    $uri = "/api/documents/" . $document->getDocId() . "?" . http_build_query($params);
+    $uri = $this->config["documentPath"] . "/" . $document->getDocId() . "?" . http_build_query($params);
 
     $request = new Request('PUT', $uri, $header, $body);
     $response = $this->send($request);
@@ -188,9 +191,11 @@ class RetrescoClient extends Client {
    *   The remote id of the document.
    *
    * @return \drunomics\RetrescoClient\Model\RetrescoDocument
+   *
+   * @throws \GuzzleHttp\Exception\ClientException
    */
   public function getDocumentById($id) {
-    $response = $this->get("/api/documents/$id");
+    $response = $this->get($this->config["documentPath"] . "/" . $id);
     $data = $response->getBody()->getContents();
 
     /** @var RetrescoDocument $document */
@@ -205,6 +210,8 @@ class RetrescoClient extends Client {
    * @param \drunomics\RetrescoClient\Model\RetrescoDocument $document
    *
    * @return \Psr\Http\Message\ResponseInterface
+   *
+   * @throws \GuzzleHttp\Exception\ClientException
    */
   public function deleteDocument(RetrescoDocument $document) {
     $response = $this->deleteDocumentById($document->getDocId());
@@ -218,9 +225,11 @@ class RetrescoClient extends Client {
    *   The remote document id.
    *
    * @return \Psr\Http\Message\ResponseInterface
+   *
+   * @throws \GuzzleHttp\Exception\ClientException
    */
   public function deleteDocumentById($id) {
-    $response = $this->delete("/api/documents/$id");
+    $response = $this->delete($this->config["documentPath"] . "/" . $id);
     return $response;
   }
 }
