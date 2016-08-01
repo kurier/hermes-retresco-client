@@ -1,5 +1,5 @@
 {
-    "name": "drunomics/retresco-client",
+    "name": "telekurier/hermes-retresco-client",
     "require": {
         "php": ">=5.5",
         "symfony/serializer": "~2.8",
