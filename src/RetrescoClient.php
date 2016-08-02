@@ -1,5 +1,7 @@
 <?php
 
+// FOOBAR to test local composer dependency
+
 /**
  * @file
  * Contains \drunomics\RetrescoClient\RetrescoClient
