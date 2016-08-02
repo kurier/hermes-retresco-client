@@ -8,6 +8,12 @@ class RetrescoDocument
      * @var string
      */
     protected $docId;
+
+    /**
+     * @var boolean
+     */
+    protected $published;
+
     /**
      * @var string
      */
@@ -101,6 +107,21 @@ class RetrescoDocument
         $this->docId = $docId;
         return $this;
     }
+
+  /**
+   * @return boolean
+   */
+  public function isPublished(): bool {
+    return $this->published;
+  }
+
+  /**
+   * @param boolean $published
+   */
+  public function setPublished(bool $published) {
+    $this->published = $published;
+  }
+
     /**
      * @return string
      */

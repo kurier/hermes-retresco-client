@@ -19,3 +19,5 @@ teaser_img_url: "/path/to/image.jpg"
 title: "Angela Merkel liest auf ihrem iPad"
 
 url: "/path/to/file.html"
+
+published: true
