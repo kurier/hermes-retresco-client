@@ -13,13 +13,13 @@
     },
     "autoload": {
         "psr-4": {
-            "drunomics\\RetrescoClient\\": "src/",
-            "drunomics\\RetrescoClient\\Model\\": "generated/Model/"
+            "telekurier\\RetrescoClient\\": "src/",
+            "telekurier\\RetrescoClient\\Model\\": "generated/Model/"
         }
     },
     "scripts": {
         "generate": [
-            "rm -rf generated/* && ./vendor/bin/jane-openapi generate swagger.json drunomics\\\\RetrescoClient generated",
+            "rm -rf generated/* && ./vendor/bin/jane-openapi generate swagger.json telekurier\\\\RetrescoClient generated",
             "@clean-generated-code"
         ],
         "clean-generated-code": "rm -rf generated/Resource generated/Normalizer",

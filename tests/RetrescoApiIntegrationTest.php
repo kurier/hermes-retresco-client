@@ -2,13 +2,13 @@
 
 /**
  * @file
- * Contains \drunomics\Retresco\Tests\RetrescoApiIntegrationTest.
+ * Contains \telekurier\Retresco\Tests\RetrescoApiIntegrationTest.
  */
 
-namespace drunomics\Retresco\Tests;
+namespace telekurier\Retresco\Tests;
 
-use drunomics\RetrescoClient\Model\RetrescoDocument;
-use drunomics\RetrescoClient\RetrescoClient;
+use telekurier\RetrescoClient\Model\RetrescoDocument;
+use telekurier\RetrescoClient\RetrescoClient;
 use FR3D\SwaggerAssertions\PhpUnit\Psr7AssertsTrait;
 use FR3D\SwaggerAssertions\SchemaManager;
 use GuzzleHttp\Exception\ClientException;
@@ -55,14 +55,14 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
   /**
    * The configured Retresco client.
    *
-   * @var \drunomics\RetrescoClient\RetrescoClient
+   * @var \telekurier\RetrescoClient\RetrescoClient
    */
   protected static $retrescoClientCache;
 
   /**
    * The configured Retresco client.
    *
-   * @var \drunomics\RetrescoClient\RetrescoClient
+   * @var \telekurier\RetrescoClient\RetrescoClient
    */
   protected $retrescoClient;
 
@@ -171,7 +171,7 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
   /**
    * Deletes remote document.
    *
-   * @param \drunomics\RetrescoClient\Model\RetrescoDocument $document
+   * @param \telekurier\RetrescoClient\Model\RetrescoDocument $document
    */
   protected function deleteDocument(RetrescoDocument $document) {
     try {
@@ -186,7 +186,7 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
    * @param String $file
    *   The yaml file to load into the RetrescoDocument.
    *
-   * @return NULL|\drunomics\RetrescoClient\Model\RetrescoDocument
+   * @return NULL|\telekurier\RetrescoClient\Model\RetrescoDocument
    */
   protected function createRetrescoDocumentFromFile($file) {
     if (is_readable($file)) {

@@ -2,12 +2,12 @@
 
 /**
  * @file
- * Contains \drunomics\RetrescoClient\Normalizer\SwaggerSchemaNormalizer.
+ * Contains \telekurier\RetrescoClient\Normalizer\SwaggerSchemaNormalizer.
  */
 
-namespace drunomics\RetrescoClient\Normalizer;
+namespace telekurier\RetrescoClient\Normalizer;
 
-use drunomics\RetrescoClient\SwaggerSchema;
+use telekurier\RetrescoClient\SwaggerSchema;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
@@ -28,7 +28,7 @@ class SwaggerSchemaNormalizer extends ObjectNormalizer {
   /**
    * The swagger schema.
    *
-   * @var \drunomics\RetrescoClient\SwaggerSchema
+   * @var \telekurier\RetrescoClient\SwaggerSchema
    */
   protected $schema;
 
@@ -37,7 +37,7 @@ class SwaggerSchemaNormalizer extends ObjectNormalizer {
    *
    * @param string $namespace
    *   The namespace under which the schema's types are generated.
-   * @param \drunomics\RetrescoClient\SwaggerSchema $schema
+   * @param \telekurier\RetrescoClient\SwaggerSchema $schema
    *   The swagger schema to use.
    *
    * @return $this

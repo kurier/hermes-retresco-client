@@ -2,13 +2,13 @@
 
 /**
  * @file
- * Contains \drunomics\RetrescoClient\RetrescoClient
+ * Contains \telekurier\RetrescoClient\RetrescoClient
  */
 
-namespace drunomics\RetrescoClient;
+namespace telekurier\RetrescoClient;
 
-use drunomics\RetrescoClient\Model\RetrescoDocument;
-use drunomics\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
+use telekurier\RetrescoClient\Model\RetrescoDocument;
+use telekurier\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
@@ -134,7 +134,7 @@ class RetrescoClient extends Client {
       $encoders = [new JsonEncoder()];
       $normalizers = [
         new ArrayDenormalizer(),
-        (new SwaggerSchemaNormalizer(null, new CamelCaseToSnakeCaseNameConverter()))->setSwaggerSchema('drunomics\RetrescoClient\Model', $schema),
+        (new SwaggerSchemaNormalizer(null, new CamelCaseToSnakeCaseNameConverter()))->setSwaggerSchema('telekurier\RetrescoClient\Model', $schema),
         new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter()),
       ];
       $this->serializer = new Serializer($normalizers, $encoders);
@@ -145,7 +145,7 @@ class RetrescoClient extends Client {
   /**
    * Puts the document on the server.
    *
-   * @param \drunomics\RetrescoClient\Model\RetrescoDocument $document
+   * @param \telekurier\RetrescoClient\Model\RetrescoDocument $document
    *   The Retresco document.
    * @param bool $enrich
    *   Enables semantic enrichment (default: true).
@@ -190,7 +190,7 @@ class RetrescoClient extends Client {
    * @param int $id
    *   The remote id of the document.
    *
-   * @return \drunomics\RetrescoClient\Model\RetrescoDocument
+   * @return \telekurier\RetrescoClient\Model\RetrescoDocument
    *
    * @throws \GuzzleHttp\Exception\ClientException
    */
@@ -207,7 +207,7 @@ class RetrescoClient extends Client {
   /**
    * Deletes the document.
    *
-   * @param \drunomics\RetrescoClient\Model\RetrescoDocument $document
+   * @param \telekurier\RetrescoClient\Model\RetrescoDocument $document
    *
    * @return \Psr\Http\Message\ResponseInterface
    *

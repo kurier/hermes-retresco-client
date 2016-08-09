@@ -1,6 +1,6 @@
 <?php
 
-namespace drunomics\RetrescoClient\Model;
+namespace telekurier\RetrescoClient\Model;
 
 class RetrescoDocument
 {
