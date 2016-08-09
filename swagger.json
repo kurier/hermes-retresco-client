@@ -169,19 +169,28 @@
             "type": "object",
             "properties": {
                 "doc_id": {
-                    "type": "string",
-                    "required": true
+                    "type": "string"
+                },
+                "doc_type": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "published": {
+                    "type": "boolean"
                 },
                 "title": {
-                    "type": "string",
-                    "required": true
+                    "type": "string"
                 },
                 "supertitle": {
                     "type": "string"
                 },
+                "author": {
+                    "type": "string"
+                },
                 "teaser": {
-                    "type": "string",
-                    "required": true
+                    "type": "string"
                 },
                 "teaser_img_url": {
                     "type": "string"
@@ -192,29 +201,71 @@
                 "body": {
                     "type": "string"
                 },
-                "author": {
-                    "type": "string"
-                },
-                "doc_type": {
-                    "type": "string",
-                    "required": true
-                },
-                "url": {
-                    "type": "string",
-                    "required": true
-                },
                 "section": {
                     "type": "string"
                 },
                 "date": {
-                    "type": "string",
-                    "required": true
+                    "type": "date"
                 },
                 "startdate": {
-                    "type": "string"
+                    "type": "date"
                 },
                 "enddate": {
+                    "type": "date"
+                },
+                "published_date": {
+                    "type": "date"
+                },
+                "updated_date": {
+                    "type": "date"
+                },
+                "source": {
                     "type": "string"
+                },
+                "agentur": {
+                    "type": "string"
+                },
+                "article_score": {
+                    "type": "integer"
+                },
+                "pi_last_72h": {
+                    "type": "integer"
+                },
+                "comments_count": {
+                    "type": "integer"
+                },
+                "socialmedia_shares": {
+                    "type": "integer"
+                },
+                "socialmedia_traffic": {
+                    "type": "integer"
+                },
+                "retention_period": {
+                    "type": "integer"
+                },
+                "video_views": {
+                    "type": "integer"
+                },
+                "bounce_rate": {
+                    "type": "integer"
+                },
+                "pin": {
+                    "type": "object",
+                    "properties": {
+                      "location": {
+                        "type": "object",
+                        "properties": {
+                          "lat": {
+                            "type": "double"
+                          },
+                          "lon": {
+                            "type": "double"
+                          }
+                        },
+                        "required": ["lat", "lon"]
+                      }
+                    },
+                    "required": ["location"]
                 },
                 "rtr_persons": {
                     "type": "array",
@@ -251,8 +302,15 @@
                     "items": {
                         "type": "string"
                     }
+                },
+                "payload": {
+                    "type": "object",
+                    "items": {
+                        "type": "string"
+                    }
                 }
-            }
+            },
+            "required": ["doc_id", "doc_type", "url", "published", "title", "teaser", "section", "date"]
         },
         "RetrescoClientError": {
             "type": "object",

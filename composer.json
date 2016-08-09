@@ -14,7 +14,8 @@
     "autoload": {
         "psr-4": {
             "telekurier\\RetrescoClient\\": "src/",
-            "telekurier\\RetrescoClient\\Model\\": "generated/Model/"
+            "telekurier\\RetrescoClient\\Model\\": "generated/Model/",
+            "telekurier\\RetrescoClient\\Normalizer\\": "generated/Normalizer/"
         }
     },
     "scripts": {
