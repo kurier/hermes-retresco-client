@@ -159,7 +159,7 @@ class RetrescoClient extends Client {
    *
    * @throws \GuzzleHttp\Exception\ClientException
    */
-  public function putDocument($document, $enrich = TRUE, $inTextLinks = FALSE, $index = TRUE) {
+  public function putDocument(RetrescoDocument $document, $enrich = TRUE, $inTextLinks = FALSE, $index = TRUE) {
     $body = $this->getSerializer()->serialize($document, 'json');
 
     $header = array(
@@ -176,7 +176,7 @@ class RetrescoClient extends Client {
       'index'         => (int) $index
     );
 
-    $uri = $this->config["documentPath"] . "/" . $document['doc_id'] . "?" . http_build_query($params);
+    $uri = $this->config["documentPath"] . "/" . $document->getDocId() . "?" . http_build_query($params);
 
     $request = new Request('PUT', $uri, $header, $body);
     $response = $this->send($request);
@@ -199,9 +199,9 @@ class RetrescoClient extends Client {
     $data = $response->getBody()->getContents();
 
     /** @var RetrescoDocument $document */
-//    $document = $this->getSerializer()->deserialize($data, RetrescoDocument::class, 'json');
+    $document = $this->getSerializer()->deserialize($data, RetrescoDocument::class, 'json');
 
-    return \GuzzleHttp\json_decode(($data));
+    return $document;
   }
 
   /**
