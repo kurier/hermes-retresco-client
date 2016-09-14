@@ -45,7 +45,7 @@ class RetrescoNormalizerTest extends \PHPUnit_Framework_TestCase {
    */
   public function testNormalizeId() {
     $this->document->setDocId(123);
-    $foo = $this->normlizer->normalize($this->document);
-    $this->assertNotNull($foo);
+    $obj = $this->normlizer->normalize($this->document);
+    $this->assertEquals(123, $obj->doc_id);
   }
 }
