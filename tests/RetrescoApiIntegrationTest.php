@@ -85,15 +85,13 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
 
     $testFile = dirname(__FILE__) . '/data/putFile01.yml';
     $this->testDocument = $this->createRetrescoDocumentFromFile($testFile);
-    $this->testDocument->setDocId('test-' . floor(microtime(true)));
+    $this->testDocument->setDocId('test-' . floor(microtime(TRUE)));
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     parent::tearDown();
     $this->deleteDocument($this->testDocument);
   }
-
 
   /**
    * Tests to put the document on the remote host.
@@ -150,13 +148,17 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
     $deleteResponse = $this->retrescoClient->deleteDocument($this->testDocument);
     $this->assertEquals(RetrescoClient::RESPONSE_OK, $deleteResponse->getStatusCode(), 'File was not deleted.');
 
+    $expectedException = NULL;
     try {
       $this->retrescoClient->getDocumentById($this->testDocument->getDocId());
     } catch (ClientException $e) {
-      $this->assertEquals(RetrescoClient::RESPONSE_NOT_FOUND, $e->getCode(), 'File not found exception expected.');
+      $expectedException = $e;
     }
 
-    $this->fail('\GuzzleHttp\Exception\ClientException for file not found expected.');
+    $this->assertNotNull($expectedException, '\GuzzleHttp\Exception\ClientException for file not found expected.');
+    $this->assertEquals(
+      RetrescoClient::RESPONSE_NOT_FOUND, $expectedException->getCode(), 'File not found exception expected.'
+    );
   }
 
   /**
