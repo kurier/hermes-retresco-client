@@ -317,6 +317,51 @@
             "properties": {
                 "q": {
                     "type": "string"
+                },
+                "search_fields": {
+                    "type": "string"
+                },
+                "result_size": {
+                    "type": "int"
+                },
+                "result_from": {
+                    "type": "int"
+                },
+                "sort_field": {
+                    "type": "string"
+                },
+                "authors": {
+                    "type": "string"
+                },
+                "locations": {
+                    "type": "string"
+                },
+                "persons": {
+                    "type": "string"
+                },
+                "products": {
+                    "type": "string"
+                },
+                "organisations": {
+                    "type": "string"
+                },
+                "keywords": {
+                    "type": "string"
+                },
+                "sources": {
+                    "type": "string"
+                },
+                "doc_types": {
+                    "type": "string"
+                },
+                "published": {
+                    "type": "bool"
+                },
+                "date_from": {
+                    "type": "date"
+                },
+                "date_to": {
+                    "type": "date"
                 }
             }
         },
