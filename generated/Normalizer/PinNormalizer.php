@@ -35,7 +35,11 @@ class PinNormalizer extends SerializerAwareNormalizer implements DenormalizerInt
             $context['rootSchema'] = $object;
         }
         if (property_exists($data, 'location')) {
-            $object->setLocation($this->serializer->deserialize($data->{'location'}, 'telekurier\\RetrescoClient\\Model\\Location', 'raw', $context));
+            $values = array();
+            foreach ($data->{'location'} as $value) {
+                $values[] = $value;
+            }
+            $object->setLocation($values);
         }
         return $object;
     }
@@ -43,7 +47,11 @@ class PinNormalizer extends SerializerAwareNormalizer implements DenormalizerInt
     {
         $data = new \stdClass();
         if (null !== $object->getLocation()) {
-            $data->{'location'} = $this->serializer->serialize($object->getLocation(), 'raw', $context);
+            $values = array();
+            foreach ($object->getLocation() as $value) {
+                $values[] = $value;
+            }
+            $data->{'location'} = $values;
         }
         return $data;
     }

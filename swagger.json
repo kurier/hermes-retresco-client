@@ -165,6 +165,18 @@
         }
     },
     "definitions": {
+        "location": {
+            "type": "array"
+        },
+        "pin": {
+            "type": "object",
+            "properties": {
+                "location": {
+                    "$ref" : "#/definitions/location"
+                }
+            },
+            "required": ["location"]
+        },
         "RetrescoDocument": {
             "type": "object",
             "properties": {
@@ -250,22 +262,7 @@
                     "type": "integer"
                 },
                 "pin": {
-                    "type": "object",
-                    "properties": {
-                      "location": {
-                        "type": "object",
-                        "properties": {
-                          "lat": {
-                            "type": "double"
-                          },
-                          "lon": {
-                            "type": "double"
-                          }
-                        },
-                        "required": ["lat", "lon"]
-                      }
-                    },
-                    "required": ["location"]
+                    "$ref" : "#/definitions/pin"
                 },
                 "rtr_persons": {
                     "type": "array",

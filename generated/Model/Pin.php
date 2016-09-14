@@ -5,22 +5,22 @@ namespace telekurier\RetrescoClient\Model;
 class Pin
 {
     /**
-     * @var Location
+     * @var mixed[]
      */
     protected $location;
     /**
-     * @return Location
+     * @return mixed[]
      */
     public function getLocation()
     {
         return $this->location;
     }
     /**
-     * @param Location $location
+     * @param mixed[] $location
      *
      * @return self
      */
-    public function setLocation(Location $location = null)
+    public function setLocation(array $location = null)
     {
         $this->location = $location;
         return $this;
