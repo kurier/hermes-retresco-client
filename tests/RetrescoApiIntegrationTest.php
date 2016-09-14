@@ -121,7 +121,8 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
 
     $document = NULL;
     try {
-      $document = $this->retrescoClient->getDocumentById($this->testDocument->getDocId());
+      $docId = $this->testDocument->getDocId();
+      $document = $this->retrescoClient->getDocumentById($docId);
     } catch (ClientException $e) {
       $this->fail($e->getMessage());
     }

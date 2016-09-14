@@ -6,18 +6,18 @@ use Joli\Jane\Reference\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
-class PinNormalizer extends SerializerAwareNormalizer implements DenormalizerInterface, NormalizerInterface
+class LocationNormalizer extends SerializerAwareNormalizer implements DenormalizerInterface, NormalizerInterface
 {
     public function supportsDenormalization($data, $type, $format = null)
     {
-        if ($type !== 'telekurier\\RetrescoClient\\Model\\Pin') {
+        if ($type !== 'telekurier\\RetrescoClient\\Model\\Location') {
             return false;
         }
         return true;
     }
     public function supportsNormalization($data, $format = null)
     {
-        if ($data instanceof \telekurier\RetrescoClient\Model\Pin) {
+        if ($data instanceof \telekurier\RetrescoClient\Model\Location) {
             return true;
         }
         return false;
@@ -30,20 +30,26 @@ class PinNormalizer extends SerializerAwareNormalizer implements DenormalizerInt
         if (isset($data->{'$ref'})) {
             return new Reference($data->{'$ref'}, $context['rootSchema'] ?: null);
         }
-        $object = new \telekurier\RetrescoClient\Model\Pin();
+        $object = new \telekurier\RetrescoClient\Model\Location();
         if (!isset($context['rootSchema'])) {
             $context['rootSchema'] = $object;
         }
-        if (property_exists($data, 'location')) {
-            $object->setLocation($this->serializer->deserialize($data->{'location'}, 'telekurier\\RetrescoClient\\Model\\Location', 'raw', $context));
+        if (property_exists($data, 'lat')) {
+            $object->setLat($data->{'lat'});
+        }
+        if (property_exists($data, 'lon')) {
+            $object->setLon($data->{'lon'});
         }
         return $object;
     }
     public function normalize($object, $format = null, array $context = array())
     {
         $data = new \stdClass();
-        if (null !== $object->getLocation()) {
-            $data->{'location'} = $this->serializer->serialize($object->getLocation(), 'raw', $context);
+        if (null !== $object->getLat()) {
+            $data->{'lat'} = $object->getLat();
+        }
+        if (null !== $object->getLon()) {
+            $data->{'lon'} = $object->getLon();
         }
         return $data;
     }

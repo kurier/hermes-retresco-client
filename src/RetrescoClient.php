@@ -201,8 +201,10 @@ class RetrescoClient extends Client {
     $response = $this->get($this->config["documentPath"] . "/" . $id);
     $data = $response->getBody()->getContents();
 
+    /** @var Serializer $serializer */
+    $serializer = $this->getSerializer();
     /** @var RetrescoDocument $document */
-    $document = $this->getSerializer()->deserialize($data, RetrescoDocument::class, 'json');
+    $document = $serializer->deserialize($data, RetrescoDocument::class, 'json');
 
     return $document;
   }

@@ -165,14 +165,22 @@
         }
     },
     "definitions": {
-        "location": {
-            "type": "array"
+        "Location": {
+            "type": "object",
+            "properties": {
+                "lat": {
+                    "type": "double"
+                },
+                "lon": {
+                    "type": "double"
+                }
+            }
         },
-        "pin": {
+        "Pin": {
             "type": "object",
             "properties": {
                 "location": {
-                    "$ref" : "#/definitions/location"
+                    "$ref": "#/definitions/Location"
                 }
             },
             "required": ["location"]
@@ -262,7 +270,7 @@
                     "type": "integer"
                 },
                 "pin": {
-                    "$ref" : "#/definitions/pin"
+                    "$ref" : "#/definitions/Pin"
                 },
                 "rtr_persons": {
                     "type": "array",
