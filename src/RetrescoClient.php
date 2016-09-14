@@ -7,8 +7,6 @@
 
 namespace telekurier\RetrescoClient;
 
-use telekurier\RetrescoClient\Model\RetrescoDocument;
-use telekurier\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
@@ -18,18 +16,21 @@ use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
+use telekurier\RetrescoClient\Model\RetrescoDocument;
+use telekurier\RetrescoClient\Model\RetrescoSearchQuery;
+use telekurier\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
 
 /**
  * Retresco REST client class.
  */
 class RetrescoClient extends Client {
 
-  const RESPONSE_OK             = '200';
-  const RESPONSE_CREATED        = '201';
-  const RESPONSE_BAD_REQUEST    = '400';
-  const RESPONSE_UNAUTHORIZED   = '401';
-  const RESPONSE_NOT_FOUND      = '404';
-  const RESPONSE_CONFLICT       = '409';
+  const RESPONSE_OK = '200';
+  const RESPONSE_CREATED = '201';
+  const RESPONSE_BAD_REQUEST = '400';
+  const RESPONSE_UNAUTHORIZED = '401';
+  const RESPONSE_NOT_FOUND = '404';
+  const RESPONSE_CONFLICT = '409';
   const RESPONSE_INTERNAL_ERROR = '500';
 
   /**
@@ -134,8 +135,10 @@ class RetrescoClient extends Client {
       $encoders = [new JsonEncoder()];
       $normalizers = [
         new ArrayDenormalizer(),
-        (new SwaggerSchemaNormalizer(null, new CamelCaseToSnakeCaseNameConverter()))->setSwaggerSchema('telekurier\RetrescoClient\Model', $schema),
-        new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter()),
+        (new SwaggerSchemaNormalizer(NULL, new CamelCaseToSnakeCaseNameConverter()))->setSwaggerSchema(
+          'telekurier\RetrescoClient\Model', $schema
+        ),
+        new ObjectNormalizer(NULL, new CamelCaseToSnakeCaseNameConverter()),
       ];
       $this->serializer = new Serializer($normalizers, $encoders);
     }
@@ -171,9 +174,9 @@ class RetrescoClient extends Client {
     }
 
     $params = array(
-      'enrich'        => (int) $enrich,
+      'enrich' => (int) $enrich,
       'in_text_links' => (int) $inTextLinks,
-      'index'         => (int) $index
+      'index' => (int) $index
     );
 
     $uri = $this->config["documentPath"] . "/" . $document->getDocId() . "?" . http_build_query($params);
@@ -231,5 +234,13 @@ class RetrescoClient extends Client {
   public function deleteDocumentById($id) {
     $response = $this->delete($this->config["documentPath"] . "/" . $id);
     return $response;
+  }
+
+  /**
+   * @param RetrescoSearchQuery $query
+   * @return RetrescoDocument[]
+   */
+  public function search(RetrescoSearchQuery $query) {
+    return [];
   }
 }

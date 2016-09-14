@@ -312,6 +312,14 @@
             },
             "required": ["doc_id", "doc_type", "url", "published", "title", "teaser", "section", "date"]
         },
+        "RetrescoSearchQuery": {
+            "type": "object",
+            "properties": {
+                "q": {
+                    "type": "string"
+                }
+            }
+        },
         "RetrescoClientError": {
             "type": "object",
             "properties": {
