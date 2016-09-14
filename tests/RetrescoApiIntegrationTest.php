@@ -7,12 +7,12 @@
 
 namespace telekurier\Retresco\Tests;
 
-use telekurier\RetrescoClient\Model\RetrescoDocument;
-use telekurier\RetrescoClient\RetrescoClient;
 use FR3D\SwaggerAssertions\PhpUnit\Psr7AssertsTrait;
 use FR3D\SwaggerAssertions\SchemaManager;
 use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Yaml\Yaml;
+use telekurier\RetrescoClient\Model\RetrescoDocument;
+use telekurier\RetrescoClient\RetrescoClient;
 
 /**
  * Tests for the Retresco client.
@@ -36,10 +36,10 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
    * @var mixed[]
    */
   protected static $config = [
-    'base_uri'     => 'https://kurier-stage01.rtrsupport.de',
-    'username'     => 'kurier',
-    'password'     => 'CHANGE-ME',
-    'basePath'     => '/api/documents',
+    'base_uri' => 'https://kurier-stage01.rtrsupport.de',
+    'username' => 'kurier',
+    'password' => 'CHANGE-ME',
+    'basePath' => '/api/documents',
     'documentPath' => '/api/documents',
   ];
 
@@ -85,10 +85,15 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
 
     $testFile = dirname(__FILE__) . '/data/putFile01.yml';
     $this->testDocument = $this->createRetrescoDocumentFromFile($testFile);
+    $this->testDocument->setDocId('test-' . floor(microtime(true)));
+  }
 
-    // Initial delete for clean state.
+  protected function tearDown()
+  {
+    parent::tearDown();
     $this->deleteDocument($this->testDocument);
   }
+
 
   /**
    * Tests to put the document on the remote host.
@@ -97,7 +102,9 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
     $document = $this->testDocument;
     $response = $this->putDocument($document);
 
-    $this->assertEquals(RetrescoClient::RESPONSE_CREATED, $response->getStatusCode(), "File couldn't be written. Unexpected status code.");
+    $this->assertEquals(
+      RetrescoClient::RESPONSE_CREATED, $response->getStatusCode(), "File couldn't be written. Unexpected status code."
+    );
 
     // cleanup
     $this->deleteDocument($document);
@@ -112,15 +119,18 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
     $putResponse = $this->putDocument($this->testDocument);
     $this->assertEquals(RetrescoClient::RESPONSE_CREATED, $putResponse->getStatusCode(), "File couldn't be written.");
 
+    $document = NULL;
     try {
       $document = $this->retrescoClient->getDocumentById($this->testDocument->getDocId());
-    }
-    catch (ClientException $e) {
+    } catch (ClientException $e) {
       $this->fail($e->getMessage());
     }
 
     $this->assertInstanceOf(RetrescoDocument::class, $document, 'Unexpected type.');
-    $this->assertEquals($this->testDocument->getDocId(), $document->getDocId(), "Document id from fetched document should equal the id of the put document.");
+    $this->assertEquals(
+      $this->testDocument->getDocId(), $document->getDocId(),
+      "Document id from fetched document should equal the id of the put document."
+    );
 
     // cleanup
     $this->deleteDocument($document);
@@ -141,27 +151,26 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
 
     try {
       $this->retrescoClient->getDocumentById($this->testDocument->getDocId());
-    }
-    catch (\Exception $e) {
+    } catch (ClientException $e) {
       $this->assertEquals(RetrescoClient::RESPONSE_NOT_FOUND, $e->getCode(), 'File not found exception expected.');
     }
 
-    $this->assertInstanceOf(ClientException::class, $e, '\GuzzleHttp\Exception\ClientException for file not found expected.');
+    $this->fail('\GuzzleHttp\Exception\ClientException for file not found expected.');
   }
 
   /**
    * Creates a RetrescoDocument from a test file and puts it on the remote host.
-   * 
+   *
    * @param RetrescoDocument $document
    *  The test document.
    *
    * @return \Psr\Http\Message\ResponseInterface
    */
   protected function putDocument(RetrescoDocument $document) {
-    try{
+    $response = NULL;
+    try {
       $response = $this->retrescoClient->putDocument($document);
-    }
-    catch (ClientException $e) {
+    } catch (ClientException $e) {
       $this->fail($e->getMessage());
     }
 
@@ -176,8 +185,8 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
   protected function deleteDocument(RetrescoDocument $document) {
     try {
       $this->retrescoClient->deleteDocument($document);
+    } catch (\Exception $e) { /* ignore */
     }
-    catch (\Exception $e) { /* ignore */ }
   }
 
   /**
