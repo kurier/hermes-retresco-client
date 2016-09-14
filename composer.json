@@ -20,8 +20,7 @@
     },
     "scripts": {
         "generate": [
-            "rm -rf generated/* && ./vendor/bin/jane-openapi generate swagger.json telekurier\\\\RetrescoClient generated",
-            "@clean-generated-code"
+            "rm -rf generated/* && ./vendor/bin/jane-openapi generate swagger.json telekurier\\\\RetrescoClient generated"
         ],
         "clean-generated-code": "rm -rf generated/Resource generated/Normalizer",
         "swagger-ui": [
