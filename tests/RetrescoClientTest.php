@@ -19,7 +19,7 @@ use telekurier\RetrescoClient\RetrescoClient;
  *
  * @covers RetrescoClient
  */
-class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
+abstract class RetrescoClientTest extends \PHPUnit_Framework_TestCase {
 
   use Psr7AssertsTrait;
 
@@ -52,144 +52,12 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
    */
   protected $testDocument;
 
-  /**
-   * The configured Retresco client.
-   *
-   * @var \telekurier\RetrescoClient\RetrescoClient
-   */
-  protected static $retrescoClientCache;
-
-  /**
-   * The configured Retresco client.
-   *
-   * @var \telekurier\RetrescoClient\RetrescoClient
-   */
-  protected $retrescoClient;
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function setUpBeforeClass() {
-    $swagger_file = dirname(__FILE__) . '/../swagger.json';
-    static::$schemaManager = new SchemaManager($swagger_file);
-    static::$config['password'] = $_ENV['RETRESCO_PASSWORD'];
-    static::$retrescoClientCache = RetrescoClient::create(static::$config);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
-    parent::setUp();
     $this->retrescoClient = static::$retrescoClientCache;
 
     $testFile = dirname(__FILE__) . '/data/putFile01.yml';
     $this->testDocument = $this->createRetrescoDocumentFromFile($testFile);
     $this->testDocument->setDocId('test-' . floor(microtime(TRUE)));
-  }
-
-  protected function tearDown() {
-    parent::tearDown();
-    $this->deleteDocument($this->testDocument);
-  }
-
-  /**
-   * Tests to put the document on the remote host.
-   */
-  public function testPutDocument() {
-    $document = $this->testDocument;
-    $response = $this->putDocument($document);
-
-    $this->assertEquals(
-      RetrescoClient::RESPONSE_CREATED, $response->getStatusCode(), "File couldn't be written. Unexpected status code."
-    );
-
-    // cleanup
-    $this->deleteDocument($document);
-  }
-
-  /**
-   * Tests if a document can be retreived with the RestrescoClient.
-   *
-   * Puts a document there first and then tries to retrieve it.
-   */
-  public function testGetDocument() {
-    $putResponse = $this->putDocument($this->testDocument);
-    $this->assertEquals(RetrescoClient::RESPONSE_CREATED, $putResponse->getStatusCode(), "File couldn't be written.");
-
-    $document = NULL;
-    try {
-      $docId = $this->testDocument->getDocId();
-      $document = $this->retrescoClient->getDocumentById($docId);
-    } catch (ClientException $e) {
-      $this->fail($e->getMessage());
-    }
-
-    $this->assertInstanceOf(RetrescoDocument::class, $document, 'Unexpected type.');
-    $this->assertEquals(
-      $this->testDocument->getDocId(), $document->getDocId(),
-      "Document id from fetched document should equal the id of the put document."
-    );
-
-    // cleanup
-    $this->deleteDocument($document);
-  }
-
-  /**
-   * Tests the deletion of the document.
-   *
-   * Puts a new document there first, then deletes it and finally
-   * tries to fetch it again to see if it is still there or not.
-   */
-  public function testDeleteDocument() {
-    $putResponse = $this->putDocument($this->testDocument);
-    $this->assertEquals(RetrescoClient::RESPONSE_CREATED, $putResponse->getStatusCode(), "File couldn't be written.");
-
-    $deleteResponse = $this->retrescoClient->deleteDocument($this->testDocument);
-    $this->assertEquals(RetrescoClient::RESPONSE_OK, $deleteResponse->getStatusCode(), 'File was not deleted.');
-
-    $expectedException = NULL;
-    try {
-      $this->retrescoClient->getDocumentById($this->testDocument->getDocId());
-    } catch (ClientException $e) {
-      $expectedException = $e;
-    }
-
-    $this->assertNotNull($expectedException, '\GuzzleHttp\Exception\ClientException for file not found expected.');
-    $this->assertEquals(
-      RetrescoClient::RESPONSE_NOT_FOUND, $expectedException->getCode(), 'File not found exception expected.'
-    );
-  }
-
-  /**
-   * Creates a RetrescoDocument from a test file and puts it on the remote host.
-   *
-   * @param RetrescoDocument $document
-   *  The test document.
-   *
-   * @return \Psr\Http\Message\ResponseInterface
-   */
-  protected function putDocument(RetrescoDocument $document) {
-    $response = NULL;
-    try {
-      $response = $this->retrescoClient->putDocument($document);
-    } catch (ClientException $e) {
-      $this->fail($e->getMessage());
-    }
-
-    return $response;
-  }
-
-  /**
-   * Deletes remote document.
-   *
-   * @param \telekurier\RetrescoClient\Model\RetrescoDocument $document
-   */
-  protected function deleteDocument(RetrescoDocument $document) {
-    try {
-      $this->retrescoClient->deleteDocument($document);
-    } catch (\Exception $e) { /* ignore */
-    }
   }
 
   /**
@@ -207,5 +75,37 @@ class RetrescoApiIntegrationTest extends \PHPUnit_Framework_TestCase {
     }
 
     return NULL;
+  }
+
+  /**
+   * The configured Retresco client.
+   *
+   * @var \telekurier\RetrescoClient\RetrescoClient
+   */
+  protected static $retrescoClientCache;
+
+  /**
+   * The configured Retresco client.
+   *
+   * @var \telekurier\RetrescoClient\RetrescoClient
+   */
+  protected $retrescoClient;
+
+  protected function tearDown() {
+    try {
+      $this->retrescoClient->deleteDocument($this->testDocument);
+    } catch (ClientException $e) {
+    }
+    parent::tearDown();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function setUpBeforeClass() {
+    $swagger_file = dirname(__FILE__) . '/../swagger.json';
+    static::$schemaManager = new SchemaManager($swagger_file);
+    static::$config['password'] = $_ENV['RETRESCO_PASSWORD'];
+    static::$retrescoClientCache = RetrescoClient::create(static::$config);
   }
 }
