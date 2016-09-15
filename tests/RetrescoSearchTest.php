@@ -7,11 +7,7 @@
 
 namespace telekurier\Retresco\Tests;
 
-use FR3D\SwaggerAssertions\PhpUnit\Psr7AssertsTrait;
-use FR3D\SwaggerAssertions\SchemaManager;
-use GuzzleHttp\Exception\ClientException;
-use Symfony\Component\Yaml\Yaml;
-use telekurier\RetrescoClient\Model\RetrescoDocument;
+use telekurier\RetrescoClient\Model\RetrescoSearchQuery;
 use telekurier\RetrescoClient\RetrescoClient;
 
 /**
@@ -19,21 +15,20 @@ use telekurier\RetrescoClient\RetrescoClient;
  *
  * @covers RetrescoClient
  */
-class RetrescoApiIntegrationTest extends RetrescoClientTest  {
+class RetrescoApiIntegrationTest extends RetrescoClientTest {
 
   /**
    * Tests to put the document on the remote host.
    */
   public function testFoo() {
-    $document = $this->testDocument;
-    $response = $this->putDocument($document);
+    $response = $this->retrescoClient->putDocument($this->testDocument);
 
-    $this->assertEquals(
-      RetrescoClient::RESPONSE_CREATED, $response->getStatusCode(), "File couldn't be written. Unexpected status code."
-    );
+    $query = new RetrescoSearchQuery();
 
-    // cleanup
-    $this->deleteDocument($document);
+    $query->setQ($this->testDocument->getTitle());
+
+    $searchResult = $this->retrescoClient->search($query);
+
+    $this->assertContains($response, $searchResult, "Document was not part of search result");
   }
-
 }

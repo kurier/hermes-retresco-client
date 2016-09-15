@@ -243,6 +243,7 @@ class RetrescoClient extends Client {
    * @return RetrescoDocument[]
    */
   public function search(RetrescoSearchQuery $query) {
+    // TODO move to separate client
     return [];
   }
 }
