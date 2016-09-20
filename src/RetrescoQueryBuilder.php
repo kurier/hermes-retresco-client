@@ -29,9 +29,7 @@ class RetrescoQueryBuilder {
   /**
    * @return \telekurier\RetrescoClient\Model\RetrescoSearchQuery
    */
-  public function getQuery(): \telekurier\RetrescoClient\Model\RetrescoSearchQuery {
+  public function getQuery(): RetrescoSearchQuery {
     return $this->query;
   }
-
-
 }
