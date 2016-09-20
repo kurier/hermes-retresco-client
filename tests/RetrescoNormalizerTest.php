@@ -48,4 +48,14 @@ class RetrescoNormalizerTest extends \PHPUnit_Framework_TestCase {
     $obj = $this->normlizer->normalize($this->document);
     $this->assertEquals(123, $obj->doc_id);
   }
+
+  /**
+   * Tests normalization of payload field
+   */
+  public function testNormalizePayload() {
+    $payload = ['foo' => 'bar'];
+    $this->document->setPayload($payload);
+    $obj = $this->normlizer->normalize($this->document);
+    $this->assertEquals($payload, $obj->payload);
+  }
 }
