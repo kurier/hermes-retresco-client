@@ -23,6 +23,10 @@ class RetrescoDocument
     /**
      * @var string
      */
+    protected $lifecycle;
+    /**
+     * @var string
+     */
     protected $title;
     /**
      * @var string
@@ -80,6 +84,10 @@ class RetrescoDocument
      * @var string
      */
     protected $agentur;
+    /**
+     * @var string
+     */
+    protected $channel;
     /**
      * @var int
      */
@@ -210,6 +218,23 @@ class RetrescoDocument
     public function setPublished($published = null)
     {
         $this->published = $published;
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getLifecycle()
+    {
+        return $this->lifecycle;
+    }
+    /**
+     * @param string $lifecycle
+     *
+     * @return self
+     */
+    public function setLifecycle($lifecycle = null)
+    {
+        $this->lifecycle = $lifecycle;
         return $this;
     }
     /**
@@ -465,6 +490,23 @@ class RetrescoDocument
     public function setAgentur($agentur = null)
     {
         $this->agentur = $agentur;
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getChannel()
+    {
+        return $this->channel;
+    }
+    /**
+     * @param string $channel
+     *
+     * @return self
+     */
+    public function setChannel($channel = null)
+    {
+        $this->channel = $channel;
         return $this;
     }
     /**

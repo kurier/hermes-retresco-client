@@ -46,6 +46,9 @@ class RetrescoDocumentNormalizer extends SerializerAwareNormalizer implements De
         if (property_exists($data, 'published')) {
             $object->setPublished($data->{'published'});
         }
+        if (property_exists($data, 'lifecycle')) {
+            $object->setLifecycle($data->{'lifecycle'});
+        }
         if (property_exists($data, 'title')) {
             $object->setTitle($data->{'title'});
         }
@@ -90,6 +93,9 @@ class RetrescoDocumentNormalizer extends SerializerAwareNormalizer implements De
         }
         if (property_exists($data, 'agentur')) {
             $object->setAgentur($data->{'agentur'});
+        }
+        if (property_exists($data, 'channel')) {
+            $object->setChannel($data->{'channel'});
         }
         if (property_exists($data, 'article_score')) {
             $object->setArticleScore($data->{'article_score'});
@@ -180,6 +186,9 @@ class RetrescoDocumentNormalizer extends SerializerAwareNormalizer implements De
         if (null !== $object->getPublished()) {
             $data->{'published'} = $object->getPublished();
         }
+        if (null !== $object->getLifecycle()) {
+            $data->{'lifecycle'} = $object->getLifecycle();
+        }
         if (null !== $object->getTitle()) {
             $data->{'title'} = $object->getTitle();
         }
@@ -224,6 +233,9 @@ class RetrescoDocumentNormalizer extends SerializerAwareNormalizer implements De
         }
         if (null !== $object->getAgentur()) {
             $data->{'agentur'} = $object->getAgentur();
+        }
+        if (null !== $object->getChannel()) {
+            $data->{'channel'} = $object->getChannel();
         }
         if (null !== $object->getArticleScore()) {
             $data->{'article_score'} = $object->getArticleScore();

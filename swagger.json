@@ -200,6 +200,9 @@
                 "published": {
                     "type": "boolean"
                 },
+                "lifecycle": {
+                    "type": "string"
+                },
                 "title": {
                     "type": "string"
                 },
@@ -243,6 +246,9 @@
                     "type": "string"
                 },
                 "agentur": {
+                    "type": "string"
+                },
+                "channel": {
                     "type": "string"
                 },
                 "article_score": {
