@@ -24,7 +24,7 @@ class RetrescoNormalizerTest extends \PHPUnit_Framework_TestCase {
   /**
    * @var RetrescoDocumentNormalizer
    */
-  protected $normlizer;
+  protected $normalizer;
 
   /**
    * @var RetrescoDocument
@@ -35,7 +35,7 @@ class RetrescoNormalizerTest extends \PHPUnit_Framework_TestCase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    $this->normlizer = new RetrescoDocumentNormalizer();
+    $this->normalizer = new RetrescoDocumentNormalizer();
     $this->document = new RetrescoDocument();
     parent::setUp();
   }
@@ -45,7 +45,7 @@ class RetrescoNormalizerTest extends \PHPUnit_Framework_TestCase {
    */
   public function testNormalizeId() {
     $this->document->setDocId(123);
-    $obj = $this->normlizer->normalize($this->document);
+    $obj = $this->normalizer->normalize($this->document);
     $this->assertEquals(123, $obj->doc_id);
   }
 
@@ -55,7 +55,7 @@ class RetrescoNormalizerTest extends \PHPUnit_Framework_TestCase {
   public function testNormalizePayload() {
     $payload = ['foo' => 'bar'];
     $this->document->setPayload($payload);
-    $obj = $this->normlizer->normalize($this->document);
+    $obj = $this->normalizer->normalize($this->document);
     $this->assertEquals($payload, $obj->payload);
   }
 }
