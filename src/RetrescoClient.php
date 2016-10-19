@@ -7,7 +7,10 @@
 
 namespace telekurier\RetrescoClient;
 
+use Joli\Jane\Encoder\RawEncoder;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
+use telekurier\RetrescoClient\Normalizer\LocationNormalizer;
+use telekurier\RetrescoClient\Normalizer\PinNormalizer;
 use telekurier\RetrescoClient\Normalizer\RetrescoDocumentNormalizer;
 use telekurier\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
 use GuzzleHttp\Client;
@@ -132,10 +135,12 @@ class RetrescoClient extends Client {
   public function getSerializer() {
     if (!isset($this->serializer)) {
       $schema = new SwaggerSchema(dirname(__FILE__) . '/../swagger.json');
-      $encoders = [new JsonEncoder()];
+      $encoders = [new JsonEncoder(), new RawEncoder()];
       $normalizers = [
         new ArrayDenormalizer(),
         new RetrescoDocumentNormalizer(),
+        new LocationNormalizer(),
+        new PinNormalizer(),
         (new SwaggerSchemaNormalizer(null, new CamelCaseToSnakeCaseNameConverter()))->setSwaggerSchema('telekurier\RetrescoClient\Model', $schema),
         new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter()),
       ];
