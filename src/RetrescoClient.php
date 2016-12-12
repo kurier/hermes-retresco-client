@@ -196,13 +196,16 @@ class RetrescoClient extends Client {
    *
    * @param int $id
    *   The remote id of the document.
+   * @param string $url
+   *   Optional. Retrieve document from specific url.
    *
    * @return \telekurier\RetrescoClient\Model\RetrescoDocument
    *
    * @throws \GuzzleHttp\Exception\ClientException
    */
-  public function getDocumentById($id) {
-    $response = $this->get($this->config["documentPath"] . "/" . $id);
+  public function getDocumentById($id, $url = NULL) {
+    $url = isset($url) ? $url : $this->config["documentPath"];
+    $response = $this->get($url . "/" . $id);
     $data = $response->getBody()->getContents();
 
     $context = ['json_decode_associative' => FALSE];
