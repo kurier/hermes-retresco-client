@@ -150,6 +150,30 @@ class RetrescoClient extends Client {
   }
 
   /**
+   * Enriches the document on the server.
+   *
+   * @param string $body
+   *   Body in JSON format.
+   * @param bool $inTextLinks
+   *   In text links.
+   *
+   * @return string
+   *   Enriched body.
+   */
+  private function enrichDocument($body, $inTextLinks = TRUE) {
+    $header = array(
+      'Content-Type' => 'application/json'
+    );
+
+    $query = $inTextLinks ? '?in-text-linked' : '';
+    $uri = $this->config["enrichPath"] . $query;
+
+    $request = new Request('POST', $uri, $header, $body);
+    $response = $this->send($request);
+    return $response->getBody()->getContents();
+  }
+
+  /**
    * Puts the document on the server.
    *
    * @param \telekurier\RetrescoClient\Model\RetrescoDocument $document
@@ -182,6 +206,11 @@ class RetrescoClient extends Client {
       'in_text_links' => (int) $inTextLinks,
       'index'         => (int) $index
     );
+
+    // Enrich.
+    if ($enrich) {
+      $body = $this->enrichDocument($body, $inTextLinks);
+    }
 
     $uri = $this->config["documentPath"] . "/" . $document->getDocId() . "?" . http_build_query($params);
 
