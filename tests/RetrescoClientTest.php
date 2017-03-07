@@ -41,6 +41,7 @@ abstract class RetrescoClientTest extends \PHPUnit_Framework_TestCase {
     'password' => 'CHANGE-ME',
     'basePath' => '/api/content',
     'documentPath' => '/api/content',
+    'enrichPath' => '/api/enrich',
   ];
 
   /**
