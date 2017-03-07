@@ -165,23 +165,55 @@
         }
     },
     "definitions": {
+        "Location": {
+            "type": "object",
+            "properties": {
+                "lat": {
+                    "type": "double"
+                },
+                "lon": {
+                    "type": "double"
+                }
+            }
+        },
+        "Pin": {
+            "type": "object",
+            "properties": {
+                "location": {
+                    "$ref": "#/definitions/Location"
+                }
+            },
+            "required": ["location"]
+        },
         "RetrescoDocument": {
             "type": "object",
             "properties": {
                 "doc_id": {
-                    "type": "string",
-                    "required": true
+                    "type": "string"
+                },
+                "doc_type": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "published": {
+                    "type": "boolean"
+                },
+                "lifecycle": {
+                    "type": "string"
                 },
                 "title": {
-                    "type": "string",
-                    "required": true
+                    "type": "string"
                 },
                 "supertitle": {
                     "type": "string"
                 },
+                "author": {
+                    "type": "string"
+                },
                 "teaser": {
-                    "type": "string",
-                    "required": true
+                    "type": "string"
                 },
                 "teaser_img_url": {
                     "type": "string"
@@ -192,29 +224,59 @@
                 "body": {
                     "type": "string"
                 },
-                "author": {
-                    "type": "string"
-                },
-                "doc_type": {
-                    "type": "string",
-                    "required": true
-                },
-                "url": {
-                    "type": "string",
-                    "required": true
-                },
                 "section": {
                     "type": "string"
                 },
                 "date": {
-                    "type": "string",
-                    "required": true
+                    "type": "date"
                 },
                 "startdate": {
-                    "type": "string"
+                    "type": "date"
                 },
                 "enddate": {
+                    "type": "date"
+                },
+                "published_date": {
+                    "type": "date"
+                },
+                "updated_date": {
+                    "type": "date"
+                },
+                "source": {
                     "type": "string"
+                },
+                "agentur": {
+                    "type": "string"
+                },
+                "channel": {
+                    "type": "string"
+                },
+                "article_score": {
+                    "type": "integer"
+                },
+                "pi_last_72h": {
+                    "type": "integer"
+                },
+                "comments_count": {
+                    "type": "integer"
+                },
+                "socialmedia_shares": {
+                    "type": "integer"
+                },
+                "socialmedia_traffic": {
+                    "type": "integer"
+                },
+                "retention_period": {
+                    "type": "integer"
+                },
+                "video_views": {
+                    "type": "integer"
+                },
+                "bounce_rate": {
+                    "type": "integer"
+                },
+                "pin": {
+                    "$ref" : "#/definitions/Pin"
                 },
                 "rtr_persons": {
                     "type": "array",
@@ -251,6 +313,66 @@
                     "items": {
                         "type": "string"
                     }
+                },
+                "payload": {
+                    "type": "object",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": ["doc_id", "doc_type", "url", "published", "title", "teaser", "section", "date"]
+        },
+        "RetrescoSearchQuery": {
+            "type": "object",
+            "properties": {
+                "q": {
+                    "type": "string"
+                },
+                "search_fields": {
+                    "type": "string"
+                },
+                "result_size": {
+                    "type": "int"
+                },
+                "result_from": {
+                    "type": "int"
+                },
+                "sort_field": {
+                    "type": "string"
+                },
+                "authors": {
+                    "type": "string"
+                },
+                "locations": {
+                    "type": "string"
+                },
+                "persons": {
+                    "type": "string"
+                },
+                "products": {
+                    "type": "string"
+                },
+                "organisations": {
+                    "type": "string"
+                },
+                "keywords": {
+                    "type": "string"
+                },
+                "sources": {
+                    "type": "string"
+                },
+                "doc_types": {
+                    "type": "string"
+                },
+                "published": {
+                    "type": "bool"
+                },
+                "date_from": {
+                    "type": "date"
+                },
+                "date_to": {
+                    "type": "date"
                 }
             }
         },

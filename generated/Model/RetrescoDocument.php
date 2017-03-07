@@ -1,6 +1,6 @@
 <?php
 
-namespace drunomics\RetrescoClient\Model;
+namespace telekurier\RetrescoClient\Model;
 
 class RetrescoDocument
 {
@@ -8,12 +8,22 @@ class RetrescoDocument
      * @var string
      */
     protected $docId;
-
     /**
-     * @var boolean
+     * @var string
+     */
+    protected $docType;
+    /**
+     * @var string
+     */
+    protected $url;
+    /**
+     * @var bool
      */
     protected $published;
-
+    /**
+     * @var string
+     */
+    protected $lifecycle;
     /**
      * @var string
      */
@@ -22,6 +32,10 @@ class RetrescoDocument
      * @var string
      */
     protected $supertitle;
+    /**
+     * @var string
+     */
+    protected $author;
     /**
      * @var string
      */
@@ -41,31 +55,75 @@ class RetrescoDocument
     /**
      * @var string
      */
-    protected $author;
-    /**
-     * @var string
-     */
-    protected $docType;
-    /**
-     * @var string
-     */
-    protected $url;
-    /**
-     * @var string
-     */
     protected $section;
     /**
-     * @var string
+     * @var mixed
      */
     protected $date;
     /**
-     * @var string
+     * @var mixed
      */
     protected $startdate;
     /**
-     * @var string
+     * @var mixed
      */
     protected $enddate;
+    /**
+     * @var mixed
+     */
+    protected $publishedDate;
+    /**
+     * @var mixed
+     */
+    protected $updatedDate;
+    /**
+     * @var string
+     */
+    protected $source;
+    /**
+     * @var string
+     */
+    protected $agentur;
+    /**
+     * @var string
+     */
+    protected $channel;
+    /**
+     * @var int
+     */
+    protected $articleScore;
+    /**
+     * @var int
+     */
+    protected $piLast72h;
+    /**
+     * @var int
+     */
+    protected $commentsCount;
+    /**
+     * @var int
+     */
+    protected $socialmediaShares;
+    /**
+     * @var int
+     */
+    protected $socialmediaTraffic;
+    /**
+     * @var int
+     */
+    protected $retentionPeriod;
+    /**
+     * @var int
+     */
+    protected $videoViews;
+    /**
+     * @var int
+     */
+    protected $bounceRate;
+    /**
+     * @var Pin
+     */
+    protected $pin;
     /**
      * @var string[]
      */
@@ -91,6 +149,10 @@ class RetrescoDocument
      */
     protected $rtrKeywords;
     /**
+     * @var mixed
+     */
+    protected $payload;
+    /**
      * @return string
      */
     public function getDocId()
@@ -107,21 +169,74 @@ class RetrescoDocument
         $this->docId = $docId;
         return $this;
     }
-
-  /**
-   * @return boolean
-   */
-  public function isPublished(): bool {
-    return $this->published;
-  }
-
-  /**
-   * @param boolean $published
-   */
-  public function setPublished(bool $published) {
-    $this->published = $published;
-  }
-
+    /**
+     * @return string
+     */
+    public function getDocType()
+    {
+        return $this->docType;
+    }
+    /**
+     * @param string $docType
+     *
+     * @return self
+     */
+    public function setDocType($docType = null)
+    {
+        $this->docType = $docType;
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+    /**
+     * @param string $url
+     *
+     * @return self
+     */
+    public function setUrl($url = null)
+    {
+        $this->url = $url;
+        return $this;
+    }
+    /**
+     * @return bool
+     */
+    public function getPublished()
+    {
+        return $this->published;
+    }
+    /**
+     * @param bool $published
+     *
+     * @return self
+     */
+    public function setPublished($published = null)
+    {
+        $this->published = $published;
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getLifecycle()
+    {
+        return $this->lifecycle;
+    }
+    /**
+     * @param string $lifecycle
+     *
+     * @return self
+     */
+    public function setLifecycle($lifecycle = null)
+    {
+        $this->lifecycle = $lifecycle;
+        return $this;
+    }
     /**
      * @return string
      */
@@ -154,6 +269,23 @@ class RetrescoDocument
     public function setSupertitle($supertitle = null)
     {
         $this->supertitle = $supertitle;
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+    /**
+     * @param string $author
+     *
+     * @return self
+     */
+    public function setAuthor($author = null)
+    {
+        $this->author = $author;
         return $this;
     }
     /**
@@ -227,57 +359,6 @@ class RetrescoDocument
     /**
      * @return string
      */
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-    /**
-     * @param string $author
-     *
-     * @return self
-     */
-    public function setAuthor($author = null)
-    {
-        $this->author = $author;
-        return $this;
-    }
-    /**
-     * @return string
-     */
-    public function getDocType()
-    {
-        return $this->docType;
-    }
-    /**
-     * @param string $docType
-     *
-     * @return self
-     */
-    public function setDocType($docType = null)
-    {
-        $this->docType = $docType;
-        return $this;
-    }
-    /**
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-    /**
-     * @param string $url
-     *
-     * @return self
-     */
-    public function setUrl($url = null)
-    {
-        $this->url = $url;
-        return $this;
-    }
-    /**
-     * @return string
-     */
     public function getSection()
     {
         return $this->section;
@@ -293,14 +374,14 @@ class RetrescoDocument
         return $this;
     }
     /**
-     * @return string
+     * @return mixed
      */
     public function getDate()
     {
         return $this->date;
     }
     /**
-     * @param string $date
+     * @param mixed $date
      *
      * @return self
      */
@@ -310,14 +391,14 @@ class RetrescoDocument
         return $this;
     }
     /**
-     * @return string
+     * @return mixed
      */
     public function getStartdate()
     {
         return $this->startdate;
     }
     /**
-     * @param string $startdate
+     * @param mixed $startdate
      *
      * @return self
      */
@@ -327,20 +408,258 @@ class RetrescoDocument
         return $this;
     }
     /**
-     * @return string
+     * @return mixed
      */
     public function getEnddate()
     {
         return $this->enddate;
     }
     /**
-     * @param string $enddate
+     * @param mixed $enddate
      *
      * @return self
      */
     public function setEnddate($enddate = null)
     {
         $this->enddate = $enddate;
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getPublishedDate()
+    {
+        return $this->publishedDate;
+    }
+    /**
+     * @param mixed $publishedDate
+     *
+     * @return self
+     */
+    public function setPublishedDate($publishedDate = null)
+    {
+        $this->publishedDate = $publishedDate;
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getUpdatedDate()
+    {
+        return $this->updatedDate;
+    }
+    /**
+     * @param mixed $updatedDate
+     *
+     * @return self
+     */
+    public function setUpdatedDate($updatedDate = null)
+    {
+        $this->updatedDate = $updatedDate;
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+    /**
+     * @param string $source
+     *
+     * @return self
+     */
+    public function setSource($source = null)
+    {
+        $this->source = $source;
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getAgentur()
+    {
+        return $this->agentur;
+    }
+    /**
+     * @param string $agentur
+     *
+     * @return self
+     */
+    public function setAgentur($agentur = null)
+    {
+        $this->agentur = $agentur;
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getChannel()
+    {
+        return $this->channel;
+    }
+    /**
+     * @param string $channel
+     *
+     * @return self
+     */
+    public function setChannel($channel = null)
+    {
+        $this->channel = $channel;
+        return $this;
+    }
+    /**
+     * @return int
+     */
+    public function getArticleScore()
+    {
+        return $this->articleScore;
+    }
+    /**
+     * @param int $articleScore
+     *
+     * @return self
+     */
+    public function setArticleScore($articleScore = null)
+    {
+        $this->articleScore = $articleScore;
+        return $this;
+    }
+    /**
+     * @return int
+     */
+    public function getPiLast72h()
+    {
+        return $this->piLast72h;
+    }
+    /**
+     * @param int $piLast72h
+     *
+     * @return self
+     */
+    public function setPiLast72h($piLast72h = null)
+    {
+        $this->piLast72h = $piLast72h;
+        return $this;
+    }
+    /**
+     * @return int
+     */
+    public function getCommentsCount()
+    {
+        return $this->commentsCount;
+    }
+    /**
+     * @param int $commentsCount
+     *
+     * @return self
+     */
+    public function setCommentsCount($commentsCount = null)
+    {
+        $this->commentsCount = $commentsCount;
+        return $this;
+    }
+    /**
+     * @return int
+     */
+    public function getSocialmediaShares()
+    {
+        return $this->socialmediaShares;
+    }
+    /**
+     * @param int $socialmediaShares
+     *
+     * @return self
+     */
+    public function setSocialmediaShares($socialmediaShares = null)
+    {
+        $this->socialmediaShares = $socialmediaShares;
+        return $this;
+    }
+    /**
+     * @return int
+     */
+    public function getSocialmediaTraffic()
+    {
+        return $this->socialmediaTraffic;
+    }
+    /**
+     * @param int $socialmediaTraffic
+     *
+     * @return self
+     */
+    public function setSocialmediaTraffic($socialmediaTraffic = null)
+    {
+        $this->socialmediaTraffic = $socialmediaTraffic;
+        return $this;
+    }
+    /**
+     * @return int
+     */
+    public function getRetentionPeriod()
+    {
+        return $this->retentionPeriod;
+    }
+    /**
+     * @param int $retentionPeriod
+     *
+     * @return self
+     */
+    public function setRetentionPeriod($retentionPeriod = null)
+    {
+        $this->retentionPeriod = $retentionPeriod;
+        return $this;
+    }
+    /**
+     * @return int
+     */
+    public function getVideoViews()
+    {
+        return $this->videoViews;
+    }
+    /**
+     * @param int $videoViews
+     *
+     * @return self
+     */
+    public function setVideoViews($videoViews = null)
+    {
+        $this->videoViews = $videoViews;
+        return $this;
+    }
+    /**
+     * @return int
+     */
+    public function getBounceRate()
+    {
+        return $this->bounceRate;
+    }
+    /**
+     * @param int $bounceRate
+     *
+     * @return self
+     */
+    public function setBounceRate($bounceRate = null)
+    {
+        $this->bounceRate = $bounceRate;
+        return $this;
+    }
+    /**
+     * @return Pin
+     */
+    public function getPin()
+    {
+        return $this->pin;
+    }
+    /**
+     * @param Pin $pin
+     *
+     * @return self
+     */
+    public function setPin(Pin $pin = null)
+    {
+        $this->pin = $pin;
         return $this;
     }
     /**
@@ -443,6 +762,23 @@ class RetrescoDocument
     public function setRtrKeywords(array $rtrKeywords = null)
     {
         $this->rtrKeywords = $rtrKeywords;
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getPayload()
+    {
+        return $this->payload;
+    }
+    /**
+     * @param mixed $payload
+     *
+     * @return self
+     */
+    public function setPayload($payload = null)
+    {
+        $this->payload = $payload;
         return $this;
     }
 }

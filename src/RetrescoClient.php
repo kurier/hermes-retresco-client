@@ -4,34 +4,38 @@
 
 /**
  * @file
- * Contains \drunomics\RetrescoClient\RetrescoClient
+ * Contains \telekurier\RetrescoClient\RetrescoClient
  */
 
-namespace drunomics\RetrescoClient;
+namespace telekurier\RetrescoClient;
 
-use drunomics\RetrescoClient\Model\RetrescoDocument;
-use drunomics\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
+use Joli\Jane\Encoder\RawEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
+use telekurier\RetrescoClient\Model\RetrescoDocument;
+use telekurier\RetrescoClient\Normalizer\LocationNormalizer;
+use telekurier\RetrescoClient\Normalizer\PinNormalizer;
+use telekurier\RetrescoClient\Normalizer\RetrescoDocumentNormalizer;
+use telekurier\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
 
 /**
  * Retresco REST client class.
  */
 class RetrescoClient extends Client {
 
-  const RESPONSE_OK             = '200';
-  const RESPONSE_CREATED        = '201';
-  const RESPONSE_BAD_REQUEST    = '400';
-  const RESPONSE_UNAUTHORIZED   = '401';
-  const RESPONSE_NOT_FOUND      = '404';
-  const RESPONSE_CONFLICT       = '409';
+  const RESPONSE_OK = '200';
+  const RESPONSE_CREATED = '201';
+  const RESPONSE_BAD_REQUEST = '400';
+  const RESPONSE_UNAUTHORIZED = '401';
+  const RESPONSE_NOT_FOUND = '404';
+  const RESPONSE_CONFLICT = '409';
   const RESPONSE_INTERNAL_ERROR = '500';
 
   /**
@@ -96,12 +100,6 @@ class RetrescoClient extends Client {
    */
   public function __construct(array $config) {
     $this->config = $config;
-    if (!empty($config['format']) && $config['format'] == 'xml') {
-      $config['headers']['Accept'] = 'application/xml';
-    }
-    else {
-      $config['headers']['Accept'] = 'application/json';
-    }
     $default_options = [
       // 'curl' => [CURLOPT_SSLVERSION => CURL_SSLVERSION_SSLv3],
       // 'verify' => FALSE,
@@ -133,11 +131,16 @@ class RetrescoClient extends Client {
   public function getSerializer() {
     if (!isset($this->serializer)) {
       $schema = new SwaggerSchema(dirname(__FILE__) . '/../swagger.json');
-      $encoders = [new JsonEncoder()];
+      $encoders = [new JsonEncoder(), new RawEncoder()];
       $normalizers = [
         new ArrayDenormalizer(),
-        (new SwaggerSchemaNormalizer(null, new CamelCaseToSnakeCaseNameConverter()))->setSwaggerSchema('drunomics\RetrescoClient\Model', $schema),
-        new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter()),
+        new RetrescoDocumentNormalizer(),
+        new LocationNormalizer(),
+        new PinNormalizer(),
+        (new SwaggerSchemaNormalizer(
+          NULL, new CamelCaseToSnakeCaseNameConverter()
+        ))->setSwaggerSchema('telekurier\RetrescoClient\Model', $schema),
+        new ObjectNormalizer(NULL, new CamelCaseToSnakeCaseNameConverter()),
       ];
       $this->serializer = new Serializer($normalizers, $encoders);
     }
@@ -145,40 +148,44 @@ class RetrescoClient extends Client {
   }
 
   /**
+   * Enriches the document on the server.
+   *
+   * @param string $body
+   *   Body in JSON format.
+   * @param bool $inTextLinks
+   *   In text links.
+   *
+   * @return string
+   *   Enriched body.
+   */
+  private function enrichBody($body, $inTextLinks) {
+    $header = array(
+      'Content-Type' => 'application/json'
+    );
+
+    $query = $inTextLinks ? '?in-text-linked' : NULL;
+    $uri = $this->config["enrichPath"] . $query;
+
+    $request = new Request('POST', $uri, $header, $body);
+    $response = $this->send($request);
+    return $response->getBody()->getContents();
+  }
+
+  /**
    * Puts the document on the server.
    *
-   * @param \drunomics\RetrescoClient\Model\RetrescoDocument $document
+   * @param \telekurier\RetrescoClient\Model\RetrescoDocument $document
    *   The Retresco document.
-   * @param bool $enrich
-   *   Enables semantic enrichment (default: true).
-   * @param bool $inTextLinks
-   *   Enables calculation of In-Text-Links, only available if $enrich = true.
-   *   (default: false).
-   * @param bool $index
-   *   Index document (default: true).
-   *
    * @return mixed|\Psr\Http\Message\ResponseInterface
-   *
-   * @throws \GuzzleHttp\Exception\ClientException
    */
-  public function putDocument(RetrescoDocument $document, $enrich = TRUE, $inTextLinks = FALSE, $index = TRUE) {
+  public function putDocument(RetrescoDocument $document) {
     $body = $this->getSerializer()->serialize($document, 'json');
 
     $header = array(
       'Content-Type' => 'application/json'
     );
 
-    if ($inTextLinks == TRUE) {
-      $enrich = TRUE; // dependency on inTextLinks
-    }
-
-    $params = array(
-      'enrich'        => (int) $enrich,
-      'in_text_links' => (int) $inTextLinks,
-      'index'         => (int) $index
-    );
-
-    $uri = $this->config["documentPath"] . "/" . $document->getDocId() . "?" . http_build_query($params);
+    $uri = $this->config["documentPath"] . "/" . $document->getDocId();
 
     $request = new Request('PUT', $uri, $header, $body);
     $response = $this->send($request);
@@ -191,17 +198,24 @@ class RetrescoClient extends Client {
    *
    * @param int $id
    *   The remote id of the document.
+   * @param string $url
+   *   Optional. Retrieve document from specific url.
    *
-   * @return \drunomics\RetrescoClient\Model\RetrescoDocument
+   * @return \telekurier\RetrescoClient\Model\RetrescoDocument
    *
    * @throws \GuzzleHttp\Exception\ClientException
    */
-  public function getDocumentById($id) {
-    $response = $this->get($this->config["documentPath"] . "/" . $id);
+  public function getDocumentById($id, $url = NULL) {
+    $url = isset($url) ? $url : $this->config["documentPath"];
+    $response = $this->get($url . "/" . $id);
     $data = $response->getBody()->getContents();
 
+    $context = ['json_decode_associative' => FALSE];
+
     /** @var RetrescoDocument $document */
-    $document = $this->getSerializer()->deserialize($data, RetrescoDocument::class, 'json');
+    $document = $this->getSerializer()->deserialize(
+      $data, RetrescoDocument::class, 'json', $context
+    );
 
     return $document;
   }
@@ -209,15 +223,14 @@ class RetrescoClient extends Client {
   /**
    * Deletes the document.
    *
-   * @param \drunomics\RetrescoClient\Model\RetrescoDocument $document
+   * @param \telekurier\RetrescoClient\Model\RetrescoDocument $document
    *
    * @return \Psr\Http\Message\ResponseInterface
    *
    * @throws \GuzzleHttp\Exception\ClientException
    */
   public function deleteDocument(RetrescoDocument $document) {
-    $response = $this->deleteDocumentById($document->getDocId());
-    return $response;
+    return $this->deleteDocumentById($document->getDocId());
   }
 
   /**
@@ -231,7 +244,6 @@ class RetrescoClient extends Client {
    * @throws \GuzzleHttp\Exception\ClientException
    */
   public function deleteDocumentById($id) {
-    $response = $this->delete($this->config["documentPath"] . "/" . $id);
-    return $response;
+    return $this->delete($this->config["documentPath"] . "/" . $id);
   }
 }

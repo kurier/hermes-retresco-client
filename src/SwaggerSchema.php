@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains drunomics\RetrescoClient\SwaggerSchema.
+ * Contains telekurier\RetrescoClient\SwaggerSchema.
  */
 
-namespace drunomics\RetrescoClient;
+namespace telekurier\RetrescoClient;
 
 /**
  * Class SwaggerSchema.

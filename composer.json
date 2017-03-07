@@ -2,25 +2,26 @@
     "name": "telekurier/hermes-retresco-client",
     "require": {
         "php": ">=5.5",
+        "jane/open-api": "1.*",
         "symfony/serializer": "~2.8",
         "symfony/property-access": "~2.3|~3.0.0",
         "guzzlehttp/guzzle": "~6.1"
     },
     "require-dev": {
-        "jane/open-api": "1.*",
         "fr3d/swagger-assertions": "^0.4.0",
         "phpunit/phpunit": "~4.8"
     },
     "autoload": {
         "psr-4": {
-            "drunomics\\RetrescoClient\\": "src/",
-            "drunomics\\RetrescoClient\\Model\\": "generated/Model/"
+            "telekurier\\RetrescoClient\\": "src/",
+            "telekurier\\Retresco\\Tests\\": "tests/",
+            "telekurier\\RetrescoClient\\Model\\": "generated/Model/",
+            "telekurier\\RetrescoClient\\Normalizer\\": "generated/Normalizer/"
         }
     },
     "scripts": {
         "generate": [
-            "rm -rf generated/* && ./vendor/bin/jane-openapi generate swagger.json drunomics\\\\RetrescoClient generated",
-            "@clean-generated-code"
+            "rm -rf generated/* && ./vendor/bin/jane-openapi generate swagger.json telekurier\\\\RetrescoClient generated"
         ],
         "clean-generated-code": "rm -rf generated/Resource generated/Normalizer",
         "swagger-ui": [
