@@ -39,8 +39,8 @@ abstract class RetrescoClientTest extends \PHPUnit_Framework_TestCase {
     'base_uri' => 'https://kurier-stage01.rtrsupport.de',
     'username' => 'kurier',
     'password' => 'CHANGE-ME',
-    'basePath' => '/api/documents',
-    'documentPath' => '/api/documents',
+    'basePath' => '/api/content',
+    'documentPath' => '/api/content',
   ];
 
   /**
@@ -70,8 +70,9 @@ abstract class RetrescoClientTest extends \PHPUnit_Framework_TestCase {
    */
   protected function createRetrescoDocumentFromFile($file) {
     if (is_readable($file)) {
-      $content = Yaml::parse(file_get_contents($file));
-      return $this->retrescoClient->getSerializer()->denormalize($content, RetrescoDocument::class);
+      $content = Yaml::parse(file_get_contents($file), FALSE, TRUE, TRUE);
+      $serializer = $this->retrescoClient->getSerializer();
+      return $serializer->denormalize($content, RetrescoDocument::class);
     }
 
     return NULL;
