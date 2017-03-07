@@ -32,6 +32,7 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
     $this->assertEquals(
       RetrescoClient::RESPONSE_CREATED, $response->getStatusCode(), "File couldn't be written. Unexpected status code."
     );
+
   }
 
   /**
