@@ -35,5 +35,7 @@ payload:
       value: "https://www.youtube.com/watch?v=9EWMmmAf_Ko"
     -
       type: "image"
-      value: "https://www.youtube.com/watch?v=9EWMmmAf_Ko"
+      data:
+        -
+          "foo": "bar"
 
