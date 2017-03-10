@@ -150,25 +150,39 @@ class RetrescoClient extends Client {
   /**
    * Enriches the document on the server.
    *
-   * @param string $body
-   *   Body in JSON format.
+   * @param \telekurier\RetrescoClient\Model\RetrescoDocument $document
+   *   The Retresco document.
    * @param bool $inTextLinks
-   *   In text links.
+   *   Enables calculation of In-Text-Links
+   *   (default: false).
+   * @param bool $index
+   *   Index document.
    *
-   * @return string
-   *   Enriched body.
+   * @return \telekurier\RetrescoClient\Model\RetrescoDocument
+   *   Enriched document.
    */
-  private function enrichBody($body, $inTextLinks) {
+  private function enrichDocument(RetrescoDocument $document, $inTextLinks) {
     $header = array(
       'Content-Type' => 'application/json'
     );
 
     $query = $inTextLinks ? '?in-text-linked' : NULL;
     $uri = $this->config["enrichPath"] . $query;
-
+    $body = $this->getSerializer()->serialize($document, 'json');
     $request = new Request('POST', $uri, $header, $body);
+
     $response = $this->send($request);
-    return $response->getBody()->getContents();
+
+    $data = $response->getBody()->getContents();
+
+    $context = ['json_decode_associative' => FALSE];
+
+    /** @var RetrescoDocument $document */
+    $document = $this->getSerializer()->deserialize(
+      $data, RetrescoDocument::class, 'json', $context
+    );
+
+    return $document;
   }
 
   /**
