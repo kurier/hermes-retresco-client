@@ -161,7 +161,7 @@ class RetrescoClient extends Client {
    * @return \telekurier\RetrescoClient\Model\RetrescoDocument
    *   Enriched document.
    */
-  private function enrichDocument(RetrescoDocument $document, $inTextLinks) {
+  public function enrichDocument(RetrescoDocument $document, $inTextLinks) {
     $header = array(
       'Content-Type' => 'application/json'
     );
