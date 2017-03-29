@@ -323,7 +323,7 @@
             },
             "required": ["doc_id", "doc_type", "url", "published", "title", "teaser", "section", "date"]
         },
-        "RetrescoDocuments": {
+        "RelatedDocuments": {
             "type": "object",
             "properties": {
                 "docs": {

@@ -2,7 +2,7 @@
 
 namespace telekurier\RetrescoClient\Model;
 
-class RetrescoDocuments
+class RelatedDocuments
 {
     /**
      * @var RetrescoDocument[]

@@ -8,6 +8,7 @@
 namespace telekurier\Retresco\Tests;
 
 use GuzzleHttp\Exception\ClientException;
+use telekurier\RetrescoClient\Model\RelatedDocuments;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
 use telekurier\RetrescoClient\RetrescoClient;
 
@@ -93,8 +94,11 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
     $options = [
       'doc_types' => 'article,article',
     ];
-    $doc_id = 250889843; // $this->testDocument->getDocId();
-    $relateds = $this->retrescoClient->getRelated($doc_id, $options);
+    $doc_id = $this->testDocument->getDocId();
+    /** @var RelatedDocuments $relateds */
+    $relateds = $this->retrescoClient->getRelatedDocuments($doc_id, $options);
+
+    $this->assertTrue($relateds instanceof RelatedDocuments);
   }
 
 }

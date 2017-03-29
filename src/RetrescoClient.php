@@ -10,6 +10,7 @@
 namespace telekurier\RetrescoClient;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use Joli\Jane\Encoder\RawEncoder;
@@ -19,12 +20,12 @@ use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
+use telekurier\RetrescoClient\Model\RelatedDocuments;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
-use telekurier\RetrescoClient\Model\RetrescoDocuments;
 use telekurier\RetrescoClient\Normalizer\LocationNormalizer;
 use telekurier\RetrescoClient\Normalizer\PinNormalizer;
+use telekurier\RetrescoClient\Normalizer\RelatedDocumentsNormalizer;
 use telekurier\RetrescoClient\Normalizer\RetrescoDocumentNormalizer;
-use telekurier\RetrescoClient\Normalizer\RetrescoDocumentsNormalizer;
 use telekurier\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
 
 /**
@@ -136,7 +137,7 @@ class RetrescoClient extends Client {
       $encoders = [new JsonEncoder(), new RawEncoder()];
       $normalizers = [
         new ArrayDenormalizer(),
-        new RetrescoDocumentsNormalizer(),
+        new RelatedDocumentsNormalizer(),
         new RetrescoDocumentNormalizer(),
         new LocationNormalizer(),
         new PinNormalizer(),
@@ -158,11 +159,10 @@ class RetrescoClient extends Client {
    * @param bool $inTextLinks
    *   Enables calculation of In-Text-Links
    *   (default: false).
-   * @param bool $index
-   *   Index document.
+   * @return \telekurier\RetrescoClient\Model\RetrescoDocument Enriched document.
+   * Enriched document.
+   * @internal param bool $index Index document.*   Index document.
    *
-   * @return \telekurier\RetrescoClient\Model\RetrescoDocument
-   *   Enriched document.
    */
   public function enrichDocument(RetrescoDocument $document, $inTextLinks) {
     $header = array(
@@ -268,22 +268,27 @@ class RetrescoClient extends Client {
    * @param string $id
    * @param mixed $options
    *    See https://kurier-stage01.rtrsupport.de/ui/manual-docs/api_relateds.html
-   * @return \telekurier\RetrescoClient\Model\RetrescoDocuments
+   * @return RelatedDocuments
    */
-  public function getRelated($id, $options = NULL) {
+  public function getRelatedDocuments($id, $options = NULL) {
     $url = $this->config['relatedPath'] . '/' . $id;
     if ($options) {
       $query = http_build_query($options);
       $url .= '?' . $query;
     }
-    $response = $this->get($url);
+    try {
+      $response = $this->get($url);
+    }
+    catch (ServerException $e) {
+      return new RelatedDocuments();
+    }
     $data = $response->getBody()->getContents();
 
     $context = ['json_decode_associative' => FALSE];
 
-    /** @var RetrescoDocuments $document */
+    /** @var RelatedDocuments $document */
     $documents = $this->getSerializer()->deserialize(
-      $data, RetrescoDocuments::class, 'json', $context
+      $data, RelatedDocuments::class, 'json', $context
     );
 
     return $documents;

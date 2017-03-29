@@ -6,18 +6,18 @@ use Joli\Jane\Reference\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
-class RetrescoDocumentsNormalizer extends SerializerAwareNormalizer implements DenormalizerInterface, NormalizerInterface
+class RelatedDocumentsNormalizer extends SerializerAwareNormalizer implements DenormalizerInterface, NormalizerInterface
 {
     public function supportsDenormalization($data, $type, $format = null)
     {
-        if ($type !== 'telekurier\\RetrescoClient\\Model\\RetrescoDocuments') {
+        if ($type !== 'telekurier\\RetrescoClient\\Model\\RelatedDocuments') {
             return false;
         }
         return true;
     }
     public function supportsNormalization($data, $format = null)
     {
-        if ($data instanceof \telekurier\RetrescoClient\Model\RetrescoDocuments) {
+        if ($data instanceof \telekurier\RetrescoClient\Model\RelatedDocuments) {
             return true;
         }
         return false;
@@ -30,7 +30,7 @@ class RetrescoDocumentsNormalizer extends SerializerAwareNormalizer implements D
         if (isset($data->{'$ref'})) {
             return new Reference($data->{'$ref'}, $context['rootSchema'] ?: null);
         }
-        $object = new \telekurier\RetrescoClient\Model\RetrescoDocuments();
+        $object = new \telekurier\RetrescoClient\Model\RelatedDocuments();
         if (!isset($context['rootSchema'])) {
             $context['rootSchema'] = $object;
         }
