@@ -323,6 +323,17 @@
             },
             "required": ["doc_id", "doc_type", "url", "published", "title", "teaser", "section", "date"]
         },
+        "RetrescoDocuments": {
+            "type": "object",
+            "properties": {
+                "docs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RetrescoDocument"
+                    }
+                }
+            }
+        },
         "RetrescoSearchQuery": {
             "type": "object",
             "properties": {

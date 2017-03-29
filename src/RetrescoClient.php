@@ -20,9 +20,11 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
+use telekurier\RetrescoClient\Model\RetrescoDocuments;
 use telekurier\RetrescoClient\Normalizer\LocationNormalizer;
 use telekurier\RetrescoClient\Normalizer\PinNormalizer;
 use telekurier\RetrescoClient\Normalizer\RetrescoDocumentNormalizer;
+use telekurier\RetrescoClient\Normalizer\RetrescoDocumentsNormalizer;
 use telekurier\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
 
 /**
@@ -134,6 +136,7 @@ class RetrescoClient extends Client {
       $encoders = [new JsonEncoder(), new RawEncoder()];
       $normalizers = [
         new ArrayDenormalizer(),
+        new RetrescoDocumentsNormalizer(),
         new RetrescoDocumentNormalizer(),
         new LocationNormalizer(),
         new PinNormalizer(),
@@ -259,5 +262,30 @@ class RetrescoClient extends Client {
    */
   public function deleteDocumentById($id) {
     return $this->delete($this->config["documentPath"] . "/" . $id);
+  }
+
+  /**
+   * @param string $id
+   * @param mixed $options
+   *    See https://kurier-stage01.rtrsupport.de/ui/manual-docs/api_relateds.html
+   * @return \telekurier\RetrescoClient\Model\RetrescoDocuments
+   */
+  public function getRelated($id, $options = NULL) {
+    $url = $this->config['relatedPath'] . '/' . $id;
+    if ($options) {
+      $query = http_build_query($options);
+      $url .= '?' . $query;
+    }
+    $response = $this->get($url);
+    $data = $response->getBody()->getContents();
+
+    $context = ['json_decode_associative' => FALSE];
+
+    /** @var RetrescoDocuments $document */
+    $documents = $this->getSerializer()->deserialize(
+      $data, RetrescoDocuments::class, 'json', $context
+    );
+
+    return $documents;
   }
 }

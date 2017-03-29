@@ -25,7 +25,8 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
     $response = NULL;
     try {
       $response = $this->retrescoClient->putDocument($this->testDocument);
-    } catch (ClientException $e) {
+    }
+    catch (ClientException $e) {
       $this->fail($e->getMessage());
     }
 
@@ -48,7 +49,8 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
     try {
       $docId = $this->testDocument->getDocId();
       $document = $this->retrescoClient->getDocumentById($docId);
-    } catch (ClientException $e) {
+    }
+    catch (ClientException $e) {
       $this->fail($e->getMessage());
     }
 
@@ -76,7 +78,8 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
     $expectedException = NULL;
     try {
       $this->retrescoClient->getDocumentById($this->testDocument->getDocId());
-    } catch (ClientException $e) {
+    }
+    catch (ClientException $e) {
       $expectedException = $e;
     }
 
@@ -85,4 +88,13 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
       RetrescoClient::RESPONSE_NOT_FOUND, $expectedException->getCode(), 'File not found exception expected.'
     );
   }
+
+  public function testRelated() {
+    $options = [
+      'doc_types' => 'article,article',
+    ];
+    $doc_id = 250889843; // $this->testDocument->getDocId();
+    $relateds = $this->retrescoClient->getRelated($doc_id, $options);
+  }
+
 }
