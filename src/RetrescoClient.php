@@ -266,16 +266,17 @@ class RetrescoClient extends Client {
 
   /**
    * @param string $id
+   * @param string $doc_types
    * @param mixed $options
    *    See https://kurier-stage01.rtrsupport.de/ui/manual-docs/api_relateds.html
-   * @return RelatedDocuments
+   * @return \telekurier\RetrescoClient\Model\RelatedDocuments
    */
-  public function getRelatedDocuments($id, $options = NULL) {
-    $url = $this->config['relatedPath'] . '/' . $id;
-    if ($options) {
-      $query = http_build_query($options);
-      $url .= '?' . $query;
-    }
+  public function getRelatedDocuments($id, $doc_types, $options = NULL) {
+    $query_data = array_merge($options ?: [], ['doc_types' => $doc_types]);
+    $query = http_build_query($query_data);
+
+    $url = $this->config['relatedPath'] . '/' . $id . '?' . $query;
+
     try {
       $response = $this->get($url);
     }

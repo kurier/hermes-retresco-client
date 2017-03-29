@@ -91,12 +91,10 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
   }
 
   public function testRelated() {
-    $options = [
-      'doc_types' => 'article,article',
-    ];
+    $doc_types = 'article,article';
     $doc_id = $this->testDocument->getDocId();
     /** @var RelatedDocuments $relateds */
-    $relateds = $this->retrescoClient->getRelatedDocuments($doc_id, $options);
+    $relateds = $this->retrescoClient->getRelatedDocuments($doc_id, $doc_types);
 
     $this->assertTrue($relateds instanceof RelatedDocuments);
   }
