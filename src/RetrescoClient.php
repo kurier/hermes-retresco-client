@@ -157,10 +157,10 @@ class RetrescoClient extends Client {
   /**
    * Get the list of white listed Retresco entities.
    *
-   * @return \ArrayObject
+   * @return telekurier\RetrescoClient\Model\RetrescoEntityLinks
    *   Entity links.
    */
-  public function getEntityListMap() {
+  public function getEntityLinksMap() {
     $header = array(
       'Content-Type' => 'application/json'
     );
