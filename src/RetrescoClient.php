@@ -157,7 +157,7 @@ class RetrescoClient extends Client {
   /**
    * Get the list of white listed Retresco entities.
    *
-   * @return telekurier\RetrescoClient\Model\RetrescoEntityLinks
+   * @return \telekurier\RetrescoClient\Model\RetrescoEntityLinks
    *   Entity links.
    */
   public function getEntityLinksMap() {
