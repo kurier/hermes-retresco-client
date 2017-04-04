@@ -22,10 +22,12 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 use telekurier\RetrescoClient\Model\RelatedDocuments;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
+use telekurier\RetrescoClient\Model\RetrescoEntityLinks;
 use telekurier\RetrescoClient\Normalizer\LocationNormalizer;
 use telekurier\RetrescoClient\Normalizer\PinNormalizer;
 use telekurier\RetrescoClient\Normalizer\RelatedDocumentsNormalizer;
 use telekurier\RetrescoClient\Normalizer\RetrescoDocumentNormalizer;
+use telekurier\RetrescoClient\Normalizer\RetrescoEntityLinksNormalizer;
 use telekurier\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
 
 /**
@@ -139,6 +141,7 @@ class RetrescoClient extends Client {
         new ArrayDenormalizer(),
         new RelatedDocumentsNormalizer(),
         new RetrescoDocumentNormalizer(),
+        new RetrescoEntityLinksNormalizer(),
         new LocationNormalizer(),
         new PinNormalizer(),
         (new SwaggerSchemaNormalizer(
@@ -149,6 +152,30 @@ class RetrescoClient extends Client {
       $this->serializer = new Serializer($normalizers, $encoders);
     }
     return $this->serializer;
+  }
+
+  /**
+   * Get the list of white listed Retresco entities.
+   *
+   * @return \ArrayObject
+   *   Entity links.
+   */
+  public function getEntityListMap() {
+    $header = array(
+      'Content-Type' => 'application/json'
+    );
+
+    $request = new Request('GET', $this->config['entityLinksPath'], $header, $body);
+    $response = $this->send($request);
+    $data = $response->getBody()->getContents();
+    $context = ['json_decode_associative' => FALSE];
+
+    /** @var RetrescoEntityLinks $document */
+    $entityLinks = $this->getSerializer()->deserialize(
+      $data, RetrescoEntityLinks::class, 'json', $context
+    );
+
+    return $entityLinks;
   }
 
   /**

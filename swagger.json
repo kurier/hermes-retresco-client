@@ -334,6 +334,17 @@
                 }
             }
         },
+        "RetrescoEntityLinks": {
+            "type": "object",
+            "properties": {
+                "links": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "RetrescoSearchQuery": {
             "type": "object",
             "properties": {
