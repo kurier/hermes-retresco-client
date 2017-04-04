@@ -2,7 +2,7 @@
 
 namespace telekurier\RetrescoClient\Normalizer;
 
-use Joli\Jane\Reference\Reference;
+use Joli\Jane\Runtime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
@@ -24,16 +24,7 @@ class RetrescoDocumentNormalizer extends SerializerAwareNormalizer implements De
     }
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        if (empty($data)) {
-            return null;
-        }
-        if (isset($data->{'$ref'})) {
-            return new Reference($data->{'$ref'}, $context['rootSchema'] ?: null);
-        }
         $object = new \telekurier\RetrescoClient\Model\RetrescoDocument();
-        if (!isset($context['rootSchema'])) {
-            $context['rootSchema'] = $object;
-        }
         if (property_exists($data, 'doc_id')) {
             $object->setDocId($data->{'doc_id'});
         }

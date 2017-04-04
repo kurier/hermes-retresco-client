@@ -2,8 +2,8 @@
 
 namespace telekurier\RetrescoClient\Resource;
 
-use Joli\Jane\OpenApi\Client\QueryParam;
-use Joli\Jane\OpenApi\Client\Resource;
+use Joli\Jane\OpenApi\Runtime\Client\QueryParam;
+use Joli\Jane\OpenApi\Runtime\Client\Resource;
 class DefaultResource extends Resource
 {
     /**
@@ -24,7 +24,11 @@ class DefaultResource extends Resource
         $headers = array_merge(array('Host' => 'kurier-stage01.rtrsupport.de'), $queryParam->buildHeaders($parameters));
         $body = $queryParam->buildFormDataString($parameters);
         $request = $this->messageFactory->createRequest('DELETE', $url, $headers, $body);
-        $response = $this->httpClient->sendRequest($request);
+        $promise = $this->httpClient->sendAsyncRequest($request);
+        if (self::FETCH_PROMISE === $fetch) {
+            return $promise;
+        }
+        $response = $promise->wait();
         if (self::FETCH_OBJECT == $fetch) {
             if ('500' == $response->getStatusCode()) {
                 return $this->serializer->deserialize((string) $response->getBody(), 'telekurier\\RetrescoClient\\Model\\RetrescoClientError', 'json');
@@ -53,7 +57,11 @@ class DefaultResource extends Resource
         $headers = array_merge(array('Host' => 'kurier-stage01.rtrsupport.de'), $queryParam->buildHeaders($parameters));
         $body = $queryParam->buildFormDataString($parameters);
         $request = $this->messageFactory->createRequest('GET', $url, $headers, $body);
-        $response = $this->httpClient->sendRequest($request);
+        $promise = $this->httpClient->sendAsyncRequest($request);
+        if (self::FETCH_PROMISE === $fetch) {
+            return $promise;
+        }
+        $response = $promise->wait();
         if (self::FETCH_OBJECT == $fetch) {
             if ('200' == $response->getStatusCode()) {
                 return $this->serializer->deserialize((string) $response->getBody(), 'telekurier\\RetrescoClient\\Model\\RetrescoDocument', 'json');
@@ -98,7 +106,11 @@ class DefaultResource extends Resource
         $headers = array_merge(array('Host' => 'kurier-stage01.rtrsupport.de'), $queryParam->buildHeaders($parameters));
         $body = $queryParam->buildFormDataString($parameters);
         $request = $this->messageFactory->createRequest('PUT', $url, $headers, $body);
-        $response = $this->httpClient->sendRequest($request);
+        $promise = $this->httpClient->sendAsyncRequest($request);
+        if (self::FETCH_PROMISE === $fetch) {
+            return $promise;
+        }
+        $response = $promise->wait();
         if (self::FETCH_OBJECT == $fetch) {
             if ('200' == $response->getStatusCode()) {
                 return $this->serializer->deserialize((string) $response->getBody(), 'telekurier\\RetrescoClient\\Model\\RetrescoDocument', 'json');
