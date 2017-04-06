@@ -1,13 +1,13 @@
 <?php
 
-// FOOBAR to test local composer dependency
+namespace telekurier\RetrescoClient;
 
 /**
  * @file
  * Contains \telekurier\RetrescoClient\RetrescoClient
  */
 
-namespace telekurier\RetrescoClient;
+
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ServerException;
@@ -23,12 +23,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 use telekurier\RetrescoClient\Model\RelatedDocuments;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
 use telekurier\RetrescoClient\Model\RetrescoEntityLinks;
+use telekurier\RetrescoClient\Model\RetrescoTopicPages;
 use telekurier\RetrescoClient\Normalizer\LocationNormalizer;
 use telekurier\RetrescoClient\Normalizer\PinNormalizer;
 use telekurier\RetrescoClient\Normalizer\RelatedDocumentsNormalizer;
 use telekurier\RetrescoClient\Normalizer\RetrescoDocumentNormalizer;
 use telekurier\RetrescoClient\Normalizer\RetrescoEntityLinksNormalizer;
+use telekurier\RetrescoClient\Normalizer\RetrescoTopicPagesNormalizer;
 use telekurier\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
+use telekurier\RetrescoClient\Normalizer\TopicPagesTypeaheadNormalizer;
 
 /**
  * Retresco REST client class.
@@ -51,6 +54,7 @@ class RetrescoClient extends Client {
   protected $serializer;
 
   /**
+   * @var array
    * An array of configuration settings.
    *
    * @todo Convert to a class.
@@ -63,33 +67,8 @@ class RetrescoClient extends Client {
    *   - format: (optional) Format of the returned data, allowed values 'json',
    *     'xml'; 'json' by default.
    *   - documentPath: The path for the document api.
-   *
-   * @var array
    */
   protected $config;
-
-  /**
-   * Creates an Retresco client instance.
-   *
-   * @param array $config
-   *   An array of configuration settings. The following keys are required,
-   *   while all Guzzle configuration options are supported:
-   *   - base_uri: Base URL of the the Retresco rest service.
-   *   - username: The Retresco username.
-   *   - password: The Retresco password.
-   *   - format: (optional) Format of the returned data, allowed values 'json',
-   *     'xml'; 'json' by default.
-   *
-   * @return static
-   */
-  public static function create($config) {
-    // Add in a handler stack with our middleware.
-    $stack = HandlerStack::create();
-    $config['handler'] = $stack;
-    $client = new static($config);
-
-    return $client;
-  }
 
   /**
    * Object constructor.
@@ -110,7 +89,7 @@ class RetrescoClient extends Client {
       // 'verify' => FALSE,
       'auth' => [
         $this->config['username'],
-        $this->config['password']
+        $this->config['password'],
       ],
       'format' => 'json',
     ];
@@ -118,13 +97,26 @@ class RetrescoClient extends Client {
   }
 
   /**
-   * Sets serializer to use.
+   * Creates an Retresco client instance.
    *
-   * @param \Symfony\Component\Serializer\SerializerInterface $serializer
-   *   The serializer.
+   * @param array $config
+   *   An array of configuration settings. The following keys are required,
+   *   while all Guzzle configuration options are supported:
+   *   - base_uri: Base URL of the the Retresco rest service.
+   *   - username: The Retresco username.
+   *   - password: The Retresco password.
+   *   - format: (optional) Format of the returned data, allowed values 'json',
+   *     'xml'; 'json' by default.
+   *
+   * @return static
    */
-  public function setSerializer(SerializerInterface $serializer) {
-    $this->serializer = $serializer;
+  public static function create(array $config) {
+    // Add in a handler stack with our middleware.
+    $stack = HandlerStack::create();
+    $config['handler'] = $stack;
+    $client = new static($config);
+
+    return $client;
   }
 
   /**
@@ -142,6 +134,8 @@ class RetrescoClient extends Client {
         new RelatedDocumentsNormalizer(),
         new RetrescoDocumentNormalizer(),
         new RetrescoEntityLinksNormalizer(),
+        new RetrescoTopicPagesNormalizer(),
+        new TopicPagesTypeaheadNormalizer(),
         new LocationNormalizer(),
         new PinNormalizer(),
         (new SwaggerSchemaNormalizer(
@@ -155,6 +149,16 @@ class RetrescoClient extends Client {
   }
 
   /**
+   * Sets serializer to use.
+   *
+   * @param \Symfony\Component\Serializer\SerializerInterface $serializer
+   *   The serializer.
+   */
+  public function setSerializer(SerializerInterface $serializer) {
+    $this->serializer = $serializer;
+  }
+
+  /**
    * Get the list of white listed Retresco entities.
    *
    * @return \telekurier\RetrescoClient\Model\RetrescoEntityLinks
@@ -162,7 +166,7 @@ class RetrescoClient extends Client {
    */
   public function getEntityLinksMap() {
     $header = array(
-      'Content-Type' => 'application/json'
+      'Content-Type' => 'application/json',
     );
 
     $request = new Request('GET', $this->config['entityLinksPath'], $header);
@@ -170,7 +174,7 @@ class RetrescoClient extends Client {
     $data = $response->getBody()->getContents();
     $context = ['json_decode_associative' => FALSE];
 
-    /** @var RetrescoEntityLinks $document */
+    /** @var \telekurier\RetrescoClient\Model\RetrescoEntityLinks $document */
     $entityLinks = $this->getSerializer()->deserialize(
       $data, RetrescoEntityLinks::class, 'json', $context
     );
@@ -186,14 +190,15 @@ class RetrescoClient extends Client {
    * @param bool $inTextLinks
    *   Enables calculation of In-Text-Links
    *   (default: false).
-   * @return \telekurier\RetrescoClient\Model\RetrescoDocument Enriched document.
-   * Enriched document.
-   * @internal param bool $index Index document.*   Index document.
    *
+   * @return \telekurier\RetrescoClient\Model\RetrescoDocument
+   *   Enriched document.
+   *
+   * @internal param bool $index Index document.
    */
   public function enrichDocument(RetrescoDocument $document, $inTextLinks) {
     $header = array(
-      'Content-Type' => 'application/json'
+      'Content-Type' => 'application/json',
     );
 
     $query = $inTextLinks ? '?in-text-linked' : NULL;
@@ -207,7 +212,7 @@ class RetrescoClient extends Client {
 
     $context = ['json_decode_associative' => FALSE];
 
-    /** @var RetrescoDocument $document */
+    /** @var \telekurier\RetrescoClient\Model\RetrescoDocument $document */
     $document = $this->getSerializer()->deserialize(
       $data, RetrescoDocument::class, 'json', $context
     );
@@ -220,13 +225,16 @@ class RetrescoClient extends Client {
    *
    * @param \telekurier\RetrescoClient\Model\RetrescoDocument $document
    *   The Retresco document.
+   *
    * @return mixed|\Psr\Http\Message\ResponseInterface
+   *
+   * @todo return description.
    */
   public function putDocument(RetrescoDocument $document) {
     $body = $this->getSerializer()->serialize($document, 'json');
 
     $header = array(
-      'Content-Type' => 'application/json'
+      'Content-Type' => 'application/json',
     );
 
     $uri = $this->config["documentPath"] . "/" . $document->getDocId();
@@ -246,6 +254,7 @@ class RetrescoClient extends Client {
    *   Optional. Retrieve document from specific url.
    *
    * @return \telekurier\RetrescoClient\Model\RetrescoDocument
+   *   RetrescoDocument object.
    *
    * @throws \GuzzleHttp\Exception\ClientException
    */
@@ -256,7 +265,7 @@ class RetrescoClient extends Client {
 
     $context = ['json_decode_associative' => FALSE];
 
-    /** @var RetrescoDocument $document */
+    /** @var \telekurier\RetrescoClient\Model\RetrescoDocument $document */
     $document = $this->getSerializer()->deserialize(
       $data, RetrescoDocument::class, 'json', $context
     );
@@ -268,8 +277,10 @@ class RetrescoClient extends Client {
    * Deletes the document.
    *
    * @param \telekurier\RetrescoClient\Model\RetrescoDocument $document
+   *   RetrescoDocument.
    *
    * @return \Psr\Http\Message\ResponseInterface
+   *   ResponseInterface
    *
    * @throws \GuzzleHttp\Exception\ClientException
    */
@@ -284,6 +295,7 @@ class RetrescoClient extends Client {
    *   The remote document id.
    *
    * @return \Psr\Http\Message\ResponseInterface
+   *   ResponseInterface
    *
    * @throws \GuzzleHttp\Exception\ClientException
    */
@@ -292,11 +304,18 @@ class RetrescoClient extends Client {
   }
 
   /**
+   * Get Related Documents
+   *
    * @param string $id
+   *   Document ID.
    * @param string $doc_types
+   *   Document type.
    * @param mixed $options
-   *    See https://kurier-stage01.rtrsupport.de/ui/manual-docs/api_relateds.html
+   *   See
+   *    https://kurier-stage01.rtrsupport.de/ui/manual-docs/api_relateds.html.
+   *
    * @return \telekurier\RetrescoClient\Model\RelatedDocuments
+   *   RelatedDocuments object.
    */
   public function getRelatedDocuments($id, $doc_types, $options = NULL) {
     $query_data = array_merge($options ?: [], ['doc_types' => $doc_types]);
@@ -314,11 +333,41 @@ class RetrescoClient extends Client {
 
     $context = ['json_decode_associative' => FALSE];
 
-    /** @var RelatedDocuments $document */
+    /** @var \telekurier\RetrescoClient\Model\RelatedDocuments $document */
     $documents = $this->getSerializer()->deserialize(
       $data, RelatedDocuments::class, 'json', $context
     );
 
     return $documents;
   }
+
+  /**
+   * Get Topic Pages object from Retresco as result of search.
+   *
+   * @param string $searchText
+   *   Text to search.
+   *
+   * @return \telekurier\RetrescoClient\Model\RetrescoTopicPages
+   *   RetrescoTopicPages object.
+   */
+  public function getTopicPages($searchText) {
+    $header = array(
+      'Content-Type' => 'application/json',
+    );
+    // Create the URL with search query and get data.
+    $uri = $this->config["topicsTypeheadPath"] . '?q=' . $searchText;
+    $request = new Request('GET', $uri, $header);
+    $response = $this->send($request);
+    $data = $response->getBody()->getContents();
+
+    $context = ['json_decode_associative' => FALSE];
+    /** @var \telekurier\RetrescoClient\Model\RetrescoTopicPages $topicsPage */
+    $serializer = $this->getSerializer();
+    $topicsPage = $serializer->deserialize(
+      $data, RetrescoTopicPages::class, 'json', $context
+    );
+
+    return $topicsPage;
+  }
+
 }
