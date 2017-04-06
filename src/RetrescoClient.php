@@ -165,7 +165,7 @@ class RetrescoClient extends Client {
       'Content-Type' => 'application/json'
     );
 
-    $request = new Request('GET', $this->config['entityLinksPath'], $header, $body);
+    $request = new Request('GET', $this->config['entityLinksPath'], $header);
     $response = $this->send($request);
     $data = $response->getBody()->getContents();
     $context = ['json_decode_associative' => FALSE];
