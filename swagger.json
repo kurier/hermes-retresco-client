@@ -446,6 +446,9 @@
                     "items": {
                         "$ref": "#/definitions/TopicPagesTypeahead"
                     }
+                },
+                "num_found": {
+                    "type": "integer"
                 }
             }
         }

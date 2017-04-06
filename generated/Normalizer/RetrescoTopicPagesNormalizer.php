@@ -32,6 +32,9 @@ class RetrescoTopicPagesNormalizer extends SerializerAwareNormalizer implements 
             }
             $object->setDocs($values);
         }
+        if (property_exists($data, 'num_found')) {
+            $object->setNumFound($data->{'num_found'});
+        }
         return $object;
     }
     public function normalize($object, $format = null, array $context = array())
@@ -43,6 +46,9 @@ class RetrescoTopicPagesNormalizer extends SerializerAwareNormalizer implements 
                 $values[] = $this->serializer->serialize($value, 'raw', $context);
             }
             $data->{'docs'} = $values;
+        }
+        if (null !== $object->getNumFound()) {
+            $data->{'num_found'} = $object->getNumFound();
         }
         return $data;
     }

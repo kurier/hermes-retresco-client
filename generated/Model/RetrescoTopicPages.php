@@ -9,6 +9,10 @@ class RetrescoTopicPages
      */
     protected $docs;
     /**
+     * @var int
+     */
+    protected $numFound;
+    /**
      * @return TopicPagesTypeahead[]
      */
     public function getDocs()
@@ -23,6 +27,23 @@ class RetrescoTopicPages
     public function setDocs(array $docs = null)
     {
         $this->docs = $docs;
+        return $this;
+    }
+    /**
+     * @return int
+     */
+    public function getNumFound()
+    {
+        return $this->numFound;
+    }
+    /**
+     * @param int $numFound
+     *
+     * @return self
+     */
+    public function setNumFound($numFound = null)
+    {
+        $this->numFound = $numFound;
         return $this;
     }
 }
