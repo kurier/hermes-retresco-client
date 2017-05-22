@@ -28,7 +28,13 @@ class FieldDocumentEncoder implements DecoderInterface {
             }
             $o = &$o->{$localfield};
           }
-          $o->{$property} = count($value) == 1 ? array_shift($value) : $value;
+          if (substr($property, 0, 4) == 'rtr_') {
+            $o->{$property} = $value;
+          } else if (count($value) > 1) {
+            $o->{$property} = $value;
+          } else {
+            $o->{$property} = array_shift($value);
+          }
         }
       }
     }

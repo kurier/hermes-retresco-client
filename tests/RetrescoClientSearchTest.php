@@ -19,10 +19,21 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
 
   public function testSearchDocuments() {
 
-    $size = 1;
+    $size = 10;
 
     $query = [
       'fields' => [
+        'payload.rss2.title',
+        'payload.rss2.description',
+        'payload.rss2.guid',
+        'payload.rss2.link',
+        'payload.rss2.author',
+        'payload.rss2.pubDate',
+        'payload.rss2.category',
+        'payload.rss2.enclosure',
+        'payload.rss2.media:content',
+        'payload.rss2.dcterms:abstract',
+        'payload.rss2.dcterms:modified',
         'comments_count',
         'doc_id',
         'doc_type',
