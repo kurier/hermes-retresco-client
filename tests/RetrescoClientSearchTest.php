@@ -22,7 +22,27 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
     $size = 1;
 
     $query = [
-      'fields' => ['doc_id', 'title'],
+      'fields' => [
+        'comments_count',
+        'doc_id',
+        'doc_type',
+        'payload.channel.id',
+        'rtr_persons',
+        'payload.channel.name',
+        'payload.channel.section',
+        'payload.channel.source',
+        'payload.channel.url',
+        'payload.teaser_img.alt',
+        'payload.teaser_img.url',
+        'pi_last_72h',
+        'pretitle',
+        'published_date',
+        'section',
+        'source',
+        'teaser',
+        'title',
+        'url',
+      ],
       'size' => $size,
     ];
 
