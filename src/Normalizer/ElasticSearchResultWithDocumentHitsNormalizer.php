@@ -14,9 +14,12 @@ class ElasticSearchResultWithDocumentHitsNormalizer extends SerializerAwareNorma
   public function denormalize($data, $class, $format = NULL, array $context = array()) {
     $hits = $data->hits ?? [];
     unset($data->hits);
+
+    // denormalize ElasticSearchResult without hits using generated ElasticSearchResultNormalizer
     /** @var \telekurier\RetrescoClient\Model\ElasticSearchResult $object */
     $object = $this->serializer->deserialize($data, $class, 'raw', $context);
 
+    // append hits as RetrescoDocument
     $documents = [];
     foreach ($hits as $hit) {
       $documents[] = $this->serializer->deserialize($hit, 'telekurier\\RetrescoClient\\Model\\RetrescoDocument', FieldDocumentEncoder::FORMAT, $context);
