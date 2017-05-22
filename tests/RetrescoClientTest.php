@@ -31,19 +31,12 @@ abstract class RetrescoClientTest extends \PHPUnit_Framework_TestCase {
   /**
    * The REST service configuration as needed by RetrescoClient.
    *
-   * @todo Make this configureable.
-   *
    * @var mixed[]
    */
   protected static $config = [
     'base_uri' => 'https://kurier-stage01.rtrsupport.de',
     'username' => 'kurier',
     'password' => 'CHANGE-ME',
-    'basePath' => '/api/content',
-    'documentPath' => '/api/content',
-    'enrichPath' => '/api/enrich',
-    'relatedPath' => '/api/relateds',
-    'poolSearchPath' => '/api/es_pool/_search',
   ];
 
   /**

@@ -38,6 +38,15 @@ class RetrescoClient extends Client {
   const RESPONSE_CONFLICT = '409';
   const RESPONSE_INTERNAL_ERROR = '500';
 
+  const DEFAULT_PATHS = [
+    'documentPath' => '/api/content',
+    'enrichPath' => 'api/enrich',
+    'relatedPath' => '/api/relateds',
+    'entityLinksPath' => '/api/entities/in-text-link-whitelist',
+    'poolSearchPath' => '/api/es_pool/_search',
+    'topicsTypeheadPath' => 'api/topic-pages-typeahead',
+  ];
+
   /**
    * The serializer to use.
    *
@@ -75,7 +84,7 @@ class RetrescoClient extends Client {
    *     'xml'; 'json' by default.
    */
   public function __construct(array $config) {
-    $this->config = $config;
+    $this->config = $config + self::DEFAULT_PATHS;
     $default_options = [
       // 'curl' => [CURLOPT_SSLVERSION => CURL_SSLVERSION_SSLv3],
       // 'verify' => FALSE,
