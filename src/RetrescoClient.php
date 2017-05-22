@@ -7,31 +7,23 @@ namespace telekurier\RetrescoClient;
  * Contains \telekurier\RetrescoClient\RetrescoClient
  */
 
-
-
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use Joli\Jane\Encoder\RawEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
-use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
+use telekurier\RetrescoClient\Encoder\FieldDocumentEncoder;
+use telekurier\RetrescoClient\Model\ElasticSearchRawResult;
+use telekurier\RetrescoClient\Model\ElasticSearchResult;
 use telekurier\RetrescoClient\Model\RelatedDocuments;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
 use telekurier\RetrescoClient\Model\RetrescoEntityLinks;
 use telekurier\RetrescoClient\Model\RetrescoTopicPages;
-use telekurier\RetrescoClient\Normalizer\LocationNormalizer;
-use telekurier\RetrescoClient\Normalizer\PinNormalizer;
-use telekurier\RetrescoClient\Normalizer\RelatedDocumentsNormalizer;
-use telekurier\RetrescoClient\Normalizer\RetrescoDocumentNormalizer;
-use telekurier\RetrescoClient\Normalizer\RetrescoEntityLinksNormalizer;
-use telekurier\RetrescoClient\Normalizer\RetrescoTopicPagesNormalizer;
-use telekurier\RetrescoClient\Normalizer\SwaggerSchemaNormalizer;
-use telekurier\RetrescoClient\Normalizer\TopicPagesTypeaheadNormalizer;
+use telekurier\RetrescoClient\Normalizer\ElasticSearchResultWithDocumentHitsNormalizer;
+use telekurier\RetrescoClient\Normalizer\NormalizerFactory;
 
 /**
  * Retresco REST client class.
@@ -127,22 +119,14 @@ class RetrescoClient extends Client {
    */
   public function getSerializer() {
     if (!isset($this->serializer)) {
-      $schema = new SwaggerSchema(dirname(__FILE__) . '/../swagger.json');
-      $encoders = [new JsonEncoder(), new RawEncoder()];
-      $normalizers = [
-        new ArrayDenormalizer(),
-        new RelatedDocumentsNormalizer(),
-        new RetrescoDocumentNormalizer(),
-        new RetrescoEntityLinksNormalizer(),
-        new RetrescoTopicPagesNormalizer(),
-        new TopicPagesTypeaheadNormalizer(),
-        new LocationNormalizer(),
-        new PinNormalizer(),
-        (new SwaggerSchemaNormalizer(
-          NULL, new CamelCaseToSnakeCaseNameConverter()
-        ))->setSwaggerSchema('telekurier\RetrescoClient\Model', $schema),
-        new ObjectNormalizer(NULL, new CamelCaseToSnakeCaseNameConverter()),
+      $encoders = [
+        new FieldDocumentEncoder(),
+        new JsonEncoder(),
+        new RawEncoder()
       ];
+      $normalizers = NormalizerFactory::create();
+      array_unshift($normalizers, new ElasticSearchResultWithDocumentHitsNormalizer());
+
       $this->serializer = new Serializer($normalizers, $encoders);
     }
     return $this->serializer;
@@ -361,13 +345,37 @@ class RetrescoClient extends Client {
     $data = $response->getBody()->getContents();
 
     $context = ['json_decode_associative' => FALSE];
-    /** @var \telekurier\RetrescoClient\Model\RetrescoTopicPages $topicsPage */
     $serializer = $this->getSerializer();
+    /** @var \telekurier\RetrescoClient\Model\RetrescoTopicPages $topicsPage */
     $topicsPage = $serializer->deserialize(
       $data, RetrescoTopicPages::class, 'json', $context
     );
 
     return $topicsPage;
+  }
+
+  public function poolSearch($query): ElasticSearchResult {
+    $header = array(
+      'Content-Type' => 'application/json',
+    );
+    $uri = $this->config['poolSearchPath'];
+
+    $body = $this->getSerializer()->serialize($query, 'json');
+    $request = new Request('POST', $uri, $header, $body);
+
+    $response = $this->send($request);
+
+    $data = $response->getBody()->getContents();
+
+    $context = ['json_decode_associative' => FALSE];
+    $serializer = $this->getSerializer();
+
+    /** @var \telekurier\RetrescoClient\Model\ElasticSearchRawResult $rawResult */
+    $rawResult = $serializer->deserialize(
+      $data, ElasticSearchRawResult::class, 'json', $context
+    );
+
+    return $rawResult->getHits();
   }
 
 }

@@ -451,6 +451,39 @@
                     "type": "integer"
                 }
             }
+        },
+        "ElasticSearchRawResult": {
+            "type": "object",
+            "properties": {
+                "took": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "timed_out": {
+                    "type": "bool"
+                },
+                "hits": {
+                    "$ref": "#/definitions/ElasticSearchResult"
+                }
+            }
+        },
+        "ElasticSearchResult": {
+            "type": "object",
+            "format": "fielded",
+            "properties": {
+                "hits": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RetrescoDocument"
+                    }
+                },
+                "max_score": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
         }
     }
 }

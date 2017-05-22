@@ -43,6 +43,7 @@ abstract class RetrescoClientTest extends \PHPUnit_Framework_TestCase {
     'documentPath' => '/api/content',
     'enrichPath' => '/api/enrich',
     'relatedPath' => '/api/relateds',
+    'poolSearchPath' => '/api/es_pool/_search',
   ];
 
   /**
