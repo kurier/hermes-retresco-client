@@ -259,6 +259,9 @@
                 "pi_last_72h": {
                     "type": "integer"
                 },
+                "ga_last_seen": {
+                    "type": "date"
+                },
                 "comments_count": {
                     "type": "integer"
                 },

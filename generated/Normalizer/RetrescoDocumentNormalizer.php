@@ -94,6 +94,9 @@ class RetrescoDocumentNormalizer extends SerializerAwareNormalizer implements De
         if (property_exists($data, 'pi_last_72h')) {
             $object->setPiLast72h($data->{'pi_last_72h'});
         }
+        if (property_exists($data, 'ga_last_seen')) {
+            $object->setGaLastSeen($data->{'ga_last_seen'});
+        }
         if (property_exists($data, 'comments_count')) {
             $object->setCommentsCount($data->{'comments_count'});
         }
@@ -233,6 +236,9 @@ class RetrescoDocumentNormalizer extends SerializerAwareNormalizer implements De
         }
         if (null !== $object->getPiLast72h()) {
             $data->{'pi_last_72h'} = $object->getPiLast72h();
+        }
+        if (null !== $object->getGaLastSeen()) {
+            $data->{'ga_last_seen'} = $object->getGaLastSeen();
         }
         if (null !== $object->getCommentsCount()) {
             $data->{'comments_count'} = $object->getCommentsCount();

@@ -97,6 +97,10 @@ class RetrescoDocument
      */
     protected $piLast72h;
     /**
+     * @var mixed
+     */
+    protected $gaLastSeen;
+    /**
      * @var int
      */
     protected $commentsCount;
@@ -541,6 +545,23 @@ class RetrescoDocument
     public function setPiLast72h($piLast72h = null)
     {
         $this->piLast72h = $piLast72h;
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getGaLastSeen()
+    {
+        return $this->gaLastSeen;
+    }
+    /**
+     * @param mixed $gaLastSeen
+     *
+     * @return self
+     */
+    public function setGaLastSeen($gaLastSeen = null)
+    {
+        $this->gaLastSeen = $gaLastSeen;
         return $this;
     }
     /**
