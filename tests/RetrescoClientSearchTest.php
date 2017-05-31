@@ -59,7 +59,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
 
     $result = NULL;
     try {
-      $result = $this->retrescoClient->poolSearch($query);
+      $result = self::$retrescoClient->poolSearch($query);
     }
     catch (ClientException $e) {
       $this->fail($e->getMessage());

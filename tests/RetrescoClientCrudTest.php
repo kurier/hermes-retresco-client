@@ -25,7 +25,7 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
   public function testPutDocument() {
     $response = NULL;
     try {
-      $response = $this->retrescoClient->putDocument($this->testDocument);
+      $response = self::$retrescoClient->putDocument($this->testDocument);
     }
     catch (ClientException $e) {
       $this->fail($e->getMessage());
@@ -43,13 +43,13 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
    * Puts a document there first and then tries to retrieve it.
    */
   public function testGetDocument() {
-    $putResponse = $this->retrescoClient->putDocument($this->testDocument);
+    $putResponse = self::$retrescoClient->putDocument($this->testDocument);
     $this->assertEquals(RetrescoClient::RESPONSE_CREATED, $putResponse->getStatusCode(), "File couldn't be written.");
 
     $document = NULL;
     try {
       $docId = $this->testDocument->getDocId();
-      $document = $this->retrescoClient->getDocumentById($docId);
+      $document = self::$retrescoClient->getDocumentById($docId);
     }
     catch (ClientException $e) {
       $this->fail($e->getMessage());
@@ -69,16 +69,16 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
    * tries to fetch it again to see if it is still there or not.
    */
   public function testDeleteDocument() {
-    $putResponse = $this->retrescoClient->putDocument($this->testDocument);
+    $putResponse = self::$retrescoClient->putDocument($this->testDocument);
     $this->assertEquals(RetrescoClient::RESPONSE_CREATED, $putResponse->getStatusCode(), "File couldn't be written.");
 
-    $deleteResponse = $this->retrescoClient->deleteDocument($this->testDocument);
+    $deleteResponse = self::$retrescoClient->deleteDocument($this->testDocument);
 
     $this->assertEquals(RetrescoClient::RESPONSE_OK, $deleteResponse->getStatusCode(), 'File was not deleted.');
 
     $expectedException = NULL;
     try {
-      $this->retrescoClient->getDocumentById($this->testDocument->getDocId());
+      self::$retrescoClient->getDocumentById($this->testDocument->getDocId());
     }
     catch (ClientException $e) {
       $expectedException = $e;
@@ -94,7 +94,7 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
     $doc_types = 'article,article';
     $doc_id = $this->testDocument->getDocId();
     /** @var RelatedDocuments $relateds */
-    $relateds = $this->retrescoClient->getRelatedDocuments($doc_id, $doc_types);
+    $relateds = self::$retrescoClient->getRelatedDocuments($doc_id, $doc_types);
 
     $this->assertTrue($relateds instanceof RelatedDocuments);
   }
