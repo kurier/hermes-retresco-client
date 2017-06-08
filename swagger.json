@@ -441,6 +441,56 @@
                 }
             }
         },
+        "RetrescoTopicPage": {
+            "type": "object",
+            "properties": {
+                "canonical_tag": {
+                    "type": "string"
+                },
+                "doc_id": {
+                    "type": "string"
+                },
+                "items_per_page": {
+                    "type": "int"
+                },
+                "meta_description": {
+                    "type": "string"
+                },
+                "meta_title": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "redirect": {
+                    "type": "string"
+                },
+                "section": {
+                    "type": "string"
+                },
+                "super_title": {
+                    "type": "string"
+                },
+                "teaser": {
+                    "type": "string"
+                },
+                "teaser_img": {
+                    "type": "string"
+                },
+                "teaser_img_subline": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "topic_type": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
         "RetrescoTopicPages": {
             "type": "object",
             "properties": {

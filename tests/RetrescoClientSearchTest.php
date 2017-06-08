@@ -72,4 +72,9 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
       $this->assertNotEmpty($hit->getDocId());
     }
   }
+
+  public function testTopicPage() {
+    $topicPage = self::$retrescoClient->getTopicPage('ivanka-trump');
+    self::assertNotEmpty($topicPage);
+  }
 }

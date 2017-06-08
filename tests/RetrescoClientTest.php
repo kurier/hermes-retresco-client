@@ -78,6 +78,7 @@ abstract class RetrescoClientTest extends \PHPUnit_Framework_TestCase {
     if (is_readable($file)) {
       $content = Yaml::parse(file_get_contents($file), FALSE, TRUE, TRUE);
       $serializer = self::$retrescoClient->getSerializer();
+      /** @noinspection PhpIncompatibleReturnTypeInspection */
       return $serializer->denormalize($content, RetrescoDocument::class);
     }
 

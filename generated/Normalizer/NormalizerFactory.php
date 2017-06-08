@@ -16,6 +16,7 @@ class NormalizerFactory
         $normalizers[] = new RetrescoSearchQueryNormalizer();
         $normalizers[] = new RetrescoClientErrorNormalizer();
         $normalizers[] = new TopicPagesTypeaheadNormalizer();
+        $normalizers[] = new RetrescoTopicPageNormalizer();
         $normalizers[] = new RetrescoTopicPagesNormalizer();
         $normalizers[] = new ElasticSearchRawResultNormalizer();
         $normalizers[] = new ElasticSearchResultNormalizer();

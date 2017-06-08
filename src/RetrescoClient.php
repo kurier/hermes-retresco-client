@@ -21,6 +21,7 @@ use telekurier\RetrescoClient\Model\ElasticSearchResult;
 use telekurier\RetrescoClient\Model\RelatedDocuments;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
 use telekurier\RetrescoClient\Model\RetrescoEntityLinks;
+use telekurier\RetrescoClient\Model\RetrescoTopicPage;
 use telekurier\RetrescoClient\Model\RetrescoTopicPages;
 use telekurier\RetrescoClient\Normalizer\ElasticSearchResultWithDocumentHitsNormalizer;
 use telekurier\RetrescoClient\Normalizer\NormalizerFactory;
@@ -44,6 +45,7 @@ class RetrescoClient extends Client {
     'relatedPath' => '/api/relateds',
     'entityLinksPath' => '/api/entities/in-text-link-whitelist',
     'poolSearchPath' => '/api/es_pool/_search',
+    'topicPagesPath' => 'api/topic-pages',
     'topicsTypeheadPath' => 'api/topic-pages-typeahead',
   ];
 
@@ -332,6 +334,36 @@ class RetrescoClient extends Client {
     );
 
     return $documents;
+  }
+
+  /**
+   * Get Topic Page object from Retresco.
+   *
+   * @param string $topicPageId
+   *   ID of topic page
+   *
+   * @return \telekurier\RetrescoClient\Model\RetrescoTopicPage
+   *   TODO
+   */
+  public function getTopicPage($topicPageId) {
+    $header = array(
+      'Content-Type' => 'application/json',
+    );
+    $uri = $this->config["topicPagesPath"] . '/' . $topicPageId;
+    $request = new Request('GET', $uri, $header);
+
+    $response = $this->send($request);
+    $data = $response->getBody()->getContents();
+
+    $context = ['json_decode_associative' => FALSE];
+    $serializer = $this->getSerializer();
+    /** @var \telekurier\RetrescoClient\Model\RetrescoTopicPage $topicsPage */
+    $topicPage = $serializer->deserialize(
+      $data, RetrescoTopicPage::class, 'json', $context
+    );
+
+    return $topicPage;
+
   }
 
   /**
