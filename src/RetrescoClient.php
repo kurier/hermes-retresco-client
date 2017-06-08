@@ -343,7 +343,7 @@ class RetrescoClient extends Client {
    *   ID of topic page
    *
    * @return \telekurier\RetrescoClient\Model\RetrescoTopicPage
-   *   TODO
+   *   Topic page
    */
   public function getTopicPage($topicPageId) {
     $header = array(
