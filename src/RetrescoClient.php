@@ -367,6 +367,36 @@ class RetrescoClient extends Client {
   }
 
   /**
+   * Search Topic Pages in Retresco.
+   *
+   * @param string $term
+   *    Search term
+   *
+   * @return \telekurier\RetrescoClient\Model\RetrescoTopicPage
+   *   Topic pages
+   */
+  public function searchTopicPage(string $term) {
+    $header = array(
+      'Content-Type' => 'application/json',
+    );
+    $uri = $this->config["topicPagesPath"] . '?q=' . $term;
+    $request = new Request('GET', $uri, $header);
+
+    $response = $this->send($request);
+    $data = $response->getBody()->getContents();
+
+    $context = ['json_decode_associative' => FALSE];
+    $serializer = $this->getSerializer();
+    /** @var \telekurier\RetrescoClient\Model\RetrescoTopicPages $topicsPage */
+    $topicPage = $serializer->deserialize(
+      $data, RetrescoTopicPages::class, 'json', $context
+    );
+
+    return $topicPage;
+
+  }
+
+  /**
    * Get Topic Pages object from Retresco as result of search.
    *
    * @param string $searchText

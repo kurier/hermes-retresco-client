@@ -73,8 +73,13 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
     }
   }
 
-  public function testTopicPage() {
+  public function testgetTopicPage() {
     $topicPage = self::$retrescoClient->getTopicPage('ivanka-trump');
     self::assertNotEmpty($topicPage);
+  }
+
+  public function testSearchTopicPage() {
+    $topicPages = self::$retrescoClient->searchTopicPage('url:"/news/themen/ivanka-trump"');
+    self::assertNotEmpty($topicPages);
   }
 }
