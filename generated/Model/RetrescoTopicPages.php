@@ -5,7 +5,7 @@ namespace telekurier\RetrescoClient\Model;
 class RetrescoTopicPages
 {
     /**
-     * @var TopicPagesTypeahead[]
+     * @var RetrescoTopicPage[]
      */
     protected $docs;
     /**
@@ -13,14 +13,14 @@ class RetrescoTopicPages
      */
     protected $numFound;
     /**
-     * @return TopicPagesTypeahead[]
+     * @return RetrescoTopicPage[]
      */
     public function getDocs()
     {
         return $this->docs;
     }
     /**
-     * @param TopicPagesTypeahead[] $docs
+     * @param RetrescoTopicPage[] $docs
      *
      * @return self
      */

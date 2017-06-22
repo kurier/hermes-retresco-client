@@ -28,7 +28,7 @@ class RetrescoTopicPagesNormalizer extends SerializerAwareNormalizer implements 
         if (property_exists($data, 'docs')) {
             $values = array();
             foreach ($data->{'docs'} as $value) {
-                $values[] = $this->serializer->deserialize($value, 'telekurier\\RetrescoClient\\Model\\TopicPagesTypeahead', 'raw', $context);
+                $values[] = $this->serializer->deserialize($value, 'telekurier\\RetrescoClient\\Model\\RetrescoTopicPage', 'raw', $context);
             }
             $object->setDocs($values);
         }

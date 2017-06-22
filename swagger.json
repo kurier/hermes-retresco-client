@@ -424,23 +424,6 @@
                 }
             }
         },
-        "TopicPagesTypeahead": {
-            "type": "object",
-            "properties": {
-                "url": {
-                    "type": "string"
-                },
-                "redirect": {
-                    "type": "string"
-                },
-                "doc_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
         "RetrescoTopicPage": {
             "type": "object",
             "properties": {
@@ -497,7 +480,7 @@
                 "docs": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/TopicPagesTypeahead"
+                        "$ref": "#/definitions/RetrescoTopicPage"
                     }
                 },
                 "num_found": {
