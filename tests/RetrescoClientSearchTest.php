@@ -8,6 +8,7 @@
 namespace telekurier\Retresco\Tests;
 
 use GuzzleHttp\Exception\ClientException;
+use telekurier\RetrescoClient\Model\RetrescoTopicPages;
 use telekurier\RetrescoClient\RetrescoClient;
 
 /**
@@ -79,7 +80,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
   }
 
   public function testSearchTopicPage() {
-    $topicPages = self::$retrescoClient->searchTopicPage('url:"/news/themen/ivanka-trump"');
-    self::assertNotEmpty($topicPages);
+    $topicPages = self::$retrescoClient->searchTopicPage('*');
+    self::assertTrue($topicPages instanceof RetrescoTopicPages);
   }
 }

@@ -372,7 +372,7 @@ class RetrescoClient extends Client {
    * @param string $term
    *    Search term
    *
-   * @return \telekurier\RetrescoClient\Model\RetrescoTopicPage
+   * @return \telekurier\RetrescoClient\Model\RetrescoTopicPages
    *   Topic pages
    */
   public function searchTopicPage(string $term) {
