@@ -375,7 +375,7 @@ class RetrescoClient extends Client {
    * @return \telekurier\RetrescoClient\Model\RetrescoTopicPages
    *   Topic pages
    */
-  public function searchTopicPage(string $term) {
+  public function searchTopicPages(string $term) {
     $header = array(
       'Content-Type' => 'application/json',
     );

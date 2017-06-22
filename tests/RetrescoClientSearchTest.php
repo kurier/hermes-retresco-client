@@ -80,7 +80,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
   }
 
   public function testSearchTopicPage() {
-    $topicPages = self::$retrescoClient->searchTopicPage('*');
+    $topicPages = self::$retrescoClient->searchTopicPages('*');
     self::assertTrue($topicPages instanceof RetrescoTopicPages);
   }
 }
