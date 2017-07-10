@@ -10,6 +10,7 @@ namespace telekurier\Retresco\Tests;
 use FR3D\SwaggerAssertions\PhpUnit\Psr7AssertsTrait;
 use FR3D\SwaggerAssertions\SchemaManager;
 use GuzzleHttp\Exception\ClientException;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
 use telekurier\RetrescoClient\RetrescoClient;
@@ -19,7 +20,7 @@ use telekurier\RetrescoClient\RetrescoClient;
  *
  * @covers RetrescoClient
  */
-abstract class RetrescoClientTest extends \PHPUnit_Framework_TestCase {
+abstract class RetrescoClientTest extends TestCase {
 
   use Psr7AssertsTrait;
 
@@ -49,7 +50,8 @@ abstract class RetrescoClientTest extends \PHPUnit_Framework_TestCase {
    */
   public static function setUpBeforeClass() {
     $swagger_file = dirname(__FILE__) . '/../swagger.json';
-    static::$schemaManager = new SchemaManager($swagger_file);
+    $definitionUri = 'file://' . $swagger_file;
+    static::$schemaManager = SchemaManager::fromUri($definitionUri);
 
     $config = [
       'base_uri' => $_ENV['RETRESCO_BASE_URI'],
