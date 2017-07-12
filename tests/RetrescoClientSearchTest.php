@@ -74,7 +74,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
     }
   }
 
-  public function testgetTopicPage() {
+  public function testGetTopicPage() {
     $topicPage = self::$retrescoClient->getTopicPage('ivanka-trump');
     self::assertNotEmpty($topicPage);
   }
@@ -83,4 +83,10 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
     $topicPages = self::$retrescoClient->searchTopicPages('*');
     self::assertTrue($topicPages instanceof RetrescoTopicPages);
   }
+
+  public function testRelatedTopicPage() {
+    $topicPages = self::$retrescoClient->relatedTopicPages('ivanka-trump');
+    self::assertNotEmpty($topicPages);
+  }
+
 }
