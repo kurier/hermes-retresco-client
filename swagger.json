@@ -445,6 +445,9 @@
                 "name": {
                     "type": "string"
                 },
+                "query": {
+                    "type": "string"
+                },
                 "redirect": {
                     "type": "string"
                 },

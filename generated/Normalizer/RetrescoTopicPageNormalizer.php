@@ -43,6 +43,9 @@ class RetrescoTopicPageNormalizer extends SerializerAwareNormalizer implements D
         if (property_exists($data, 'name')) {
             $object->setName($data->{'name'});
         }
+        if (property_exists($data, 'query')) {
+            $object->setQuery($data->{'query'});
+        }
         if (property_exists($data, 'redirect')) {
             $object->setRedirect($data->{'redirect'});
         }
@@ -92,6 +95,9 @@ class RetrescoTopicPageNormalizer extends SerializerAwareNormalizer implements D
         }
         if (null !== $object->getName()) {
             $data->{'name'} = $object->getName();
+        }
+        if (null !== $object->getQuery()) {
+            $data->{'query'} = $object->getQuery();
         }
         if (null !== $object->getRedirect()) {
             $data->{'redirect'} = $object->getRedirect();

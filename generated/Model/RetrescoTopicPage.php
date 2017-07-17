@@ -31,6 +31,10 @@ class RetrescoTopicPage
     /**
      * @var string
      */
+    protected $query;
+    /**
+     * @var string
+     */
     protected $redirect;
     /**
      * @var string
@@ -164,6 +168,23 @@ class RetrescoTopicPage
     public function setName($name = null)
     {
         $this->name = $name;
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
+    /**
+     * @param string $query
+     *
+     * @return self
+     */
+    public function setQuery($query = null)
+    {
+        $this->query = $query;
         return $this;
     }
     /**
