@@ -74,6 +74,40 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
     }
   }
 
+  public function testSearchWithAggregation() {
+
+    $query = [
+      'size' => 0,
+      'query' => [
+        'bool' => [
+          'filter' => [
+            [
+              'term' => [
+                'doc_type' => 'twitter',
+              ],
+            ]
+          ],
+        ],
+      ],
+      'aggregations' => [
+        'since_id' => [
+          'max' => [
+            'field' => 'payload.remote_id',
+          ],
+        ],
+
+      ],
+    ];
+
+    try {
+      $aggregations = self::$retrescoClient->poolAggregations($query);
+      $this->assertNotEmpty($aggregations);
+    }
+    catch (ClientException $e) {
+      $this->fail($e->getMessage());
+    }
+  }
+
   public function testGetTopicPage() {
     $topicPage = self::$retrescoClient->getTopicPage('ivanka-trump');
     self::assertNotEmpty($topicPage);

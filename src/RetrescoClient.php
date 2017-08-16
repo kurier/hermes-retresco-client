@@ -479,4 +479,28 @@ class RetrescoClient extends Client {
     return $rawResult->getHits();
   }
 
+  public function poolAggregations($query) {
+    $header = array(
+      'Content-Type' => 'application/json',
+    );
+    $uri = $this->config['poolSearchPath'];
+
+    $body = $this->getSerializer()->serialize($query, 'json');
+    $request = new Request('POST', $uri, $header, $body);
+
+    $response = $this->send($request);
+
+    $data = $response->getBody()->getContents();
+
+    $context = ['json_decode_associative' => FALSE];
+    $serializer = $this->getSerializer();
+
+    /** @var \telekurier\RetrescoClient\Model\ElasticSearchRawResult $rawResult */
+    $rawResult = $serializer->deserialize(
+      $data, ElasticSearchRawResult::class, 'json', $context
+    );
+
+    return $rawResult->getAggregations();
+  }
+
 }

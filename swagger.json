@@ -501,6 +501,9 @@
                 "timed_out": {
                     "type": "bool"
                 },
+                "aggregations": {
+                    "type": "object"
+                },
                 "hits": {
                     "$ref": "#/definitions/ElasticSearchResult"
                 }

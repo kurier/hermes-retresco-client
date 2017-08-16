@@ -13,6 +13,10 @@ class ElasticSearchRawResult
      */
     protected $timedOut;
     /**
+     * @var mixed
+     */
+    protected $aggregations;
+    /**
      * @var ElasticSearchResult
      */
     protected $hits;
@@ -48,6 +52,23 @@ class ElasticSearchRawResult
     public function setTimedOut($timedOut = null)
     {
         $this->timedOut = $timedOut;
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getAggregations()
+    {
+        return $this->aggregations;
+    }
+    /**
+     * @param mixed $aggregations
+     *
+     * @return self
+     */
+    public function setAggregations($aggregations = null)
+    {
+        $this->aggregations = $aggregations;
         return $this;
     }
     /**

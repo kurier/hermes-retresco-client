@@ -31,6 +31,9 @@ class ElasticSearchRawResultNormalizer extends SerializerAwareNormalizer impleme
         if (property_exists($data, 'timed_out')) {
             $object->setTimedOut($data->{'timed_out'});
         }
+        if (property_exists($data, 'aggregations')) {
+            $object->setAggregations($data->{'aggregations'});
+        }
         if (property_exists($data, 'hits')) {
             $object->setHits($this->serializer->deserialize($data->{'hits'}, 'telekurier\\RetrescoClient\\Model\\ElasticSearchResult', 'raw', $context));
         }
@@ -44,6 +47,9 @@ class ElasticSearchRawResultNormalizer extends SerializerAwareNormalizer impleme
         }
         if (null !== $object->getTimedOut()) {
             $data->{'timed_out'} = $object->getTimedOut();
+        }
+        if (null !== $object->getAggregations()) {
+            $data->{'aggregations'} = $object->getAggregations();
         }
         if (null !== $object->getHits()) {
             $data->{'hits'} = $this->serializer->serialize($object->getHits(), 'raw', $context);
