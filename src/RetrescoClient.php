@@ -42,7 +42,6 @@ class RetrescoClient extends Client {
   const DEFAULT_PATHS = [
     'documentPath' => '/api/content',
     'enrichPath' => 'api/enrich',
-    'relatedPath' => '/api/relateds',
     'entityLinksPath' => '/api/entities/in-text-link-whitelist',
     'poolSearchPath' => '/api/es_pool/_search',
     'topicPagesPath' => 'api/topic-pages',
@@ -316,7 +315,7 @@ class RetrescoClient extends Client {
     $query_data = array_merge($options ?: [], ['doc_types' => $doc_types]);
     $query = http_build_query($query_data);
 
-    $url = $this->config['relatedPath'] . '/' . $id . '?' . $query;
+    $url = sprintf('%s/%s/relateds?%s', $this->config['documentPath'], $id, $query);
 
     try {
       $response = $this->get($url);
