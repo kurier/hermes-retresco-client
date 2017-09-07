@@ -460,56 +460,41 @@ class RetrescoClient extends Client {
     return $topicsPage;
   }
 
+  protected function poolSearch($query): ElasticSearchRawResult {
+    $header = [
+      'Content-Type' => 'application/json',
+    ];
+    $uri = $this->config['poolSearchPath'];
+
+    $body = $this->getSerializer()->serialize($query, 'json');
+    $request = new Request('POST', $uri, $header, $body);
+
+    $response = $this->send($request);
+
+    $data = $response->getBody()->getContents();
+
+    $context = ['json_decode_associative' => FALSE];
+    $serializer = $this->getSerializer();
+
+    /** @var \telekurier\RetrescoClient\Model\ElasticSearchRawResult $rawResult */
+    return $serializer->deserialize(
+      $data, ElasticSearchRawResult::class, 'json', $context
+    );
+  }
+
   public function poolSearchResult($query): ElasticSearchResult {
-    return $this->poolSearch($query);
+    return $this->poolSearch($query)->getHits();
   }
 
-  public function poolSearch($query): ElasticSearchResult {
-    $header = [
-      'Content-Type' => 'application/json',
-    ];
-    $uri = $this->config['poolSearchPath'];
-
-    $body = $this->getSerializer()->serialize($query, 'json');
-    $request = new Request('POST', $uri, $header, $body);
-
-    $response = $this->send($request);
-
-    $data = $response->getBody()->getContents();
-
-    $context = ['json_decode_associative' => FALSE];
-    $serializer = $this->getSerializer();
-
-    /** @var \telekurier\RetrescoClient\Model\ElasticSearchRawResult $rawResult */
-    $rawResult = $serializer->deserialize(
-      $data, ElasticSearchRawResult::class, 'json', $context
-    );
-
-    return $rawResult->getHits();
+  public function poolSearchAggregations($query) {
+    return $this->poolSearch($query)->getAggregations();
   }
 
+  /**
+   * @deprecated use RetrescoClient::poolSearchAggregations
+   */
   public function poolAggregations($query) {
-    $header = [
-      'Content-Type' => 'application/json',
-    ];
-    $uri = $this->config['poolSearchPath'];
-
-    $body = $this->getSerializer()->serialize($query, 'json');
-    $request = new Request('POST', $uri, $header, $body);
-
-    $response = $this->send($request);
-
-    $data = $response->getBody()->getContents();
-
-    $context = ['json_decode_associative' => FALSE];
-    $serializer = $this->getSerializer();
-
-    /** @var \telekurier\RetrescoClient\Model\ElasticSearchRawResult $rawResult */
-    $rawResult = $serializer->deserialize(
-      $data, ElasticSearchRawResult::class, 'json', $context
-    );
-
-    return $rawResult->getAggregations();
+    return $this->poolSearchAggregations($query);
   }
 
 }
