@@ -18,6 +18,8 @@ class NormalizerFactory
         $normalizers[] = new RetrescoTopicPageNormalizer();
         $normalizers[] = new RetrescoTopicPagesNormalizer();
         $normalizers[] = new ElasticSearchRawResultNormalizer();
+        $normalizers[] = new ElasticSearchAggregationNormalizer();
+        $normalizers[] = new ElasticSearchAggregationBucketNormalizer();
         $normalizers[] = new ElasticSearchResultNormalizer();
         return $normalizers;
     }

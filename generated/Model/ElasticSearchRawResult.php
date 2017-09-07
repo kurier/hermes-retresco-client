@@ -13,7 +13,7 @@ class ElasticSearchRawResult
      */
     protected $timedOut;
     /**
-     * @var mixed
+     * @var ElasticSearchAggregation[]
      */
     protected $aggregations;
     /**
@@ -55,18 +55,18 @@ class ElasticSearchRawResult
         return $this;
     }
     /**
-     * @return mixed
+     * @return ElasticSearchAggregation[]
      */
     public function getAggregations()
     {
         return $this->aggregations;
     }
     /**
-     * @param mixed $aggregations
+     * @param ElasticSearchAggregation[] $aggregations
      *
      * @return self
      */
-    public function setAggregations($aggregations = null)
+    public function setAggregations(\ArrayObject $aggregations = null)
     {
         $this->aggregations = $aggregations;
         return $this;

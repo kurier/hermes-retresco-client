@@ -487,7 +487,8 @@ class RetrescoClient extends Client {
   }
 
   public function poolSearchAggregations($query) {
-    return $this->poolSearch($query)->getAggregations();
+    $ps = $this->poolSearch($query);
+    return $ps->getAggregations();
   }
 
 }

@@ -502,10 +502,50 @@
                     "type": "bool"
                 },
                 "aggregations": {
-                    "type": "object"
+                    "$ref": "#/definitions/ElasticSearchAggregationDictionary"
                 },
                 "hits": {
                     "$ref": "#/definitions/ElasticSearchResult"
+                }
+            }
+        },
+        "ElasticSearchAggregationDictionary": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/ElasticSearchAggregation"
+            }
+        },
+        "ElasticSearchAggregation": {
+            "type": "object",
+            "properties": {
+                "buckets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ElasticSearchAggregationBucket"
+                    }
+                },
+                "doc_count": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "value": {
+                    "type": "any"
+                }
+            }
+        },
+        "ElasticSearchAggregationBucket": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "doc_count": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "score": {
+                    "type": "number",
+                    "format": "double"
                 }
             }
         },

@@ -74,8 +74,9 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
     }
   }
 
-  public function testSearchWithAggregation() {
+  public function testMaxAggregationHasValue() {
 
+    $aggName = 'since_id_agg';
     $query = [
       'size' => 0,
       'query' => [
@@ -90,7 +91,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
         ],
       ],
       'aggregations' => [
-        'since_id' => [
+        $aggName => [
           'max' => [
             'field' => 'payload.remote_id',
           ],
@@ -101,7 +102,54 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
 
     try {
       $aggregations = self::$retrescoClient->poolSearchAggregations($query);
-      $this->assertNotEmpty($aggregations);
+      /** @var \telekurier\RetrescoClient\Model\ElasticSearchAggregation $agg */
+      $agg = reset($aggregations);
+      $actualAggName = key($aggregations);
+      $this->assertEquals($aggName, $actualAggName);
+      $max = $agg->getValue();
+      $this->assertNotEmpty($max);
+    }
+    catch (ClientException $e) {
+      $this->fail($e->getMessage());
+    }
+  }
+
+  public function testSigTermsAggregationHasBuckets() {
+
+    $aggName = 'sig_agg_name';
+    $sigTermsSize = 5;
+    $query = [
+      'size' => 0,
+      'query' => [
+        'bool' => [
+          'filter' => [
+            [
+              'term' => [
+                'doc_type' => 'twitter',
+              ],
+            ],
+          ],
+        ],
+      ],
+      'aggregations' => [
+        $aggName => [
+          'significant_terms' => [
+            'field' => 'rtr_tags',
+            'size' => $sigTermsSize,
+          ],
+        ],
+
+      ],
+    ];
+
+    try {
+      $aggregations = self::$retrescoClient->poolSearchAggregations($query);
+      /** @var \telekurier\RetrescoClient\Model\ElasticSearchAggregation $agg */
+      $agg = reset($aggregations);
+      $actualAggName = key($aggregations);
+      $this->assertEquals($aggName, $actualAggName);
+      $buckets = $agg->getBuckets();
+      $this->assertEquals($sigTermsSize, count($buckets));
     }
     catch (ClientException $e) {
       $this->fail($e->getMessage());
