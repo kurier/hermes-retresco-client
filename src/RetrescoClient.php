@@ -490,11 +490,4 @@ class RetrescoClient extends Client {
     return $this->poolSearch($query)->getAggregations();
   }
 
-  /**
-   * @deprecated use RetrescoClient::poolSearchAggregations
-   */
-  public function poolAggregations($query) {
-    return $this->poolSearchAggregations($query);
-  }
-
 }

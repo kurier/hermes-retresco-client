@@ -100,7 +100,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
     ];
 
     try {
-      $aggregations = self::$retrescoClient->poolAggregations($query);
+      $aggregations = self::$retrescoClient->poolSearchAggregations($query);
       $this->assertNotEmpty($aggregations);
     }
     catch (ClientException $e) {
