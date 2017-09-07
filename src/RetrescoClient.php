@@ -460,6 +460,13 @@ class RetrescoClient extends Client {
     return $topicsPage;
   }
 
+  /**
+   * @param $query mixed
+   *   Elasticsearch query as associative array
+   *
+   * @return \telekurier\RetrescoClient\Model\ElasticSearchRawResult
+   *   Raw result.
+   */
   protected function poolSearch($query): ElasticSearchRawResult {
     $header = [
       'Content-Type' => 'application/json',
@@ -482,13 +489,30 @@ class RetrescoClient extends Client {
     );
   }
 
+  /**
+   * @param $query mixed
+   *   Elasticsearch query as associative array
+   *
+   * @return \telekurier\RetrescoClient\Model\ElasticSearchResult
+   *   Search result.
+   */
   public function poolSearchResult($query): ElasticSearchResult {
     return $this->poolSearch($query)->getHits();
   }
 
-  public function poolSearchAggregations($query) {
-    $ps = $this->poolSearch($query);
-    return $ps->getAggregations();
+  /**
+   * @param $query mixed
+   *   Elasticsearch query as associative array
+   *
+   * @return \telekurier\RetrescoClient\Model\ElasticSearchAggregation[]
+   *   Aggregations.
+   */
+  public function poolSearchAggregations($query): array {
+    /** @var \telekurier\RetrescoClient\Model\ElasticSearchRawResult $rawResult */
+    $rawResult = $this->poolSearch($query);
+    /** @var \ArrayObject $aggregations */
+    $aggregations = $rawResult->getAggregations();
+    return $aggregations->getArrayCopy();
   }
 
 }
