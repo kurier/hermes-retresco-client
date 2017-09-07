@@ -534,20 +534,7 @@
             }
         },
         "ElasticSearchAggregationBucket": {
-            "type": "object",
-            "properties": {
-                "key": {
-                    "type": "string"
-                },
-                "doc_count": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "score": {
-                    "type": "number",
-                    "format": "double"
-                }
-            }
+            "type": "object"
         },
         "ElasticSearchResult": {
             "type": "object",

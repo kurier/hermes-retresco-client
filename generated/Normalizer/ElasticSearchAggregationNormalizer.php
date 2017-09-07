@@ -28,7 +28,7 @@ class ElasticSearchAggregationNormalizer extends SerializerAwareNormalizer imple
         if (property_exists($data, 'buckets')) {
             $values = array();
             foreach ($data->{'buckets'} as $value) {
-                $values[] = $this->serializer->deserialize($value, 'telekurier\\RetrescoClient\\Model\\ElasticSearchAggregationBucket', 'raw', $context);
+                $values[] = $value;
             }
             $object->setBuckets($values);
         }
@@ -46,7 +46,7 @@ class ElasticSearchAggregationNormalizer extends SerializerAwareNormalizer imple
         if (null !== $object->getBuckets()) {
             $values = array();
             foreach ($object->getBuckets() as $value) {
-                $values[] = $this->serializer->serialize($value, 'raw', $context);
+                $values[] = $value;
             }
             $data->{'buckets'} = $values;
         }

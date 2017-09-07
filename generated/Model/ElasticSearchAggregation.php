@@ -5,7 +5,7 @@ namespace telekurier\RetrescoClient\Model;
 class ElasticSearchAggregation
 {
     /**
-     * @var ElasticSearchAggregationBucket[]
+     * @var mixed[]
      */
     protected $buckets;
     /**
@@ -17,14 +17,14 @@ class ElasticSearchAggregation
      */
     protected $value;
     /**
-     * @return ElasticSearchAggregationBucket[]
+     * @return mixed[]
      */
     public function getBuckets()
     {
         return $this->buckets;
     }
     /**
-     * @param ElasticSearchAggregationBucket[] $buckets
+     * @param mixed[] $buckets
      *
      * @return self
      */

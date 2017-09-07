@@ -18,6 +18,12 @@ use telekurier\RetrescoClient\RetrescoClient;
  */
 class RetrescoClientSearchTest extends RetrescoClientTest {
 
+  const COUNT_DOC_TYPES = 'countDocTypes';
+
+  const SINCE_ID_AGG = 'since_id_agg';
+
+  const SIGNIFICANT_TAG_TERMS = 'significant_tag_terms';
+
   public function testSearchReturnsResultWithHits() {
 
     $size = 10;
@@ -76,7 +82,6 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
 
   public function testMaxAggregationHasValue() {
 
-    $aggName = 'since_id_agg';
     $query = [
       'size' => 0,
       'query' => [
@@ -91,7 +96,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
         ],
       ],
       'aggregations' => [
-        $aggName => [
+        self::SINCE_ID_AGG => [
           'max' => [
             'field' => 'payload.remote_id',
           ],
@@ -105,7 +110,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
       /** @var \telekurier\RetrescoClient\Model\ElasticSearchAggregation $agg */
       $agg = reset($aggregations);
       $actualAggName = key($aggregations);
-      $this->assertEquals($aggName, $actualAggName);
+      $this->assertEquals(self::SINCE_ID_AGG, $actualAggName);
       $max = $agg->getValue();
       $this->assertNotEmpty($max);
     }
@@ -114,9 +119,65 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
     }
   }
 
+  public function testNestedAggregations() {
+
+    $query = [
+      'size' => 0,
+      'query' => [
+        'bool' => [
+          'filter' => [
+            [
+              'term' => [
+                'doc_type' => 'twitter',
+              ],
+            ],
+          ],
+        ],
+      ],
+      'aggregations' => [
+        self::SIGNIFICANT_TAG_TERMS => [
+          'significant_terms' => [
+            'field' => 'rtr_tags',
+            'size' => 1,
+          ],
+          'aggregations' => [
+            self::COUNT_DOC_TYPES => [
+              'terms' => [
+                'field' => 'doc_type',
+              ],
+            ],
+          ],
+        ],
+
+      ],
+    ];
+
+    try {
+      $aggregations = self::$retrescoClient->poolSearchAggregations($query);
+      /** @var \telekurier\RetrescoClient\Model\ElasticSearchAggregation $topAgg */
+      $topAgg = reset($aggregations);
+      $actualAggName = key($aggregations);
+      $this->assertEquals(self::SIGNIFICANT_TAG_TERMS, $actualAggName);
+
+      $sigTermsBuckets = $topAgg->getBuckets();
+      $topSigTermBucket = reset($sigTermsBuckets);
+
+      $docTypesBuckets = $topSigTermBucket->{self::COUNT_DOC_TYPES}->buckets;
+
+      $this->assertNotEmpty($docTypesBuckets);
+
+      $firstDocTypeBucket = reset($docTypesBuckets);
+
+      $this->assertNotEmpty($firstDocTypeBucket->key, 'Count bucket has no property named "key"');
+      $this->assertNotEmpty($firstDocTypeBucket->doc_count, 'Count bucket has no property named "doc_count"');
+    }
+    catch (ClientException $e) {
+      $this->fail($e->getMessage());
+    }
+  }
+
   public function testSigTermsAggregationHasBuckets() {
 
-    $aggName = 'sig_agg_name';
     $sigTermsSize = 5;
     $query = [
       'size' => 0,
@@ -132,7 +193,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
         ],
       ],
       'aggregations' => [
-        $aggName => [
+        self::SINCE_ID_AGG => [
           'significant_terms' => [
             'field' => 'rtr_tags',
             'size' => $sigTermsSize,
@@ -147,7 +208,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
       /** @var \telekurier\RetrescoClient\Model\ElasticSearchAggregation $agg */
       $agg = reset($aggregations);
       $actualAggName = key($aggregations);
-      $this->assertEquals($aggName, $actualAggName);
+      $this->assertEquals(self::SINCE_ID_AGG, $actualAggName);
       $buckets = $agg->getBuckets();
       $this->assertEquals($sigTermsSize, count($buckets));
     }
