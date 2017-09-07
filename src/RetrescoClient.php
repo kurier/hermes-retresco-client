@@ -32,11 +32,17 @@ use telekurier\RetrescoClient\Normalizer\NormalizerFactory;
 class RetrescoClient extends Client {
 
   const RESPONSE_OK = '200';
+
   const RESPONSE_CREATED = '201';
+
   const RESPONSE_BAD_REQUEST = '400';
+
   const RESPONSE_UNAUTHORIZED = '401';
+
   const RESPONSE_NOT_FOUND = '404';
+
   const RESPONSE_CONFLICT = '409';
+
   const RESPONSE_INTERNAL_ERROR = '500';
 
   const DEFAULT_PATHS = [
@@ -132,7 +138,7 @@ class RetrescoClient extends Client {
       $encoders = [
         new FieldDocumentEncoder(),
         new JsonEncoder(),
-        new RawEncoder()
+        new RawEncoder(),
       ];
       $normalizers = NormalizerFactory::create();
       array_unshift($normalizers, new ElasticSearchResultWithDocumentHitsNormalizer());
@@ -159,9 +165,9 @@ class RetrescoClient extends Client {
    *   Entity links.
    */
   public function getEntityLinksMap() {
-    $header = array(
+    $header = [
       'Content-Type' => 'application/json',
-    );
+    ];
 
     $request = new Request('GET', $this->config['entityLinksPath'], $header);
     $response = $this->send($request);
@@ -191,9 +197,9 @@ class RetrescoClient extends Client {
    * @internal param bool $index Index document.
    */
   public function enrichDocument(RetrescoDocument $document, $inTextLinks) {
-    $header = array(
+    $header = [
       'Content-Type' => 'application/json',
-    );
+    ];
 
     $query = $inTextLinks ? '?in-text-linked' : NULL;
     $uri = $this->config["enrichPath"] . $query;
@@ -227,9 +233,9 @@ class RetrescoClient extends Client {
   public function putDocument(RetrescoDocument $document) {
     $body = $this->getSerializer()->serialize($document, 'json');
 
-    $header = array(
+    $header = [
       'Content-Type' => 'application/json',
-    );
+    ];
 
     $uri = $this->config["documentPath"] . "/" . $document->getDocId();
 
@@ -345,9 +351,9 @@ class RetrescoClient extends Client {
    *   Topic page
    */
   public function getTopicPage($topicPageId) {
-    $header = array(
+    $header = [
       'Content-Type' => 'application/json',
-    );
+    ];
     $uri = $this->config["topicPagesPath"] . '/' . $topicPageId;
     $request = new Request('GET', $uri, $header);
 
@@ -375,9 +381,9 @@ class RetrescoClient extends Client {
    *   Topic pages
    */
   public function searchTopicPages(string $term) {
-    $header = array(
+    $header = [
       'Content-Type' => 'application/json',
-    );
+    ];
     $uri = $this->config["topicPagesPath"] . '?q=' . $term;
     $request = new Request('GET', $uri, $header);
 
@@ -405,9 +411,9 @@ class RetrescoClient extends Client {
    *   Topic pages
    */
   public function relatedTopicPages(string $topicPageId) {
-    $header = array(
+    $header = [
       'Content-Type' => 'application/json',
-    );
+    ];
     $uri = sprintf('%s/%s/relateds', $this->config["topicPagesPath"], $topicPageId);
     $request = new Request('GET', $uri, $header);
 
@@ -435,9 +441,9 @@ class RetrescoClient extends Client {
    *   RetrescoTopicPages object.
    */
   public function getTopicPages($searchText) {
-    $header = array(
+    $header = [
       'Content-Type' => 'application/json',
-    );
+    ];
     // Create the URL with search query and get data.
     $uri = $this->config["topicsTypeheadPath"] . '?q=' . $searchText;
     $request = new Request('GET', $uri, $header);
@@ -454,10 +460,14 @@ class RetrescoClient extends Client {
     return $topicsPage;
   }
 
+  public function poolSearchResult($query): ElasticSearchResult {
+    return $this->poolSearch($query);
+  }
+
   public function poolSearch($query): ElasticSearchResult {
-    $header = array(
+    $header = [
       'Content-Type' => 'application/json',
-    );
+    ];
     $uri = $this->config['poolSearchPath'];
 
     $body = $this->getSerializer()->serialize($query, 'json');
@@ -479,9 +489,9 @@ class RetrescoClient extends Client {
   }
 
   public function poolAggregations($query) {
-    $header = array(
+    $header = [
       'Content-Type' => 'application/json',
-    );
+    ];
     $uri = $this->config['poolSearchPath'];
 
     $body = $this->getSerializer()->serialize($query, 'json');

@@ -18,7 +18,7 @@ use telekurier\RetrescoClient\RetrescoClient;
  */
 class RetrescoClientSearchTest extends RetrescoClientTest {
 
-  public function testSearchDocuments() {
+  public function testSearchReturnsResultWithHits() {
 
     $size = 10;
 
@@ -60,7 +60,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
 
     $result = NULL;
     try {
-      $result = self::$retrescoClient->poolSearch($query);
+      $result = self::$retrescoClient->poolSearchResult($query);
     }
     catch (ClientException $e) {
       $this->fail($e->getMessage());
@@ -85,7 +85,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
               'term' => [
                 'doc_type' => 'twitter',
               ],
-            ]
+            ],
           ],
         ],
       ],
