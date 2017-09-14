@@ -46,6 +46,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
         'doc_type',
         'payload.channel.id',
         'rtr_persons',
+        'rtr_tags',
         'payload.channel.name',
         'payload.channel.section',
         'payload.channel.source',

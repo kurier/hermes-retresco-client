@@ -153,6 +153,10 @@ class RetrescoDocument
      */
     protected $rtrKeywords;
     /**
+     * @var string[]
+     */
+    protected $rtrTags;
+    /**
      * @var mixed
      */
     protected $payload;
@@ -783,6 +787,23 @@ class RetrescoDocument
     public function setRtrKeywords(array $rtrKeywords = null)
     {
         $this->rtrKeywords = $rtrKeywords;
+        return $this;
+    }
+    /**
+     * @return string[]
+     */
+    public function getRtrTags()
+    {
+        return $this->rtrTags;
+    }
+    /**
+     * @param string[] $rtrTags
+     *
+     * @return self
+     */
+    public function setRtrTags(array $rtrTags = null)
+    {
+        $this->rtrTags = $rtrTags;
         return $this;
     }
     /**

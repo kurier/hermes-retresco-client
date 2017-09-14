@@ -319,6 +319,12 @@
                         "type": "string"
                     }
                 },
+                "rtr_tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "payload": {
                     "type": "object",
                     "items": {

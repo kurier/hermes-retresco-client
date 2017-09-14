@@ -160,6 +160,13 @@ class RetrescoDocumentNormalizer extends SerializerAwareNormalizer implements De
             }
             $object->setRtrKeywords($values_5);
         }
+        if (property_exists($data, 'rtr_tags')) {
+            $values_6 = array();
+            foreach ($data->{'rtr_tags'} as $value_6) {
+                $values_6[] = $value_6;
+            }
+            $object->setRtrTags($values_6);
+        }
         if (property_exists($data, 'payload')) {
             $object->setPayload($data->{'payload'});
         }
@@ -302,6 +309,13 @@ class RetrescoDocumentNormalizer extends SerializerAwareNormalizer implements De
                 $values_5[] = $value_5;
             }
             $data->{'rtr_keywords'} = $values_5;
+        }
+        if (null !== $object->getRtrTags()) {
+            $values_6 = array();
+            foreach ($object->getRtrTags() as $value_6) {
+                $values_6[] = $value_6;
+            }
+            $data->{'rtr_tags'} = $values_6;
         }
         if (null !== $object->getPayload()) {
             $data->{'payload'} = $object->getPayload();
