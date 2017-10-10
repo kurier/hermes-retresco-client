@@ -2,14 +2,17 @@
     "name": "telekurier/hermes-retresco-client",
     "require": {
         "php": ">=7.0",
-        "jane/open-api": "^1.3.0",
-        "symfony/serializer": "^3.3.0",
-        "symfony/property-access": "^3.3.0",
-        "guzzlehttp/guzzle": "^6.3.0"
+        "symfony/serializer": "^3.1.0",
+        "symfony/property-access": "^3.1.0",
+        "guzzlehttp/guzzle": "^6.3.0",
+        "jane/jane": "^3.0.0",
+        "jane/open-api": "^3.0.0",
+        "jane/runtime": "^2.0",
+        "jane/openapi-runtime": "2.0"
     },
     "require-dev": {
         "fr3d/swagger-assertions": "^0.8.3",
-        "phpunit/phpunit": "^6.2.3"
+        "phpunit/phpunit": "^6.4.1"
     },
     "autoload": {
         "psr-4": {

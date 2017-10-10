@@ -11,11 +11,11 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
-use Joli\Jane\Encoder\RawEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 use telekurier\RetrescoClient\Encoder\FieldDocumentEncoder;
+use telekurier\RetrescoClient\Encoder\RawEncoder;
 use telekurier\RetrescoClient\Model\ElasticSearchRawResult;
 use telekurier\RetrescoClient\Model\ElasticSearchResult;
 use telekurier\RetrescoClient\Model\RelatedDocuments;
@@ -57,7 +57,7 @@ class RetrescoClient extends Client {
   /**
    * The serializer to use.
    *
-   * @var \Symfony\Component\Serializer\SerializerInterface
+   * @var \Symfony\Component\Serializer\Serializer
    */
   protected $serializer;
 
@@ -128,6 +128,30 @@ class RetrescoClient extends Client {
   }
 
   /**
+   * Get the list of white listed Retresco entities.
+   *
+   * @return \telekurier\RetrescoClient\Model\RetrescoEntityLinks
+   *   Entity links.
+   */
+  public function getEntityLinksMap() {
+    $header = [
+      'Content-Type' => 'application/json',
+    ];
+
+    $request = new Request('GET', $this->config['entityLinksPath'], $header);
+    $response = $this->send($request);
+    $data = $response->getBody()->getContents();
+    $context = ['json_decode_associative' => FALSE];
+
+    /** @var \telekurier\RetrescoClient\Model\RetrescoEntityLinks $document */
+    $entityLinks = $this->getSerializer()->deserialize(
+      $data, RetrescoEntityLinks::class, 'json', $context
+    );
+
+    return $entityLinks;
+  }
+
+  /**
    * The serializer to use.
    *
    * @return \Symfony\Component\Serializer\Serializer
@@ -156,30 +180,6 @@ class RetrescoClient extends Client {
    */
   public function setSerializer(SerializerInterface $serializer) {
     $this->serializer = $serializer;
-  }
-
-  /**
-   * Get the list of white listed Retresco entities.
-   *
-   * @return \telekurier\RetrescoClient\Model\RetrescoEntityLinks
-   *   Entity links.
-   */
-  public function getEntityLinksMap() {
-    $header = [
-      'Content-Type' => 'application/json',
-    ];
-
-    $request = new Request('GET', $this->config['entityLinksPath'], $header);
-    $response = $this->send($request);
-    $data = $response->getBody()->getContents();
-    $context = ['json_decode_associative' => FALSE];
-
-    /** @var \telekurier\RetrescoClient\Model\RetrescoEntityLinks $document */
-    $entityLinks = $this->getSerializer()->deserialize(
-      $data, RetrescoEntityLinks::class, 'json', $context
-    );
-
-    return $entityLinks;
   }
 
   /**
@@ -464,6 +464,17 @@ class RetrescoClient extends Client {
    * @param $query mixed
    *   Elasticsearch query as associative array
    *
+   * @return \telekurier\RetrescoClient\Model\ElasticSearchResult
+   *   Search result.
+   */
+  public function poolSearchResult($query): ElasticSearchResult {
+    return $this->poolSearch($query)->getHits();
+  }
+
+  /**
+   * @param $query mixed
+   *   Elasticsearch query as associative array
+   *
    * @return \telekurier\RetrescoClient\Model\ElasticSearchRawResult
    *   Raw result.
    */
@@ -487,17 +498,6 @@ class RetrescoClient extends Client {
     return $serializer->deserialize(
       $data, ElasticSearchRawResult::class, 'json', $context
     );
-  }
-
-  /**
-   * @param $query mixed
-   *   Elasticsearch query as associative array
-   *
-   * @return \telekurier\RetrescoClient\Model\ElasticSearchResult
-   *   Search result.
-   */
-  public function poolSearchResult($query): ElasticSearchResult {
-    return $this->poolSearch($query)->getHits();
   }
 
   /**

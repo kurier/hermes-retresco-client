@@ -3,11 +3,17 @@
 namespace telekurier\RetrescoClient\Normalizer;
 
 use Joli\Jane\Runtime\Reference;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
-class RetrescoDocumentNormalizer extends SerializerAwareNormalizer implements DenormalizerInterface, NormalizerInterface
+class RetrescoDocumentNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use DenormalizerAwareTrait;
+    use NormalizerAwareTrait;
     public function supportsDenormalization($data, $type, $format = null)
     {
         if ($type !== 'telekurier\\RetrescoClient\\Model\\RetrescoDocument') {
@@ -24,6 +30,9 @@ class RetrescoDocumentNormalizer extends SerializerAwareNormalizer implements De
     }
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        if (!is_object($data)) {
+            throw new InvalidArgumentException();
+        }
         $object = new \telekurier\RetrescoClient\Model\RetrescoDocument();
         if (property_exists($data, 'doc_id')) {
             $object->setDocId($data->{'doc_id'});
@@ -116,7 +125,7 @@ class RetrescoDocumentNormalizer extends SerializerAwareNormalizer implements De
             $object->setBounceRate($data->{'bounce_rate'});
         }
         if (property_exists($data, 'pin')) {
-            $object->setPin($this->serializer->deserialize($data->{'pin'}, 'telekurier\\RetrescoClient\\Model\\Pin', 'raw', $context));
+            $object->setPin($this->denormalizer->denormalize($data->{'pin'}, 'telekurier\\RetrescoClient\\Model\\Pin', 'json', $context));
         }
         if (property_exists($data, 'rtr_persons')) {
             $values = array();
@@ -266,7 +275,7 @@ class RetrescoDocumentNormalizer extends SerializerAwareNormalizer implements De
             $data->{'bounce_rate'} = $object->getBounceRate();
         }
         if (null !== $object->getPin()) {
-            $data->{'pin'} = $this->serializer->serialize($object->getPin(), 'raw', $context);
+            $data->{'pin'} = $this->normalizer->normalize($object->getPin(), 'json', $context);
         }
         if (null !== $object->getRtrPersons()) {
             $values = array();

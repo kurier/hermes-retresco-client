@@ -65,7 +65,8 @@ abstract class RetrescoClientTest extends TestCase {
   protected function setUp() {
     $testFile = dirname(__FILE__) . '/data/putFile01.yml';
     $this->testDocument = $this->createRetrescoDocumentFromFile($testFile);
-    $this->testDocument->setDocId('test-' . floor(microtime(TRUE)));
+    $testDocid = 'test-' . floor(microtime(TRUE));
+    $this->testDocument->setDocId($testDocid);
   }
 
   /**

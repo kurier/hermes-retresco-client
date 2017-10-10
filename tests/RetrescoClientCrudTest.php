@@ -91,6 +91,7 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
   }
 
   public function testRelated() {
+    self::$retrescoClient->putDocument($this->testDocument);
     $doc_types = 'article,article';
     $doc_id = $this->testDocument->getDocId();
     /** @var RelatedDocuments $relateds */

@@ -8,7 +8,7 @@
 namespace telekurier\Retresco\Tests;
 
 use FR3D\SwaggerAssertions\PhpUnit\Psr7AssertsTrait;
-use Joli\Jane\Encoder\RawEncoder;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
 use telekurier\RetrescoClient\Model\Location;
@@ -22,10 +22,12 @@ use telekurier\RetrescoClient\RetrescoClient;
  *
  * @covers RetrescoClient
  */
-class RetrescoPinNormalizerTest extends \PHPUnit_Framework_TestCase {
+class RetrescoPinNormalizerTest extends TestCase {
 
   use Psr7AssertsTrait;
+
   const LAT = 7.829219;
+
   const LON = 98.952227;
 
   /**
@@ -48,13 +50,23 @@ class RetrescoPinNormalizerTest extends \PHPUnit_Framework_TestCase {
    */
   protected $location;
 
+  public function testNormalizeLocation() {
+    $obj = $this->normalizer->normalize($this->pin);
+
+    $normalizedLocation = new \stdClass();
+    $normalizedLocation->lat = self::LAT;
+    $normalizedLocation->lon = self::LON;
+
+    $this->assertEquals($normalizedLocation, $obj->location);
+  }
+
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     $this->normalizer = new PinNormalizer();
 
-    $encoders = [new JsonEncoder(), new RawEncoder()];
+    $encoders = [new JsonEncoder()];
     $normalizers = [
       $this->normalizer,
       new LocationNormalizer(),
@@ -69,15 +81,5 @@ class RetrescoPinNormalizerTest extends \PHPUnit_Framework_TestCase {
     $this->pin->setLocation($this->location);
 
     parent::setUp();
-  }
-
-  public function testNormalizeLocation() {
-    $obj = $this->normalizer->normalize($this->pin);
-
-    $normalizedLocation = new \stdClass();
-    $normalizedLocation->lat = self::LAT;
-    $normalizedLocation->lon = self::LON;
-
-    $this->assertEquals($normalizedLocation, $obj->location);
   }
 }

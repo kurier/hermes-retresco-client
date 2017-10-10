@@ -3,11 +3,17 @@
 namespace telekurier\RetrescoClient\Normalizer;
 
 use Joli\Jane\Runtime\Reference;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
-class RetrescoTopicPageNormalizer extends SerializerAwareNormalizer implements DenormalizerInterface, NormalizerInterface
+class RetrescoTopicPageNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use DenormalizerAwareTrait;
+    use NormalizerAwareTrait;
     public function supportsDenormalization($data, $type, $format = null)
     {
         if ($type !== 'telekurier\\RetrescoClient\\Model\\RetrescoTopicPage') {
@@ -24,6 +30,9 @@ class RetrescoTopicPageNormalizer extends SerializerAwareNormalizer implements D
     }
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        if (!is_object($data)) {
+            throw new InvalidArgumentException();
+        }
         $object = new \telekurier\RetrescoClient\Model\RetrescoTopicPage();
         if (property_exists($data, 'canonical_tag')) {
             $object->setCanonicalTag($data->{'canonical_tag'});

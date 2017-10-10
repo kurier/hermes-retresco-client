@@ -3,11 +3,17 @@
 namespace telekurier\RetrescoClient\Normalizer;
 
 use Joli\Jane\Runtime\Reference;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
-class LocationNormalizer extends SerializerAwareNormalizer implements DenormalizerInterface, NormalizerInterface
+class LocationNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use DenormalizerAwareTrait;
+    use NormalizerAwareTrait;
     public function supportsDenormalization($data, $type, $format = null)
     {
         if ($type !== 'telekurier\\RetrescoClient\\Model\\Location') {
@@ -24,6 +30,9 @@ class LocationNormalizer extends SerializerAwareNormalizer implements Denormaliz
     }
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        if (!is_object($data)) {
+            throw new InvalidArgumentException();
+        }
         $object = new \telekurier\RetrescoClient\Model\Location();
         if (property_exists($data, 'lat')) {
             $object->setLat($data->{'lat'});

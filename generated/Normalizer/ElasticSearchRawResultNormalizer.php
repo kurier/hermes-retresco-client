@@ -3,11 +3,17 @@
 namespace telekurier\RetrescoClient\Normalizer;
 
 use Joli\Jane\Runtime\Reference;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
-class ElasticSearchRawResultNormalizer extends SerializerAwareNormalizer implements DenormalizerInterface, NormalizerInterface
+class ElasticSearchRawResultNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use DenormalizerAwareTrait;
+    use NormalizerAwareTrait;
     public function supportsDenormalization($data, $type, $format = null)
     {
         if ($type !== 'telekurier\\RetrescoClient\\Model\\ElasticSearchRawResult') {
@@ -24,6 +30,9 @@ class ElasticSearchRawResultNormalizer extends SerializerAwareNormalizer impleme
     }
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        if (!is_object($data)) {
+            throw new InvalidArgumentException();
+        }
         $object = new \telekurier\RetrescoClient\Model\ElasticSearchRawResult();
         if (property_exists($data, 'took')) {
             $object->setTook($data->{'took'});
@@ -34,12 +43,12 @@ class ElasticSearchRawResultNormalizer extends SerializerAwareNormalizer impleme
         if (property_exists($data, 'aggregations')) {
             $values = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data->{'aggregations'} as $key => $value) {
-                $values[$key] = $this->serializer->deserialize($value, 'telekurier\\RetrescoClient\\Model\\ElasticSearchAggregation', 'raw', $context);
+                $values[$key] = $this->denormalizer->denormalize($value, 'telekurier\\RetrescoClient\\Model\\ElasticSearchAggregation', 'json', $context);
             }
             $object->setAggregations($values);
         }
         if (property_exists($data, 'hits')) {
-            $object->setHits($this->serializer->deserialize($data->{'hits'}, 'telekurier\\RetrescoClient\\Model\\ElasticSearchResult', 'raw', $context));
+            $object->setHits($this->denormalizer->denormalize($data->{'hits'}, 'telekurier\\RetrescoClient\\Model\\ElasticSearchResult', 'json', $context));
         }
         return $object;
     }
@@ -55,12 +64,12 @@ class ElasticSearchRawResultNormalizer extends SerializerAwareNormalizer impleme
         if (null !== $object->getAggregations()) {
             $values = new \stdClass();
             foreach ($object->getAggregations() as $key => $value) {
-                $values->{$key} = $this->serializer->serialize($value, 'raw', $context);
+                $values->{$key} = $this->normalizer->normalize($value, 'json', $context);
             }
             $data->{'aggregations'} = $values;
         }
         if (null !== $object->getHits()) {
-            $data->{'hits'} = $this->serializer->serialize($object->getHits(), 'raw', $context);
+            $data->{'hits'} = $this->normalizer->normalize($object->getHits(), 'json', $context);
         }
         return $data;
     }

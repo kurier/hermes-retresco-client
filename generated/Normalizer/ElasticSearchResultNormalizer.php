@@ -3,11 +3,17 @@
 namespace telekurier\RetrescoClient\Normalizer;
 
 use Joli\Jane\Runtime\Reference;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
-class ElasticSearchResultNormalizer extends SerializerAwareNormalizer implements DenormalizerInterface, NormalizerInterface
+class ElasticSearchResultNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use DenormalizerAwareTrait;
+    use NormalizerAwareTrait;
     public function supportsDenormalization($data, $type, $format = null)
     {
         if ($type !== 'telekurier\\RetrescoClient\\Model\\ElasticSearchResult') {
@@ -24,11 +30,14 @@ class ElasticSearchResultNormalizer extends SerializerAwareNormalizer implements
     }
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        if (!is_object($data)) {
+            throw new InvalidArgumentException();
+        }
         $object = new \telekurier\RetrescoClient\Model\ElasticSearchResult();
         if (property_exists($data, 'hits')) {
             $values = array();
             foreach ($data->{'hits'} as $value) {
-                $values[] = $this->serializer->deserialize($value, 'telekurier\\RetrescoClient\\Model\\RetrescoDocument', 'raw', $context);
+                $values[] = $this->denormalizer->denormalize($value, 'telekurier\\RetrescoClient\\Model\\RetrescoDocument', 'json', $context);
             }
             $object->setHits($values);
         }
@@ -46,7 +55,7 @@ class ElasticSearchResultNormalizer extends SerializerAwareNormalizer implements
         if (null !== $object->getHits()) {
             $values = array();
             foreach ($object->getHits() as $value) {
-                $values[] = $this->serializer->serialize($value, 'raw', $context);
+                $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
             $data->{'hits'} = $values;
         }

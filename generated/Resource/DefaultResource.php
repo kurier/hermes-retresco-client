@@ -13,7 +13,7 @@ class DefaultResource extends Resource
      * @param array  $parameters List of parameters
      * @param string $fetch      Fetch mode (object or response)
      *
-     * @return \Psr\Http\Message\ResponseInterface|\telekurier\RetrescoClient\Model\RetrescoClientError
+     * @return \Psr\Http\Message\ResponseInterface|null|\telekurier\RetrescoClient\Model\RetrescoClientError
      */
     public function deleteApiDocumentByDocumentId($documentId, $parameters = array(), $fetch = self::FETCH_OBJECT)
     {
@@ -30,12 +30,13 @@ class DefaultResource extends Resource
         }
         $response = $promise->wait();
         if (self::FETCH_OBJECT == $fetch) {
+            if ('200' == $response->getStatusCode()) {
+                return null;
+            }
             if ('500' == $response->getStatusCode()) {
                 return $this->serializer->deserialize((string) $response->getBody(), 'telekurier\\RetrescoClient\\Model\\RetrescoClientError', 'json');
             }
-            if ('default' == $response->getStatusCode()) {
-                return $this->serializer->deserialize((string) $response->getBody(), 'telekurier\\RetrescoClient\\Model\\RetrescoClientError', 'json');
-            }
+            return $this->serializer->deserialize((string) $response->getBody(), 'telekurier\\RetrescoClient\\Model\\RetrescoClientError', 'json');
         }
         return $response;
     }
@@ -75,9 +76,7 @@ class DefaultResource extends Resource
             if ('500' == $response->getStatusCode()) {
                 return $this->serializer->deserialize((string) $response->getBody(), 'telekurier\\RetrescoClient\\Model\\RetrescoClientError', 'json');
             }
-            if ('default' == $response->getStatusCode()) {
-                return $this->serializer->deserialize((string) $response->getBody(), 'telekurier\\RetrescoClient\\Model\\RetrescoClientError', 'json');
-            }
+            return $this->serializer->deserialize((string) $response->getBody(), 'telekurier\\RetrescoClient\\Model\\RetrescoClientError', 'json');
         }
         return $response;
     }
@@ -127,9 +126,7 @@ class DefaultResource extends Resource
             if ('500' == $response->getStatusCode()) {
                 return $this->serializer->deserialize((string) $response->getBody(), 'telekurier\\RetrescoClient\\Model\\RetrescoClientError', 'json');
             }
-            if ('default' == $response->getStatusCode()) {
-                return $this->serializer->deserialize((string) $response->getBody(), 'telekurier\\RetrescoClient\\Model\\RetrescoClientError', 'json');
-            }
+            return $this->serializer->deserialize((string) $response->getBody(), 'telekurier\\RetrescoClient\\Model\\RetrescoClientError', 'json');
         }
         return $response;
     }

@@ -8,7 +8,7 @@
 namespace telekurier\Retresco\Tests;
 
 use FR3D\SwaggerAssertions\PhpUnit\Psr7AssertsTrait;
-use Joli\Jane\Encoder\RawEncoder;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
 use telekurier\RetrescoClient\Model\Location;
@@ -24,7 +24,7 @@ use telekurier\RetrescoClient\RetrescoClient;
  *
  * @covers RetrescoClient
  */
-class RetrescoNormalizerTest extends \PHPUnit_Framework_TestCase {
+class RetrescoNormalizerTest extends TestCase {
 
   use Psr7AssertsTrait;
 
@@ -42,28 +42,6 @@ class RetrescoNormalizerTest extends \PHPUnit_Framework_TestCase {
    * @var RetrescoDocument
    */
   protected $document;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-
-    $retrescoDocumentNormalizer = new RetrescoDocumentNormalizer();
-
-    $encoders = [new JsonEncoder(), new RawEncoder()];
-    $normalizers = [
-      $retrescoDocumentNormalizer,
-      new PinNormalizer(),
-      new LocationNormalizer(),
-    ];
-
-    $this->serializer = new Serializer($normalizers, $encoders);
-
-    $this->normalizer = $retrescoDocumentNormalizer;
-
-    $this->document = new RetrescoDocument();
-    parent::setUp();
-  }
 
   /**
    * Tests normalization of ID field
@@ -102,5 +80,27 @@ class RetrescoNormalizerTest extends \PHPUnit_Framework_TestCase {
 
     $obj = $this->normalizer->normalize($this->document);
     $this->assertEquals($normalizedPin, $obj->pin);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
+
+    $retrescoDocumentNormalizer = new RetrescoDocumentNormalizer();
+
+    $encoders = [new JsonEncoder()];
+    $normalizers = [
+      $retrescoDocumentNormalizer,
+      new PinNormalizer(),
+      new LocationNormalizer(),
+    ];
+
+    $this->serializer = new Serializer($normalizers, $encoders);
+
+    $this->normalizer = $retrescoDocumentNormalizer;
+
+    $this->document = new RetrescoDocument();
+    parent::setUp();
   }
 }

@@ -3,11 +3,17 @@
 namespace telekurier\RetrescoClient\Normalizer;
 
 use Joli\Jane\Runtime\Reference;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
-class RetrescoTopicPagesNormalizer extends SerializerAwareNormalizer implements DenormalizerInterface, NormalizerInterface
+class RetrescoTopicPagesNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use DenormalizerAwareTrait;
+    use NormalizerAwareTrait;
     public function supportsDenormalization($data, $type, $format = null)
     {
         if ($type !== 'telekurier\\RetrescoClient\\Model\\RetrescoTopicPages') {
@@ -24,11 +30,14 @@ class RetrescoTopicPagesNormalizer extends SerializerAwareNormalizer implements 
     }
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        if (!is_object($data)) {
+            throw new InvalidArgumentException();
+        }
         $object = new \telekurier\RetrescoClient\Model\RetrescoTopicPages();
         if (property_exists($data, 'docs')) {
             $values = array();
             foreach ($data->{'docs'} as $value) {
-                $values[] = $this->serializer->deserialize($value, 'telekurier\\RetrescoClient\\Model\\RetrescoTopicPage', 'raw', $context);
+                $values[] = $this->denormalizer->denormalize($value, 'telekurier\\RetrescoClient\\Model\\RetrescoTopicPage', 'json', $context);
             }
             $object->setDocs($values);
         }
@@ -43,7 +52,7 @@ class RetrescoTopicPagesNormalizer extends SerializerAwareNormalizer implements 
         if (null !== $object->getDocs()) {
             $values = array();
             foreach ($object->getDocs() as $value) {
-                $values[] = $this->serializer->serialize($value, 'raw', $context);
+                $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
             $data->{'docs'} = $values;
         }

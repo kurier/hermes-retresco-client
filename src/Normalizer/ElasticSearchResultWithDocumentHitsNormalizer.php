@@ -3,19 +3,26 @@
 namespace telekurier\RetrescoClient\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerAwareTrait;
 use telekurier\RetrescoClient\Encoder\FieldDocumentEncoder;
 
-class ElasticSearchResultWithDocumentHitsNormalizer extends SerializerAwareNormalizer implements DenormalizerInterface {
+class ElasticSearchResultWithDocumentHitsNormalizer implements DenormalizerInterface, SerializerAwareInterface {
+
+  use SerializerAwareTrait;
 
   /**
    * {@inheritdoc}
    */
-  public function denormalize($data, $class, $format = NULL, array $context = array()) {
+  public function denormalize($data,
+                              $class,
+                              $format = NULL,
+                              array $context = []) {
     $hits = $data->hits ?? [];
     unset($data->hits);
 
     // denormalize ElasticSearchResult without hits using generated ElasticSearchResultNormalizer
+
     /** @var \telekurier\RetrescoClient\Model\ElasticSearchResult $object */
     $object = $this->serializer->deserialize($data, $class, 'raw', $context);
 
