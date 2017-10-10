@@ -8,7 +8,7 @@
         "guzzlehttp/guzzle": "^6.3.0"
     },
     "require-dev": {
-        "fr3d/swagger-assertions": "^0.8.2",
+        "fr3d/swagger-assertions": "^0.8.3",
         "phpunit/phpunit": "^6.2.3"
     },
     "autoload": {
@@ -20,6 +20,7 @@
         }
     },
     "scripts": {
+        "outdated-direct": "composer show -o -D",
         "generate": [
             "rm -rf generated/* && ./vendor/bin/jane-openapi generate swagger.json telekurier\\\\RetrescoClient generated"
         ],

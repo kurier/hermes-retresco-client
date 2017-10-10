@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa2ead702f482a69b2759ba38da82fe3",
+    "content-hash": "10645984f936b86942c4ed20734a57a4",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -1773,16 +1773,16 @@
         },
         {
             "name": "fr3d/swagger-assertions",
-            "version": "v0.8.2",
+            "version": "v0.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Maks3w/SwaggerAssertions.git",
-                "reference": "a41ec65c1bef0a793e37ad260de01919a3b9b444"
+                "reference": "4cf58ed5a7eafbc968ce2b3426d05b6753c36e6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Maks3w/SwaggerAssertions/zipball/a41ec65c1bef0a793e37ad260de01919a3b9b444",
-                "reference": "a41ec65c1bef0a793e37ad260de01919a3b9b444",
+                "url": "https://api.github.com/repos/Maks3w/SwaggerAssertions/zipball/4cf58ed5a7eafbc968ce2b3426d05b6753c36e6b",
+                "reference": "4cf58ed5a7eafbc968ce2b3426d05b6753c36e6b",
                 "shasum": ""
             },
             "require": {
@@ -1821,7 +1821,7 @@
                 "test",
                 "testing"
             ],
-            "time": "2017-06-13T07:15:04+00:00"
+            "time": "2017-09-03T04:34:55+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
