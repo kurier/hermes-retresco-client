@@ -11,35 +11,51 @@ class FieldDocumentEncoder implements DecoderInterface {
   /**
    * {@inheritdoc}
    */
-  public function decode($data, $format, array $context = array()) {
+  public function decode($data, $format, array $context = []) {
     $object = new \stdClass();
 
-    if (property_exists($data, 'fields')) {
+    if (property_exists($data, '_source')) {
       /** @noinspection PhpUndefinedFieldInspection */
-      foreach ($data->fields as $fqField => $value) {
-        if (isset($value)) {
-          $localfields = explode('.', $fqField);
-          $property = array_pop($localfields);
-          $o = &$object;
+      $this->decodeWithNestedProperties($data->_source, $object);
+    }
+    elseif (property_exists($data, 'fields')) {
+      /** @noinspection PhpUndefinedFieldInspection */
+      $source = $data->fields;
+      $this->decodeWithNestedProperties($source, $object);
+    }
 
-          while ($localfield = array_shift($localfields)) {
-            if (!property_exists($o, $localfield)) {
-              $o->{$localfield} = new \stdClass();
-            }
-            $o = &$o->{$localfield};
+    return $object;
+  }
+
+  protected function decodeWithNestedProperties($source, &$object) {
+    foreach ($source as $fqField => $value) {
+      if (isset($value)) {
+        $localfields = explode('.', $fqField);
+        $property = array_pop($localfields);
+        $o = &$object;
+
+        while ($localfield = array_shift($localfields)) {
+          if (!property_exists($o, $localfield)) {
+            $o->{$localfield} = new \stdClass();
           }
-          if (substr($property, 0, 4) == 'rtr_') {
+          $o = &$o->{$localfield};
+        }
+        if (substr($property, 0, 4) == 'rtr_') {
+          $o->{$property} = $value;
+        }
+        else {
+          if (count($value) > 1) {
             $o->{$property} = $value;
-          } else if (count($value) > 1) {
-            $o->{$property} = $value;
-          } else {
+          }
+          elseif (is_array($value)) {
             $o->{$property} = array_shift($value);
+          }
+          else {
+            $o->{$property} = $value;
           }
         }
       }
     }
-
-    return $object;
   }
 
   /**
