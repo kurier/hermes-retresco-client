@@ -1,14 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \telekurier\Retresco\Tests\RetrescoApiIntegrationTest.
- */
+declare(strict_types=1);
 
 namespace telekurier\Retresco\Tests;
 
-use FR3D\SwaggerAssertions\PhpUnit\Psr7AssertsTrait;
-use FR3D\SwaggerAssertions\SchemaManager;
 use GuzzleHttp\Exception\ClientException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
@@ -21,13 +16,6 @@ use telekurier\RetrescoClient\RetrescoClient;
  * @covers RetrescoClient
  */
 abstract class RetrescoClientTest extends TestCase {
-
-  use Psr7AssertsTrait;
-
-  /**
-   * @var SchemaManager
-   */
-  protected static $schemaManager;
 
   /**
    * The configured Retresco client.
@@ -49,16 +37,11 @@ abstract class RetrescoClientTest extends TestCase {
    * {@inheritdoc}
    */
   public static function setUpBeforeClass() {
-    $swagger_file = dirname(__FILE__) . '/../swagger.json';
-    $definitionUri = 'file://' . $swagger_file;
-    static::$schemaManager = SchemaManager::fromUri($definitionUri);
-
     $config = [
       'base_uri' => $_ENV['RETRESCO_BASE_URI'],
       'username' => $_ENV['RETRESCO_USERNAME'],
       'password' => $_ENV['RETRESCO_PASSWORD'],
     ];
-
     self::$retrescoClient = RetrescoClient::create($config);
   }
 
@@ -79,7 +62,7 @@ abstract class RetrescoClientTest extends TestCase {
    */
   protected function createRetrescoDocumentFromFile($file) {
     if (is_readable($file)) {
-      $content = Yaml::parse(file_get_contents($file), FALSE, TRUE, TRUE);
+      $content = Yaml::parseFile($file, Yaml::PARSE_OBJECT_FOR_MAP);
       $serializer = self::$retrescoClient->getSerializer();
       /** @noinspection PhpIncompatibleReturnTypeInspection */
       return $serializer->denormalize($content, RetrescoDocument::class);

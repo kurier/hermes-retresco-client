@@ -1,13 +1,11 @@
 <?php
 
-/**
- * @file
- * Contains \telekurier\Retresco\Tests\RetrescoApiIntegrationTest.
- */
+declare(strict_types=1);
 
 namespace telekurier\Retresco\Tests;
 
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use telekurier\RetrescoClient\Model\RetrescoTopicPages;
 use telekurier\RetrescoClient\RetrescoClient;
 
@@ -69,12 +67,12 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
     try {
       $result = self::$retrescoClient->poolSearchResult($query);
     }
-    catch (ClientException $e) {
+    catch (GuzzleException $e) {
       $this->fail($e->getMessage());
     }
 
     $hits = $result->getHits();
-    $this->assertEquals(count($hits), $size);
+    self::assertEquals(count($hits), $size);
 
     foreach ($hits as $hit) {
       $this->assertNotEmpty($hit->getDocId());
@@ -96,12 +94,12 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
     try {
       $result = self::$retrescoClient->poolSearchResult($query);
     }
-    catch (ClientException $e) {
+    catch (GuzzleException $e) {
       $this->fail($e->getMessage());
     }
 
     $hits = $result->getHits();
-    $this->assertEquals(count($hits), $size);
+    self::assertEquals(count($hits), $size);
 
     foreach ($hits as $hit) {
       $this->assertNotEmpty($hit->getDocId());
@@ -117,7 +115,7 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
           'filter' => [
             [
               'term' => [
-                'doc_type' => 'twitter',
+                'doc_type' => 'article',
               ],
             ],
           ],
@@ -138,12 +136,14 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
       /** @var \telekurier\RetrescoClient\Model\ElasticSearchAggregation $agg */
       $agg = reset($aggregations);
       $actualAggName = key($aggregations);
-      $this->assertEquals(self::SINCE_ID_AGG, $actualAggName);
+      self::assertEquals(self::SINCE_ID_AGG, $actualAggName);
       $max = $agg->getValue();
       $this->assertNotEmpty($max);
     }
     catch (ClientException $e) {
       $this->fail($e->getMessage());
+    }
+    catch (GuzzleException $e) {
     }
   }
 
@@ -179,28 +179,43 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
       /** @var \telekurier\RetrescoClient\Model\ElasticSearchAggregation $agg */
       $agg = reset($aggregations);
       $actualAggName = key($aggregations);
-      $this->assertEquals(self::SINCE_ID_AGG, $actualAggName);
+      self::assertEquals(self::SINCE_ID_AGG, $actualAggName);
       $docCountIsInt = is_int($agg->getDocCount());
       $this->assertTrue($docCountIsInt);
     }
-    catch (ClientException $e) {
+    catch (GuzzleException $e) {
       $this->fail($e->getMessage());
     }
   }
 
   public function testGetTopicPage() {
-    $topicPage = self::$retrescoClient->getTopicPage('ivanka-trump');
-    self::assertNotEmpty($topicPage);
+    try {
+      $topicPage = self::$retrescoClient->getTopicPage('ivanka-trump');
+      self::assertNotEmpty($topicPage);
+    }
+    catch (GuzzleException $e) {
+      $this->fail($e->getMessage());
+    }
   }
 
   public function testSearchTopicPage() {
-    $topicPages = self::$retrescoClient->searchTopicPages('*');
-    self::assertTrue($topicPages instanceof RetrescoTopicPages);
+    try {
+      $topicPages = self::$retrescoClient->searchTopicPages('*');
+      self::assertTrue($topicPages instanceof RetrescoTopicPages);
+    }
+    catch (GuzzleException $e) {
+      $this->fail($e->getMessage());
+    }
   }
 
   public function testRelatedTopicPage() {
-    $topicPages = self::$retrescoClient->relatedTopicPages('ivanka-trump');
-    self::assertNotEmpty($topicPages);
+    try {
+      $topicPages = self::$retrescoClient->relatedTopicPages('ivanka-trump');
+      self::assertNotEmpty($topicPages);
+    }
+    catch (GuzzleException $e) {
+      $this->fail($e->getMessage());
+    }
   }
 
 }

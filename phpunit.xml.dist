@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/autoload.php"
-         colors="true"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd">
-  <!-- Copy file to phpunit.xml and set password below: -->
-  <php>
-    <env name="RETRESCO_BASE_URI" value=""/>
-    <env name="RETRESCO_PASSWORD" value=""/>
-    <env name="RETRESCO_USERNAME" value=""/>
-  </php>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true">
+    <!-- Copy file to phpunit.xml and set password below: -->
+    <php>
+        <env name="RETRESCO_BASE_URI" value=""/>
+        <env name="RETRESCO_PASSWORD" value=""/>
+        <env name="RETRESCO_USERNAME" value=""/>
+    </php>
     <testsuites>
         <testsuite name="tests">
             <directory suffix=".php">tests/</directory>

@@ -1,9 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains \telekurier\Retresco\Tests\RetrescoApiIntegrationTest.
- */
+declare(strict_types=1);
 
 namespace telekurier\Retresco\Tests;
 
@@ -45,12 +42,12 @@ class LocationNormalizerTest extends TestCase {
   public function testNormalizeLat() {
     $this->location->setLat(self::LAT);
     $obj = $this->normalizer->normalize($this->location);
-    $this->assertEquals(self::LAT, $obj->lat);
+    self::assertEquals(self::LAT, $obj->lat);
   }
 
   public function testNormalizeLon() {
     $this->location->setLon(self::LON);
     $obj = $this->normalizer->normalize($this->location);
-    $this->assertEquals(self::LON, $obj->lon);
+    self::assertEquals(self::LON, $obj->lon);
   }
 }

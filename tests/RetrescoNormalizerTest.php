@@ -1,9 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains \telekurier\Retresco\Tests\RetrescoApiIntegrationTest.
- */
+declare(strict_types=1);
 
 namespace telekurier\Retresco\Tests;
 
@@ -44,9 +41,9 @@ class RetrescoNormalizerTest extends TestCase {
    * Tests normalization of ID field
    */
   public function testNormalizeId() {
-    $this->document->setDocId(123);
+    $this->document->setDocId('123');
     $obj = $this->normalizer->normalize($this->document);
-    $this->assertEquals(123, $obj->doc_id);
+    self::assertEquals(123, $obj->doc_id);
   }
 
   /**
@@ -56,7 +53,7 @@ class RetrescoNormalizerTest extends TestCase {
     $payload = ['foo' => 'bar'];
     $this->document->setPayload($payload);
     $obj = $this->normalizer->normalize($this->document);
-    $this->assertEquals($payload, $obj->payload);
+    self::assertEquals($payload, $obj->payload);
   }
 
   /**
@@ -76,7 +73,7 @@ class RetrescoNormalizerTest extends TestCase {
     $normalizedPin->location->lon = 1;
 
     $obj = $this->normalizer->normalize($this->document);
-    $this->assertEquals($normalizedPin, $obj->pin);
+    self::assertEquals($normalizedPin, $obj->pin);
   }
 
   /**
