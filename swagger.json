@@ -553,7 +553,7 @@
                     }
                 },
                 "max_score": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "total": {
                     "type": "integer"

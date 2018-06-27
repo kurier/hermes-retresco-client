@@ -17,7 +17,7 @@ class ElasticSearchResult
      */
     protected $hits;
     /**
-     * @var int
+     * @var float
      */
     protected $maxScore;
     /**
@@ -46,19 +46,19 @@ class ElasticSearchResult
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getMaxScore(): ?int
+    public function getMaxScore(): ?float
     {
         return $this->maxScore;
     }
 
     /**
-     * @param int $maxScore
+     * @param float $maxScore
      *
      * @return self
      */
-    public function setMaxScore(?int $maxScore): self
+    public function setMaxScore(?float $maxScore): self
     {
         $this->maxScore = $maxScore;
 
