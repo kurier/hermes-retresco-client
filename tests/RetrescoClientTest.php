@@ -12,8 +12,6 @@ use telekurier\RetrescoClient\RetrescoClient;
 
 /**
  * Tests for the Retresco client.
- *
- * @covers RetrescoClient
  */
 abstract class RetrescoClientTest extends TestCase {
 

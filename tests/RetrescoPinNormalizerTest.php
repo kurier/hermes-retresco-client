@@ -11,12 +11,9 @@ use telekurier\RetrescoClient\Model\Location;
 use telekurier\RetrescoClient\Model\Pin;
 use telekurier\RetrescoClient\Normalizer\LocationNormalizer;
 use telekurier\RetrescoClient\Normalizer\PinNormalizer;
-use telekurier\RetrescoClient\RetrescoClient;
 
 /**
  * Tests for the Retresco client.
- *
- * @covers RetrescoClient
  */
 class RetrescoPinNormalizerTest extends TestCase {
 

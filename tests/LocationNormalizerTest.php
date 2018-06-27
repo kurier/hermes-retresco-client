@@ -7,12 +7,9 @@ namespace telekurier\Retresco\Tests;
 use PHPUnit\Framework\TestCase;
 use telekurier\RetrescoClient\Model\Location;
 use telekurier\RetrescoClient\Normalizer\LocationNormalizer;
-use telekurier\RetrescoClient\RetrescoClient;
 
 /**
  * Tests for the Retresco client.
- *
- * @covers RetrescoClient
  */
 class LocationNormalizerTest extends TestCase {
 

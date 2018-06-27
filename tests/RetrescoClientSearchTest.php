@@ -7,12 +7,9 @@ namespace telekurier\Retresco\Tests;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use telekurier\RetrescoClient\Model\RetrescoTopicPages;
-use telekurier\RetrescoClient\RetrescoClient;
 
 /**
  * Tests for the Retresco client.
- *
- * @covers RetrescoClient
  */
 class RetrescoClientSearchTest extends RetrescoClientTest {
 
