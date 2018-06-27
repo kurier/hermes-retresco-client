@@ -2,7 +2,8 @@
     "name": "telekurier/hermes-retresco-client",
     "require": {
         "php": ">=7.1",
-        "jane-php/open-api-runtime": "^4.0"
+        "jane-php/open-api-runtime": "^4.0",
+        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
         "jane-php/open-api": "^4.0",

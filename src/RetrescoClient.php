@@ -1,11 +1,8 @@
 <?php
 
-namespace telekurier\RetrescoClient;
+declare(strict_types=1);
 
-/**
- * @file
- * Contains \telekurier\RetrescoClient\RetrescoClient
- */
+namespace telekurier\RetrescoClient;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ServerException;
@@ -65,8 +62,6 @@ class RetrescoClient extends Client {
    * @var array
    * An array of configuration settings.
    *
-   * @todo Convert to a class.
-   *
    * The following keys are required,
    *   while all Guzzle configuration options are supported:
    *   - base_uri: Base URL of the the Retresco rest service.
@@ -93,8 +88,6 @@ class RetrescoClient extends Client {
   public function __construct(array $config) {
     $this->config = $config + self::DEFAULT_PATHS;
     $default_options = [
-      // 'curl' => [CURLOPT_SSLVERSION => CURL_SSLVERSION_SSLv3],
-      // 'verify' => FALSE,
       'auth' => [
         $this->config['username'],
         $this->config['password'],
@@ -132,6 +125,9 @@ class RetrescoClient extends Client {
    *
    * @return \telekurier\RetrescoClient\Model\RetrescoEntityLinks
    *   Entity links.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   *
    */
   public function getEntityLinksMap() {
     $header = [
@@ -195,6 +191,7 @@ class RetrescoClient extends Client {
    *   Enriched document.
    *
    * @internal param bool $index Index document.
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function enrichDocument(RetrescoDocument $document, $inTextLinks) {
     $header = [
@@ -228,7 +225,7 @@ class RetrescoClient extends Client {
    *
    * @return mixed|\Psr\Http\Message\ResponseInterface
    *
-   * @todo return description.
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function putDocument(RetrescoDocument $document) {
     $body = $this->getSerializer()->serialize($document, 'json');
@@ -349,6 +346,8 @@ class RetrescoClient extends Client {
    *
    * @return \telekurier\RetrescoClient\Model\RetrescoTopicPage
    *   Topic page
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function getTopicPage($topicPageId) {
     $header = [
@@ -379,6 +378,8 @@ class RetrescoClient extends Client {
    *
    * @return \telekurier\RetrescoClient\Model\RetrescoTopicPages
    *   Topic pages
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function searchTopicPages(string $term) {
     $header = [
@@ -409,6 +410,8 @@ class RetrescoClient extends Client {
    *
    * @return \telekurier\RetrescoClient\Model\RetrescoTopicPages
    *   Topic pages
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function relatedTopicPages(string $topicPageId) {
     $header = [
@@ -439,6 +442,8 @@ class RetrescoClient extends Client {
    *
    * @return \telekurier\RetrescoClient\Model\RetrescoTopicPages
    *   RetrescoTopicPages object.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function getTopicPages($searchText) {
     $header = [
@@ -466,6 +471,8 @@ class RetrescoClient extends Client {
    *
    * @return \telekurier\RetrescoClient\Model\ElasticSearchResult
    *   Search result.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function poolSearchResult($query): ElasticSearchResult {
     return $this->poolSearch($query)->getHits();
@@ -477,6 +484,8 @@ class RetrescoClient extends Client {
    *
    * @return \telekurier\RetrescoClient\Model\ElasticSearchRawResult
    *   Raw result.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   protected function poolSearch($query): ElasticSearchRawResult {
     $header = [
@@ -506,6 +515,8 @@ class RetrescoClient extends Client {
    *
    * @return \telekurier\RetrescoClient\Model\ElasticSearchAggregation[]
    *   Aggregations.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function poolSearchAggregations($query): array {
     /** @var \telekurier\RetrescoClient\Model\ElasticSearchRawResult $rawResult */
