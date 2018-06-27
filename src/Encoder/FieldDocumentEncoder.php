@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace telekurier\RetrescoClient\Encoder;
 
 use Symfony\Component\Serializer\Encoder\DecoderInterface;

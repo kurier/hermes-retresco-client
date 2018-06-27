@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace telekurier\RetrescoClient\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
