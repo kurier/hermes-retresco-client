@@ -1,4 +1,3 @@
+.php_cs.cache
 vendor
-bower_components
-swagger-ui
 phpunit.xml
