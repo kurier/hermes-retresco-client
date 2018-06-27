@@ -7,7 +7,6 @@
 
 namespace telekurier\Retresco\Tests;
 
-use FR3D\SwaggerAssertions\PhpUnit\Psr7AssertsTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
@@ -25,8 +24,6 @@ use telekurier\RetrescoClient\RetrescoClient;
  * @covers RetrescoClient
  */
 class RetrescoNormalizerTest extends TestCase {
-
-  use Psr7AssertsTrait;
 
   /**
    * @var RetrescoDocumentNormalizer

@@ -7,7 +7,6 @@
 
 namespace telekurier\Retresco\Tests;
 
-use FR3D\SwaggerAssertions\PhpUnit\Psr7AssertsTrait;
 use PHPUnit\Framework\TestCase;
 use telekurier\RetrescoClient\Model\Location;
 use telekurier\RetrescoClient\Normalizer\LocationNormalizer;
@@ -23,8 +22,6 @@ class LocationNormalizerTest extends TestCase {
   const LAT = 12.318079;
 
   const LON = -69.150537;
-
-  use Psr7AssertsTrait;
 
   /**
    * @var LocationNormalizer
