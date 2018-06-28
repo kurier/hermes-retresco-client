@@ -200,7 +200,7 @@
                     "type": "string"
                 },
                 "published": {
-                    "type": "string"
+                    "type": "any"
                 },
                 "lifecycle": {
                     "type": "string"

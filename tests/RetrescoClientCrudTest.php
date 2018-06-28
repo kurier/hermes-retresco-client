@@ -57,6 +57,7 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
     }
 
     $this->assertInstanceOf(RetrescoDocument::class, $document, 'Unexpected type.');
+    self::assertTrue(is_bool($document->getPublished()));
     self::assertEquals(
       $this->testDocument->getDocId(), $document->getDocId(),
       "Document id from fetched document should equal the id of the put document."

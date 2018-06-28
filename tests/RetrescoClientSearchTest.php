@@ -215,4 +215,30 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
     }
   }
 
+  public function testSearchResultPublishedIsString() {
+    $size = 1;
+
+    $query = [
+      'fields' => [
+        'published',
+      ],
+      'size' => $size,
+    ];
+
+    $result = NULL;
+    try {
+      $result = self::$retrescoClient->poolSearchResult($query);
+      $count = count($result->getHits());
+      self::assertEquals($size, $count);
+      /** @var \telekurier\RetrescoClient\Model\RetrescoDocument $doc */
+      $doc = reset($result->getHits());
+      $published = $doc->getPublished();
+      self::assertTrue(is_string($published));
+    }
+    catch (GuzzleException $e) {
+      $this->fail($e->getMessage());
+    }
+  }
+
+
 }

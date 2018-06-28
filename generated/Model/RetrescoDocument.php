@@ -25,7 +25,7 @@ class RetrescoDocument
      */
     protected $url;
     /**
-     * @var string
+     * @var mixed
      */
     protected $published;
     /**
@@ -230,19 +230,19 @@ class RetrescoDocument
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getPublished(): ?string
+    public function getPublished()
     {
         return $this->published;
     }
 
     /**
-     * @param string $published
+     * @param mixed $published
      *
      * @return self
      */
-    public function setPublished(?string $published): self
+    public function setPublished($published): self
     {
         $this->published = $published;
 
