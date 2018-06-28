@@ -3,7 +3,8 @@
     "require": {
         "php": ">=7.1",
         "jane-php/open-api-runtime": "^4.0",
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "symfony/property-access": "^4.1"
     },
     "require-dev": {
         "jane-php/open-api": "^4.0",
