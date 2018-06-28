@@ -25,7 +25,7 @@ class RetrescoDocument
      */
     protected $url;
     /**
-     * @var bool
+     * @var string
      */
     protected $published;
     /**
@@ -230,19 +230,19 @@ class RetrescoDocument
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function getPublished(): ?bool
+    public function getPublished(): ?string
     {
         return $this->published;
     }
 
     /**
-     * @param bool $published
+     * @param string $published
      *
      * @return self
      */
-    public function setPublished(?bool $published): self
+    public function setPublished(?string $published): self
     {
         $this->published = $published;
 

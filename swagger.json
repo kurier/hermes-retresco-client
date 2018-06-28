@@ -200,7 +200,7 @@
                     "type": "string"
                 },
                 "published": {
-                    "type": "boolean"
+                    "type": "string"
                 },
                 "lifecycle": {
                     "type": "string"
