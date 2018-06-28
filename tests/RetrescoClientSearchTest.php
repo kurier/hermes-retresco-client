@@ -6,7 +6,7 @@ namespace telekurier\Retresco\Tests;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
-use telekurier\RetrescoClient\Model\RelatedDocuments;
+use telekurier\RetrescoClient\Model\RetrescoDocuments;
 use telekurier\RetrescoClient\Model\RetrescoTopicPages;
 
 /**
@@ -205,16 +205,16 @@ class RetrescoClientSearchTest extends RetrescoClientTest {
     }
     $doc_types = 'article,article';
     $doc_id = $this->testDocument->getDocId();
-    /** @var \telekurier\RetrescoClient\Model\RelatedDocuments $relateds */
+    /** @var \telekurier\RetrescoClient\Model\RetrescoDocuments $relateds */
     $relateds = self::$retrescoClient->getRelatedDocuments($doc_id, $doc_types);
 
-    $this->assertTrue($relateds instanceof RelatedDocuments);
+    $this->assertTrue($relateds instanceof RetrescoDocuments);
   }
 
   public function testGetTopicPageDocuments() {
     try {
       $docs = self::$retrescoClient->getTopicPageDocuments('ivanka-trump', 1, 1, 'date');
-      $this->assertTrue($docs instanceof RelatedDocuments);
+      $this->assertTrue($docs instanceof RetrescoDocuments);
       self::assertNotEmpty($docs);
     }
     catch (GuzzleException $e) {

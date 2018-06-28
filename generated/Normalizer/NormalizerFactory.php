@@ -19,7 +19,7 @@ class NormalizerFactory
         $normalizers[] = new LocationNormalizer();
         $normalizers[] = new PinNormalizer();
         $normalizers[] = new RetrescoDocumentNormalizer();
-        $normalizers[] = new RelatedDocumentsNormalizer();
+        $normalizers[] = new RetrescoDocumentsNormalizer();
         $normalizers[] = new RetrescoEntityLinksNormalizer();
         $normalizers[] = new RetrescoSearchQueryNormalizer();
         $normalizers[] = new RetrescoClientErrorNormalizer();

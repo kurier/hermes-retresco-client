@@ -343,7 +343,7 @@
                 "date"
             ]
         },
-        "RelatedDocuments": {
+        "RetrescoDocuments": {
             "type": "object",
             "properties": {
                 "docs": {

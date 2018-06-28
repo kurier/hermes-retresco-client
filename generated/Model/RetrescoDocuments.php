@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace telekurier\RetrescoClient\Model;
 
-class RelatedDocuments
+class RetrescoDocuments
 {
     /**
      * @var RetrescoDocument[]

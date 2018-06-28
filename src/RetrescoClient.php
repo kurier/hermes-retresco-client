@@ -15,7 +15,7 @@ use telekurier\RetrescoClient\Encoder\FieldDocumentEncoder;
 use telekurier\RetrescoClient\Encoder\RawEncoder;
 use telekurier\RetrescoClient\Model\ElasticSearchRawResult;
 use telekurier\RetrescoClient\Model\ElasticSearchResult;
-use telekurier\RetrescoClient\Model\RelatedDocuments;
+use telekurier\RetrescoClient\Model\RetrescoDocuments;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
 use telekurier\RetrescoClient\Model\RetrescoEntityLinks;
 use telekurier\RetrescoClient\Model\RetrescoTopicPage;
@@ -311,8 +311,8 @@ class RetrescoClient extends Client {
    *   See
    *    https://kurier-stage01.rtrsupport.de/ui/manual-docs/api_relateds.html.
    *
-   * @return \telekurier\RetrescoClient\Model\RelatedDocuments
-   *   RelatedDocuments object.
+   * @return \telekurier\RetrescoClient\Model\RetrescoDocuments
+   *   RetrescoDocuments object.
    */
   public function getRelatedDocuments($id, $doc_types, $options = NULL) {
     $query_data = array_merge($options ?: [], ['doc_types' => $doc_types]);
@@ -324,15 +324,15 @@ class RetrescoClient extends Client {
       $response = $this->get($url);
     }
     catch (ServerException $e) {
-      return new RelatedDocuments();
+      return new RetrescoDocuments();
     }
     $data = $response->getBody()->getContents();
 
     $context = ['json_decode_associative' => FALSE];
 
-    /** @var \telekurier\RetrescoClient\Model\RelatedDocuments $document */
+    /** @var \telekurier\RetrescoClient\Model\RetrescoDocuments $document */
     $documents = $this->getSerializer()->deserialize(
-      $data, RelatedDocuments::class, 'json', $context
+      $data, RetrescoDocuments::class, 'json', $context
     );
 
     return $documents;
@@ -384,7 +384,7 @@ class RetrescoClient extends Client {
    * @param string $sort_by
    *   "date" or "relevance"
    *
-   * @return \telekurier\RetrescoClient\Model\RelatedDocuments
+   * @return \telekurier\RetrescoClient\Model\RetrescoDocuments
    *   Documents
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
@@ -392,7 +392,7 @@ class RetrescoClient extends Client {
   public function getTopicPageDocuments(string $topicPageId,
                                         int $rows,
                                         int $page,
-                                        string $sort_by): RelatedDocuments {
+                                        string $sort_by): RetrescoDocuments {
     $header = [
       'Content-Type' => 'application/json',
     ];
@@ -405,9 +405,9 @@ class RetrescoClient extends Client {
     $context = ['json_decode_associative' => FALSE];
     $serializer = $this->getSerializer();
 
-    /** @var \telekurier\RetrescoClient\Model\RelatedDocuments $document */
+    /** @var \telekurier\RetrescoClient\Model\RetrescoDocuments $document */
     $documents = $this->getSerializer()->deserialize(
-      $data, RelatedDocuments::class, 'json', $context
+      $data, RetrescoDocuments::class, 'json', $context
     );
 
     return $documents;

@@ -6,7 +6,7 @@ namespace telekurier\Retresco\Tests;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
-use telekurier\RetrescoClient\Model\RelatedDocuments;
+use telekurier\RetrescoClient\Model\RetrescoDocuments;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
 use telekurier\RetrescoClient\RetrescoClient;
 

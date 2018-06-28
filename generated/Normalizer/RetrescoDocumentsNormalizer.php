@@ -18,19 +18,19 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class RelatedDocumentsNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class RetrescoDocumentsNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $type === 'telekurier\\RetrescoClient\\Model\\RelatedDocuments';
+        return $type === 'telekurier\\RetrescoClient\\Model\\RetrescoDocuments';
     }
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \telekurier\RetrescoClient\Model\RelatedDocuments;
+        return $data instanceof \telekurier\RetrescoClient\Model\RetrescoDocuments;
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -38,7 +38,7 @@ class RelatedDocumentsNormalizer implements DenormalizerInterface, NormalizerInt
         if (!is_object($data)) {
             throw new InvalidArgumentException();
         }
-        $object = new \telekurier\RetrescoClient\Model\RelatedDocuments();
+        $object = new \telekurier\RetrescoClient\Model\RetrescoDocuments();
         if (property_exists($data, 'docs')) {
             $values = [];
             foreach ($data->{'docs'} as $value) {
