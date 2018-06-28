@@ -16,6 +16,10 @@ class RetrescoDocuments
      * @var RetrescoDocument[]
      */
     protected $docs;
+    /**
+     * @var int
+     */
+    protected $numFound;
 
     /**
      * @return RetrescoDocument[]
@@ -33,6 +37,26 @@ class RetrescoDocuments
     public function setDocs(?array $docs): self
     {
         $this->docs = $docs;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumFound(): ?int
+    {
+        return $this->numFound;
+    }
+
+    /**
+     * @param int $numFound
+     *
+     * @return self
+     */
+    public function setNumFound(?int $numFound): self
+    {
+        $this->numFound = $numFound;
 
         return $this;
     }

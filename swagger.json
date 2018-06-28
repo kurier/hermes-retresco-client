@@ -351,6 +351,9 @@
                     "items": {
                         "$ref": "#/definitions/RetrescoDocument"
                     }
+                },
+                "num_found": {
+                    "type": "integer"
                 }
             }
         },

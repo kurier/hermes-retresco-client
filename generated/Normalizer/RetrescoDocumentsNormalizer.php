@@ -46,6 +46,9 @@ class RetrescoDocumentsNormalizer implements DenormalizerInterface, NormalizerIn
             }
             $object->setDocs($values);
         }
+        if (property_exists($data, 'num_found')) {
+            $object->setNumFound($data->{'num_found'});
+        }
 
         return $object;
     }
@@ -59,6 +62,9 @@ class RetrescoDocumentsNormalizer implements DenormalizerInterface, NormalizerIn
                 $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
             $data->{'docs'} = $values;
+        }
+        if (null !== $object->getNumFound()) {
+            $data->{'num_found'} = $object->getNumFound();
         }
 
         return $data;
