@@ -46,7 +46,10 @@ class FieldDocumentEncoder implements DecoderInterface {
           $o->{$property} = $value;
         }
         else {
-          if (count($value) > 1) {
+          if (is_scalar($value)) {
+            $o->{$property} = $value;
+          }
+          elseif (count($value) > 1) {
             $o->{$property} = $value;
           }
           elseif (is_array($value)) {
