@@ -97,19 +97,4 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
     );
   }
 
-  public function testRelated() {
-    try {
-      self::$retrescoClient->putDocument($this->testDocument);
-    }
-    catch (GuzzleException $e) {
-      $this->fail($e->getMessage());
-    }
-    $doc_types = 'article,article';
-    $doc_id = $this->testDocument->getDocId();
-    /** @var RelatedDocuments $relateds */
-    $relateds = self::$retrescoClient->getRelatedDocuments($doc_id, $doc_types);
-
-    $this->assertTrue($relateds instanceof RelatedDocuments);
-  }
-
 }

@@ -371,6 +371,49 @@ class RetrescoClient extends Client {
   }
 
   /**
+   * Get Documents for given topic page.
+   *
+   * @see https://kurierat.rtrsupport.de/ui/manual-docs/api_topic_pages_documents.html
+   *
+   * @param string $topicPageId
+   *   ID of topic page
+   * @param int $rows
+   *   Number of results
+   * @param int $page
+   *   For pagination
+   * @param string $sort_by
+   *   "date" or "relevance"
+   *
+   * @return \telekurier\RetrescoClient\Model\RelatedDocuments
+   *   Documents
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
+  public function getTopicPageDocuments(string $topicPageId,
+                                        int $rows,
+                                        int $page,
+                                        string $sort_by): RelatedDocuments {
+    $header = [
+      'Content-Type' => 'application/json',
+    ];
+    $uri = sprintf('%s/%s/documents?rows=%d&page=%d&sort_by=%s', $this->config["topicPagesPath"], $topicPageId, $rows, $page, $sort_by);
+    $request = new Request('GET', $uri, $header);
+
+    $response = $this->send($request);
+    $data = $response->getBody()->getContents();
+
+    $context = ['json_decode_associative' => FALSE];
+    $serializer = $this->getSerializer();
+
+    /** @var \telekurier\RetrescoClient\Model\RelatedDocuments $document */
+    $documents = $this->getSerializer()->deserialize(
+      $data, RelatedDocuments::class, 'json', $context
+    );
+
+    return $documents;
+  }
+
+  /**
    * Search Topic Pages in Retresco.
    *
    * @param string $term
