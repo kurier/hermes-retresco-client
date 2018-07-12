@@ -12,7 +12,7 @@ use telekurier\RetrescoClient\Model\RetrescoTopicPages;
 /**
  * Tests for the Retresco client.
  */
-class RetrescoClientSearchTest extends RetrescoClientTest {
+class RetrescoClientImplSearchTest extends RetrescoClientImplTest {
 
   const COUNT_DOC_TYPES = 'countDocTypes';
 

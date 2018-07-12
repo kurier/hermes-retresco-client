@@ -6,14 +6,12 @@ namespace telekurier\Retresco\Tests;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
-use telekurier\RetrescoClient\Model\RetrescoDocuments;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
-use telekurier\RetrescoClient\RetrescoClient;
 
 /**
  * Tests for the Retresco client.
  */
-class RetrescoClientCrudTest extends RetrescoClientTest {
+class RetrescoClientImplCrudTest extends RetrescoClientImplTest {
 
   /**
    * Tests to put the document on the remote host.
@@ -28,7 +26,7 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
     }
 
     self::assertEquals(
-      RetrescoClient::RESPONSE_CREATED, $response->getStatusCode(), "File couldn't be written. Unexpected status code."
+      self::RESPONSE_CREATED, $response->getStatusCode(), "File couldn't be written. Unexpected status code."
     );
 
   }
@@ -41,7 +39,7 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
   public function testGetDocument() {
     try {
       $putResponse = self::$retrescoClient->putDocument($this->testDocument);
-      self::assertEquals(RetrescoClient::RESPONSE_CREATED, $putResponse->getStatusCode(), "File couldn't be written.");
+      self::assertEquals(self::RESPONSE_CREATED, $putResponse->getStatusCode(), "File couldn't be written.");
     }
     catch (GuzzleException $e) {
       $this->fail($e->getMessage());
@@ -73,7 +71,7 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
   public function testDeleteDocument() {
     try {
       $putResponse = self::$retrescoClient->putDocument($this->testDocument);
-      self::assertEquals(RetrescoClient::RESPONSE_CREATED, $putResponse->getStatusCode(), "File couldn't be written.");
+      self::assertEquals(self::RESPONSE_CREATED, $putResponse->getStatusCode(), "File couldn't be written.");
     }
     catch (GuzzleException $e) {
       $this->fail($e->getMessage());
@@ -81,7 +79,7 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
 
     $deleteResponse = self::$retrescoClient->deleteDocument($this->testDocument);
 
-    self::assertEquals(RetrescoClient::RESPONSE_OK, $deleteResponse->getStatusCode(), 'File was not deleted.');
+    self::assertEquals(self::RESPONSE_OK, $deleteResponse->getStatusCode(), 'File was not deleted.');
 
     $expectedException = NULL;
     try {
@@ -93,7 +91,7 @@ class RetrescoClientCrudTest extends RetrescoClientTest {
 
     $this->assertNotNull($expectedException, '\GuzzleHttp\Exception\ClientException for file not found expected.');
     self::assertEquals(
-      RetrescoClient::RESPONSE_NOT_FOUND, $expectedException->getCode(), 'File not found exception expected.'
+      self::RESPONSE_NOT_FOUND, $expectedException->getCode(), 'File not found exception expected.'
     );
   }
 

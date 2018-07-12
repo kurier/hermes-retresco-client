@@ -8,12 +8,18 @@ use GuzzleHttp\Exception\ClientException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
-use telekurier\RetrescoClient\RetrescoClient;
+use telekurier\RetrescoClient\RetrescoClientImpl;
 
 /**
  * Tests for the Retresco client.
  */
-abstract class RetrescoClientTest extends TestCase {
+abstract class RetrescoClientImplTest extends TestCase {
+
+  const RESPONSE_OK = '200';
+
+  const RESPONSE_CREATED = '201';
+
+  const RESPONSE_NOT_FOUND = '404';
 
   /**
    * The configured Retresco client.
@@ -40,7 +46,7 @@ abstract class RetrescoClientTest extends TestCase {
       'username' => $_ENV['RETRESCO_USERNAME'],
       'password' => $_ENV['RETRESCO_PASSWORD'],
     ];
-    self::$retrescoClient = RetrescoClient::create($config);
+    self::$retrescoClient = RetrescoClientImpl::create($config);
   }
 
   protected function setUp() {
@@ -61,7 +67,9 @@ abstract class RetrescoClientTest extends TestCase {
   protected function createRetrescoDocumentFromFile($file) {
     if (is_readable($file)) {
       $content = Yaml::parseFile($file, Yaml::PARSE_OBJECT_FOR_MAP);
-      $serializer = self::$retrescoClient->getSerializer();
+      /** @var \telekurier\RetrescoClient\RetrescoClientImpl $client */
+      $client = self::$retrescoClient;
+      $serializer = $client->getSerializer();
       /** @noinspection PhpIncompatibleReturnTypeInspection */
       return $serializer->denormalize($content, RetrescoDocument::class);
     }
