@@ -2,10 +2,8 @@
 
 namespace telekurier\RetrescoClient;
 
-use GuzzleHttp\Promise;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\UriInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use telekurier\RetrescoClient\Model\ElasticSearchRawResult;
 use telekurier\RetrescoClient\Model\ElasticSearchResult;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
 use telekurier\RetrescoClient\Model\RetrescoDocuments;
@@ -200,12 +198,12 @@ interface RetrescoClient {
    * @param $query mixed
    *   Elasticsearch query as associative array
    *
-   * @return \telekurier\RetrescoClient\Model\ElasticSearchResult
-   *   Search result.
+   * @return \telekurier\RetrescoClient\Model\ElasticSearchRawResult
+   *   Raw result.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function poolSearchResult($query): ElasticSearchResult;
+  public function poolSearch($query): ElasticSearchRawResult;
 
   /**
    * @param $query mixed
@@ -217,4 +215,15 @@ interface RetrescoClient {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function poolSearchAggregations($query): array;
+
+  /**
+   * @param $query mixed
+   *   Elasticsearch query as associative array
+   *
+   * @return \telekurier\RetrescoClient\Model\ElasticSearchResult
+   *   Search result.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
+  public function poolSearchResult($query): ElasticSearchResult;
 }

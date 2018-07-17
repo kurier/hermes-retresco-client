@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace telekurier\Retresco\Tests;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\HandlerStack;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
@@ -41,12 +43,17 @@ abstract class RetrescoClientImplTest extends TestCase {
    * {@inheritdoc}
    */
   public static function setUpBeforeClass() {
-    $config = [
+    $clientConfig = [
       'base_uri' => $_ENV['RETRESCO_BASE_URI'],
-      'username' => $_ENV['RETRESCO_USERNAME'],
-      'password' => $_ENV['RETRESCO_PASSWORD'],
+      'auth' => [
+        $_ENV['RETRESCO_USERNAME'],
+        $_ENV['RETRESCO_PASSWORD'],
+      ],
     ];
-    self::$retrescoClient = RetrescoClientImpl::create($config);
+    $stack = HandlerStack::create();
+    $config['handler'] = $stack;
+    $client = new Client($clientConfig);
+    self::$retrescoClient = new RetrescoClientImpl($client);
   }
 
   protected function setUp() {
