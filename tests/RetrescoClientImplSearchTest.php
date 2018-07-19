@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace telekurier\Retresco\Tests;
 
@@ -142,6 +142,7 @@ class RetrescoClientImplSearchTest extends RetrescoClientImplTest {
       $this->fail($e->getMessage());
     }
     catch (GuzzleException $e) {
+      $this->fail($e->getMessage());
     }
   }
 
@@ -260,12 +261,11 @@ class RetrescoClientImplSearchTest extends RetrescoClientImplTest {
       /** @var \telekurier\RetrescoClient\Model\RetrescoDocument $doc */
       $doc = reset($result->getHits());
       $published = $doc->getPublished();
-      self::assertTrue(is_string($published));
+      self::assertTrue(is_bool($published));
     }
     catch (GuzzleException $e) {
       $this->fail($e->getMessage());
     }
   }
-
 
 }

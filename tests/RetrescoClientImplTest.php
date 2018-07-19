@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace telekurier\Retresco\Tests;
 
@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\HandlerStack;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use Symfony\Component\Yaml\Yaml;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
 use telekurier\RetrescoClient\RetrescoClientImpl;
@@ -43,6 +44,7 @@ abstract class RetrescoClientImplTest extends TestCase {
    * {@inheritdoc}
    */
   public static function setUpBeforeClass() {
+    $logger = new NullLogger();
     $clientConfig = [
       'base_uri' => $_ENV['RETRESCO_BASE_URI'],
       'auth' => [
@@ -53,7 +55,7 @@ abstract class RetrescoClientImplTest extends TestCase {
     $stack = HandlerStack::create();
     $config['handler'] = $stack;
     $client = new Client($clientConfig);
-    self::$retrescoClient = new RetrescoClientImpl($client);
+    self::$retrescoClient = new RetrescoClientImpl($logger, $client);
   }
 
   protected function setUp() {

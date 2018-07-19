@@ -7,6 +7,7 @@ namespace telekurier\RetrescoClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
 use telekurier\RetrescoClient\Encoder\FieldDocumentEncoder;
@@ -23,19 +24,49 @@ use telekurier\RetrescoClient\Normalizer\NormalizerFactory;
 
 class RetrescoClientImpl implements RetrescoClient {
 
-  const PATHS = [
-    'documentPath' => '/api/content',
-    'enrichPath' => 'api/enrich',
-    'entityLinksPath' => '/api/entities/in-text-link-whitelist',
-    'poolSearchPath' => '/api/es_pool/_search',
-    'topicPagesPath' => 'api/topic-pages',
-    'topicsTypeheadPath' => 'api/topic-pages-typeahead',
+  const CONTENT_READ_PATH = 'contentReadPath';
+
+  const CONTENT_WRITE_PATH = 'contentWritePath';
+
+  const ENRICH_PATH = 'enrichPath';
+
+  const ENTITY_LINKS_PATH = 'entityLinksPath';
+
+  const POOL_SEARCH_PATH = 'poolSearchPath';
+
+  const TOPIC_PAGES_PATH = 'topicPagesPath';
+
+  const TOPICS_TYPEHEAD_PATH = 'topicsTypeheadPath';
+
+  const DEFAULT_PATHS = [
+    self::CONTENT_READ_PATH => '/api/content/%s',
+    self::CONTENT_WRITE_PATH => '/api/content/%s',
+    self::ENRICH_PATH => '/api/enrich',
+    self::ENTITY_LINKS_PATH => '/api/entities/in-text-link-whitelist',
+    self::POOL_SEARCH_PATH => '/api/es_pool/_search',
+    self::TOPIC_PAGES_PATH => 'api/topic-pages',
+    self::TOPICS_TYPEHEAD_PATH => '/api/topic-pages-typeahead',
   ];
+
+  /**
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
 
   /**
    * @var \GuzzleHttp\Client
    */
   protected $client;
+
+  /**
+   * @var mixed
+   */
+  protected $_paths;
+
+  /**
+   * @var string Index type name
+   */
+  protected $_type;
 
   /**
    * The serializer to use.
@@ -47,11 +78,19 @@ class RetrescoClientImpl implements RetrescoClient {
   /**
    * RetrescoClientImpl constructor.
    *
+   * @param \Psr\Log\LoggerInterface $logger
+   *   A logger instance.
    * @param \GuzzleHttp\Client $client
    *   HTTP client.
+   * @param array|null $paths
+   *   Optional path override.
    */
-  public function __construct(Client $client) {
+  public function __construct(LoggerInterface $logger,
+                              Client $client,
+                              ?array $paths = []) {
+    $this->logger = $logger;
     $this->client = $client;
+    $this->_paths = $paths + self::DEFAULT_PATHS;
   }
 
   public function getEntityLinksMap() {
@@ -59,7 +98,7 @@ class RetrescoClientImpl implements RetrescoClient {
       'Content-Type' => 'application/json',
     ];
 
-    $request = new Request('GET', self::PATHS['entityLinksPath'], $header);
+    $request = new Request('GET', $this->_paths[self::ENTITY_LINKS_PATH], $header);
     $response = $this->client->send($request);
     $data = $response->getBody()->getContents();
     $context = ['json_decode_associative' => FALSE];
@@ -102,7 +141,7 @@ class RetrescoClientImpl implements RetrescoClient {
     ];
 
     $query = $inTextLinks ? '?in-text-linked' : NULL;
-    $uri = self::PATHS["enrichPath"] . $query;
+    $uri = $this->_paths[self::ENRICH_PATH] . $query;
     $body = $this->getSerializer()->serialize($document, 'json');
     $request = new Request('POST', $uri, $header, $body);
 
@@ -130,17 +169,18 @@ class RetrescoClientImpl implements RetrescoClient {
       'Content-Type' => 'application/json',
     ];
 
-    $uri = self::PATHS["documentPath"] . "/" . $document->getDocId();
+    $id = $document->getDocId();
+    $url = sprintf($this->_paths[self::CONTENT_WRITE_PATH], $id);
 
-    $request = new Request('PUT', $uri, $header, $body);
+    $request = new Request('PUT', $url, $header, $body);
     $response = $this->client->send($request);
 
     return $response;
   }
 
-  public function getDocumentById($id, $url = NULL) {
-    $url = isset($url) ? $url : self::PATHS["documentPath"];
-    $response = $this->client->get($url . "/" . $id);
+  public function getDocumentById($id) {
+    $url = sprintf($this->_paths[self::CONTENT_READ_PATH], $id);
+    $response = $this->client->get($url);
     $data = $response->getBody()->getContents();
 
     $context = ['json_decode_associative' => FALSE];
@@ -164,7 +204,8 @@ class RetrescoClientImpl implements RetrescoClient {
    * @inheritdoc
    */
   public function deleteDocumentById($id) {
-    return $this->client->delete(self::PATHS["documentPath"] . "/" . $id);
+    $url = sprintf($this->_paths[self::CONTENT_WRITE_PATH], $id);
+    return $this->client->delete($url);
   }
 
   /**
@@ -174,7 +215,7 @@ class RetrescoClientImpl implements RetrescoClient {
     $query_data = array_merge($options ?: [], ['doc_types' => $doc_types]);
     $query = http_build_query($query_data);
 
-    $url = sprintf('%s/%s/relateds?%s', self::PATHS['documentPath'], $id, $query);
+    $url = sprintf($this->_paths[self::CONTENT_WRITE_PATH] . '/relateds?%s', $id, $query);
 
     try {
       $response = $this->client->get($url);
@@ -201,7 +242,7 @@ class RetrescoClientImpl implements RetrescoClient {
     $header = [
       'Content-Type' => 'application/json',
     ];
-    $uri = self::PATHS["topicPagesPath"] . '/' . $topicPageId;
+    $uri = $this->_paths[self::TOPIC_PAGES_PATH] . '/' . $topicPageId;
     $request = new Request('GET', $uri, $header);
 
     $response = $this->client->send($request);
@@ -228,7 +269,7 @@ class RetrescoClientImpl implements RetrescoClient {
     $header = [
       'Content-Type' => 'application/json',
     ];
-    $uri = sprintf('%s/%s/documents?rows=%d&page=%d&sort_by=%s', self::PATHS["topicPagesPath"], $topicPageId, $rows, $page, $sort_by);
+    $uri = sprintf('%s/%s/documents?rows=%d&page=%d&sort_by=%s', $this->_paths[self::TOPIC_PAGES_PATH], $topicPageId, $rows, $page, $sort_by);
     $request = new Request('GET', $uri, $header);
 
     $response = $this->client->send($request);
@@ -251,7 +292,7 @@ class RetrescoClientImpl implements RetrescoClient {
     $header = [
       'Content-Type' => 'application/json',
     ];
-    $uri = self::PATHS["topicPagesPath"] . '?q=' . $term;
+    $uri = $this->_paths[self::TOPIC_PAGES_PATH] . '?q=' . $term;
     $request = new Request('GET', $uri, $header);
 
     $response = $this->client->send($request);
@@ -275,7 +316,7 @@ class RetrescoClientImpl implements RetrescoClient {
     $header = [
       'Content-Type' => 'application/json',
     ];
-    $uri = sprintf('%s/%s/relateds', self::PATHS["topicPagesPath"], $topicPageId);
+    $uri = sprintf('%s/%s/relateds', $this->_paths[self::TOPIC_PAGES_PATH], $topicPageId);
     $request = new Request('GET', $uri, $header);
 
     $response = $this->client->send($request);
@@ -300,7 +341,7 @@ class RetrescoClientImpl implements RetrescoClient {
       'Content-Type' => 'application/json',
     ];
     // Create the URL with search query and get data.
-    $uri = self::PATHS["topicsTypeheadPath"] . '?q=' . $searchText;
+    $uri = $this->_paths[self::TOPICS_TYPEHEAD_PATH] . '?q=' . $searchText;
     $request = new Request('GET', $uri, $header);
     $response = $this->client->send($request);
     $data = $response->getBody()->getContents();
@@ -322,7 +363,8 @@ class RetrescoClientImpl implements RetrescoClient {
     $header = [
       'Content-Type' => 'application/json',
     ];
-    $uri = self::PATHS['poolSearchPath'];
+
+    $uri = $this->_paths[self::POOL_SEARCH_PATH];
 
     $body = $this->getSerializer()->serialize($query, 'json');
     $request = new Request('POST', $uri, $header, $body);

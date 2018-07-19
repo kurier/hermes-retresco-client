@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace telekurier\RetrescoClient;
 
-use Symfony\Component\Serializer\SerializerInterface;
 use telekurier\RetrescoClient\Model\ElasticSearchRawResult;
 use telekurier\RetrescoClient\Model\ElasticSearchResult;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
@@ -58,15 +59,13 @@ interface RetrescoClient {
    *
    * @param int $id
    *   The remote id of the document.
-   * @param string $url
-   *   Optional. Retrieve document from specific url.
    *
    * @return \telekurier\RetrescoClient\Model\RetrescoDocument
    *   RetrescoDocument object.
    *
    * @throws \GuzzleHttp\Exception\ClientException
    */
-  public function getDocumentById($id, $url = NULL);
+  public function getDocumentById($id);
 
   /**
    * Deletes the document.
@@ -193,6 +192,7 @@ interface RetrescoClient {
    * @return \telekurier\RetrescoClient\Model\ElasticSearchRawResult
    *   Raw result.
    *
+   * @throws \Exception
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function poolSearch($query): ElasticSearchRawResult;
