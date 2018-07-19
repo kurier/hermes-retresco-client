@@ -9,7 +9,6 @@ use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 use telekurier\RetrescoClient\Encoder\FieldDocumentEncoder;
 use telekurier\RetrescoClient\Encoder\RawEncoder;
 use telekurier\RetrescoClient\Model\ElasticSearchRawResult;
@@ -92,10 +91,6 @@ class RetrescoClientImpl implements RetrescoClient {
       $this->serializer = new Serializer($normalizers, $encoders);
     }
     return $this->serializer;
-  }
-
-  public function setSerializer(SerializerInterface $serializer) {
-    $this->serializer = $serializer;
   }
 
   /**

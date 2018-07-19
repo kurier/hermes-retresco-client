@@ -25,14 +25,6 @@ interface RetrescoClient {
   public function getEntityLinksMap();
 
   /**
-   * Sets serializer to use.
-   *
-   * @param \Symfony\Component\Serializer\SerializerInterface $serializer
-   *   The serializer.
-   */
-  public function setSerializer(SerializerInterface $serializer);
-
-  /**
    * Enriches the document on the server.
    *
    * @param \telekurier\RetrescoClient\Model\RetrescoDocument $document
