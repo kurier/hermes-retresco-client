@@ -175,15 +175,15 @@ interface RetrescoClient {
   /**
    * Get Topic Pages object from Retresco as result of search.
    *
-   * @param string $searchText
-   *   Text to search.
+   * @param string $phrase
+   *   Searched phrase.
    *
    * @return \telekurier\RetrescoClient\Model\RetrescoTopicPages
    *   RetrescoTopicPages object.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function getTopicPages($searchText);
+  public function topicPagesTypeAhead($phrase);
 
   /**
    * @param $query mixed

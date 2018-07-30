@@ -336,12 +336,12 @@ class RetrescoClientImpl implements RetrescoClient {
   /**
    * @inheritdoc
    */
-  public function getTopicPages($searchText) {
+  public function topicPagesTypeAhead($phrase) {
     $header = [
       'Content-Type' => 'application/json',
     ];
     // Create the URL with search query and get data.
-    $uri = $this->_paths[self::TOPICS_TYPEHEAD_PATH] . '?q=' . $searchText;
+    $uri = $this->_paths[self::TOPICS_TYPEHEAD_PATH] . '?q=' . $phrase;
     $request = new Request('GET', $uri, $header);
     $response = $this->client->send($request);
     $data = $response->getBody()->getContents();
