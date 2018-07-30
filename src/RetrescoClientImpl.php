@@ -36,7 +36,7 @@ class RetrescoClientImpl implements RetrescoClient {
 
   const TOPIC_PAGES_PATH = 'topicPagesPath';
 
-  const TOPICS_TYPEHEAD_PATH = 'topicsTypeheadPath';
+  const TOPICS_TYPEHEAD_PATH = 'topicPagesTypeAheadPath';
 
   const DEFAULT_PATHS = [
     self::CONTENT_READ_PATH => '/api/content/%s',
