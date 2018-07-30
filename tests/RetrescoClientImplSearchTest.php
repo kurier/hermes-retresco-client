@@ -223,9 +223,9 @@ class RetrescoClientImplSearchTest extends RetrescoClientImplTest {
     }
   }
 
-  public function testSearchTopicPage() {
+  public function testTopicPagesTypeAhead() {
     try {
-      $topicPages = self::$retrescoClient->searchTopicPages('*');
+      $topicPages = self::$retrescoClient->topicPagesTypeAhead('ipho');
       self::assertTrue($topicPages instanceof RetrescoTopicPages);
     }
     catch (GuzzleException $e) {

@@ -288,30 +288,6 @@ class RetrescoClientImpl implements RetrescoClient {
   /**
    * @inheritdoc
    */
-  public function searchTopicPages(string $term) {
-    $header = [
-      'Content-Type' => 'application/json',
-    ];
-    $uri = $this->_paths[self::TOPIC_PAGES_PATH] . '?q=' . $term;
-    $request = new Request('GET', $uri, $header);
-
-    $response = $this->client->send($request);
-    $data = $response->getBody()->getContents();
-
-    $context = ['json_decode_associative' => FALSE];
-    $serializer = $this->getSerializer();
-    /** @var \telekurier\RetrescoClient\Model\RetrescoTopicPages $topicsPage */
-    $topicPage = $serializer->deserialize(
-      $data, RetrescoTopicPages::class, 'json', $context
-    );
-
-    return $topicPage;
-
-  }
-
-  /**
-   * @inheritdoc
-   */
   public function relatedTopicPages(string $topicPageId) {
     $header = [
       'Content-Type' => 'application/json',

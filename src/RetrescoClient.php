@@ -147,19 +147,6 @@ interface RetrescoClient {
                                         string $sort_by): RetrescoDocuments;
 
   /**
-   * Search Topic Pages in Retresco.
-   *
-   * @param string $term
-   *    Search term
-   *
-   * @return \telekurier\RetrescoClient\Model\RetrescoTopicPages
-   *   Topic pages
-   *
-   * @throws \GuzzleHttp\Exception\GuzzleException
-   */
-  public function searchTopicPages(string $term);
-
-  /**
    * Related Topic Pages.
    *
    * @param string $topicPageId
