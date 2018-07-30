@@ -135,6 +135,8 @@ interface RetrescoClient {
    *   For pagination
    * @param string $sort_by
    *   "date" or "relevance"
+   * @param null|string $filter
+   *   Named filter (optional).
    *
    * @return \telekurier\RetrescoClient\Model\RetrescoDocuments
    *   Documents
@@ -144,7 +146,8 @@ interface RetrescoClient {
   public function getTopicPageDocuments(string $topicPageId,
                                         int $rows,
                                         int $page,
-                                        string $sort_by): RetrescoDocuments;
+                                        string $sort_by,
+                                        ?string $filter = NULL): RetrescoDocuments;
 
   /**
    * Related Topic Pages.

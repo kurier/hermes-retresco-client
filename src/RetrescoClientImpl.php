@@ -265,11 +265,24 @@ class RetrescoClientImpl implements RetrescoClient {
   public function getTopicPageDocuments(string $topicPageId,
                                         int $rows,
                                         int $page,
-                                        string $sort_by): RetrescoDocuments {
+                                        string $sort_by,
+                                        ?string $filter = NULL): RetrescoDocuments {
     $header = [
       'Content-Type' => 'application/json',
     ];
-    $uri = sprintf('%s/%s/documents?rows=%d&page=%d&sort_by=%s', $this->_paths[self::TOPIC_PAGES_PATH], $topicPageId, $rows, $page, $sort_by);
+
+    $query = [
+      'rows' => $rows,
+      'page' => $page,
+      'sort_by' => $sort_by,
+    ];
+
+    if (!empty($filter)) {
+      $query['filter'] = $filter;
+    }
+
+    $queryString = http_build_query($query);
+    $uri = sprintf('%s/%s/documents?%s', $this->_paths[self::TOPIC_PAGES_PATH], $topicPageId, $queryString);
     $request = new Request('GET', $uri, $header);
 
     $response = $this->client->send($request);

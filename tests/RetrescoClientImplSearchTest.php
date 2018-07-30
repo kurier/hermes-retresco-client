@@ -214,7 +214,7 @@ class RetrescoClientImplSearchTest extends RetrescoClientImplTest {
 
   public function testGetTopicPageDocuments() {
     try {
-      $docs = self::$retrescoClient->getTopicPageDocuments('ivanka-trump', 1, 1, 'date');
+      $docs = self::$retrescoClient->getTopicPageDocuments('ivanka-trump', 1, 1, 'date', 'articles_only');
       $this->assertTrue($docs instanceof RetrescoDocuments);
       self::assertNotEmpty($docs);
     }
