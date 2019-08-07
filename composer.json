@@ -1,7 +1,7 @@
 {
     "name": "telekurier/hermes-retresco-client",
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "jane-php/open-api-runtime": "^4.0",
         "guzzlehttp/guzzle": "^6.3",
         "symfony/property-access": "^4.1"

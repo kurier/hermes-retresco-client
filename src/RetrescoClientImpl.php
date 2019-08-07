@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Log\LoggerInterface;
+use stdClass;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
 use telekurier\RetrescoClient\Encoder\FieldDocumentEncoder;
@@ -101,14 +102,8 @@ class RetrescoClientImpl implements RetrescoClient {
     $request = new Request('GET', $this->_paths[self::ENTITY_LINKS_PATH], $header);
     $response = $this->client->send($request);
     $data = $response->getBody()->getContents();
-    $context = ['json_decode_associative' => FALSE];
 
-    /** @var \telekurier\RetrescoClient\Model\RetrescoEntityLinks $document */
-    $entityLinks = $this->getSerializer()->deserialize(
-      $data, RetrescoEntityLinks::class, 'json', $context
-    );
-
-    return $entityLinks;
+    return $this->deserialize($data, RetrescoEntityLinks::class);
   }
 
   /**
@@ -142,28 +137,21 @@ class RetrescoClientImpl implements RetrescoClient {
 
     $query = $inTextLinks ? '?in-text-linked' : NULL;
     $uri = $this->_paths[self::ENRICH_PATH] . $query;
-    $body = $this->getSerializer()->serialize($document, 'json');
+    $body = $this->serialize($document);
     $request = new Request('POST', $uri, $header, $body);
 
     $response = $this->client->send($request);
 
     $data = $response->getBody()->getContents();
 
-    $context = ['json_decode_associative' => FALSE];
-
-    /** @var \telekurier\RetrescoClient\Model\RetrescoDocument $document */
-    $document = $this->getSerializer()->deserialize(
-      $data, RetrescoDocument::class, 'json', $context
-    );
-
-    return $document;
+    return $this->deserialize($data, RetrescoDocument::class);
   }
 
   /**
    * @inheritdoc
    */
   public function putDocument(RetrescoDocument $document) {
-    $body = $this->getSerializer()->serialize($document, 'json');
+    $body = $this->serialize($document);
 
     $header = [
       'Content-Type' => 'application/json',
@@ -182,15 +170,7 @@ class RetrescoClientImpl implements RetrescoClient {
     $url = sprintf($this->_paths[self::CONTENT_READ_PATH], $id);
     $response = $this->client->get($url);
     $data = $response->getBody()->getContents();
-
-    $context = ['json_decode_associative' => FALSE];
-
-    /** @var \telekurier\RetrescoClient\Model\RetrescoDocument $document */
-    $document = $this->getSerializer()->deserialize(
-      $data, RetrescoDocument::class, 'json', $context
-    );
-
-    return $document;
+    return $this->deserialize($data, RetrescoDocument::class);
   }
 
   /**
@@ -225,14 +205,7 @@ class RetrescoClientImpl implements RetrescoClient {
     }
     $data = $response->getBody()->getContents();
 
-    $context = ['json_decode_associative' => FALSE];
-
-    /** @var \telekurier\RetrescoClient\Model\RetrescoDocuments $document */
-    $documents = $this->getSerializer()->deserialize(
-      $data, RetrescoDocuments::class, 'json', $context
-    );
-
-    return $documents;
+    return $this->deserialize($data, RetrescoDocuments::class);
   }
 
   /**
@@ -248,15 +221,7 @@ class RetrescoClientImpl implements RetrescoClient {
     $response = $this->client->send($request);
     $data = $response->getBody()->getContents();
 
-    $context = ['json_decode_associative' => FALSE];
-    $serializer = $this->getSerializer();
-    /** @var \telekurier\RetrescoClient\Model\RetrescoTopicPage $topicsPage */
-    $topicPage = $serializer->deserialize(
-      $data, RetrescoTopicPage::class, 'json', $context
-    );
-
-    return $topicPage;
-
+    return $this->deserialize($data, RetrescoTopicPage::class);
   }
 
   /**
@@ -288,13 +253,8 @@ class RetrescoClientImpl implements RetrescoClient {
     $response = $this->client->send($request);
     $data = $response->getBody()->getContents();
 
-    $context = ['json_decode_associative' => FALSE];
-
-    /** @var \telekurier\RetrescoClient\Model\RetrescoDocuments $document */
-    $documents = $this->getSerializer()->deserialize(
-      $data, RetrescoDocuments::class, 'json', $context
-    );
-
+    /** @var \telekurier\RetrescoClient\Model\RetrescoDocuments $documents */
+    $documents = $this->deserialize($data, RetrescoDocuments::class);
     return $documents;
   }
 
@@ -311,15 +271,7 @@ class RetrescoClientImpl implements RetrescoClient {
     $response = $this->client->send($request);
     $data = $response->getBody()->getContents();
 
-    $context = ['json_decode_associative' => FALSE];
-    $serializer = $this->getSerializer();
-    /** @var \telekurier\RetrescoClient\Model\RetrescoTopicPages $topicsPage */
-    $topicPage = $serializer->deserialize(
-      $data, RetrescoTopicPages::class, 'json', $context
-    );
-
-    return $topicPage;
-
+    return $this->deserialize($data, RetrescoTopicPages::class);
   }
 
   /**
@@ -329,20 +281,14 @@ class RetrescoClientImpl implements RetrescoClient {
     $header = [
       'Content-Type' => 'application/json',
     ];
+
     // Create the URL with search query and get data.
     $uri = $this->_paths[self::TOPICS_TYPEHEAD_PATH] . '?q=' . $phrase;
     $request = new Request('GET', $uri, $header);
     $response = $this->client->send($request);
     $data = $response->getBody()->getContents();
 
-    $context = ['json_decode_associative' => FALSE];
-    $serializer = $this->getSerializer();
-    /** @var \telekurier\RetrescoClient\Model\RetrescoTopicPages $topicsPage */
-    $topicsPage = $serializer->deserialize(
-      $data, RetrescoTopicPages::class, 'json', $context
-    );
-
-    return $topicsPage;
+    return $this->deserialize($data, RetrescoTopicPages::class);
   }
 
   /**
@@ -355,20 +301,16 @@ class RetrescoClientImpl implements RetrescoClient {
 
     $uri = $this->_paths[self::POOL_SEARCH_PATH];
 
-    $body = $this->getSerializer()->serialize($query, 'json');
+    $body = $this->serialize($query);
     $request = new Request('POST', $uri, $header, $body);
 
     $response = $this->client->send($request);
 
     $data = $response->getBody()->getContents();
 
-    $context = ['json_decode_associative' => FALSE];
-    $serializer = $this->getSerializer();
-
     /** @var \telekurier\RetrescoClient\Model\ElasticSearchRawResult $rawResult */
-    return $serializer->deserialize(
-      $data, ElasticSearchRawResult::class, 'json', $context
-    );
+    $rawResult = $this->deserialize($data, ElasticSearchRawResult::class);
+    return $rawResult;
   }
 
   /**
@@ -387,6 +329,22 @@ class RetrescoClientImpl implements RetrescoClient {
     /** @var \ArrayObject $aggregations */
     $aggregations = $rawResult->getAggregations();
     return $aggregations->getArrayCopy();
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function deserialize(string $data, string $type): object {
+    $context = ['json_decode_associative' => FALSE];
+    return $this->getSerializer()
+      ->deserialize($data, $type, 'json', $context);
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function serialize($data) {
+    return $this->getSerializer()->serialize($data, 'json');
   }
 
 }

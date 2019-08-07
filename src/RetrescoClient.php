@@ -208,4 +208,24 @@ interface RetrescoClient {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function poolSearchResult($query): ElasticSearchResult;
+
+  /**
+   * @param mixed $data
+   *    Any data.
+   * @param string $type
+   *    Type of deserialized object.
+   *
+   * @return object
+   *    Deserialized object.
+   */
+  public function deserialize(string $data, string $type): object;
+
+  /**
+   * @param mixed $data
+   *   The data to serialize.
+   *
+   * @return string
+   *   Serialized data as string.
+   */
+  public function serialize($data);
 }
