@@ -26,6 +26,10 @@ class FieldDocumentEncoder implements DecoderInterface {
       $this->decodeWithNestedProperties($source, $object);
     }
 
+    if (property_exists($data, 'inner_hits')) {
+      $object->innerHits = $data->inner_hits;
+    }
+
     return $object;
   }
 

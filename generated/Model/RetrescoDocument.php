@@ -168,6 +168,10 @@ class RetrescoDocument
      * @var mixed
      */
     protected $payload;
+    /**
+     * @var mixed
+     */
+    protected $innerHits;
 
     /**
      * @return string
@@ -945,6 +949,26 @@ class RetrescoDocument
     public function setPayload($payload): self
     {
         $this->payload = $payload;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInnerHits()
+    {
+        return $this->innerHits;
+    }
+
+    /**
+     * @param mixed $innerHits
+     *
+     * @return self
+     */
+    public function setInnerHits($innerHits): self
+    {
+        $this->innerHits = $innerHits;
 
         return $this;
     }

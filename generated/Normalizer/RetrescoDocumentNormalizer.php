@@ -184,6 +184,9 @@ class RetrescoDocumentNormalizer implements DenormalizerInterface, NormalizerInt
         if (property_exists($data, 'payload')) {
             $object->setPayload($data->{'payload'});
         }
+        if (property_exists($data, 'innerHits')) {
+            $object->setInnerHits($data->{'innerHits'});
+        }
 
         return $object;
     }
