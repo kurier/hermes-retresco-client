@@ -187,6 +187,9 @@ class RetrescoDocumentNormalizer implements DenormalizerInterface, NormalizerInt
         if (property_exists($data, 'innerHits')) {
             $object->setInnerHits($data->{'innerHits'});
         }
+        if (property_exists($data, '_score')) {
+          $object->setScore($data->{'_score'});
+        }
 
         return $object;
     }
