@@ -30,6 +30,10 @@ class FieldDocumentEncoder implements DecoderInterface {
       $object->innerHits = $data->inner_hits;
     }
 
+    if (property_exists($data, '_score')) {
+      $object->_score = $data->_score;
+    }
+
     return $object;
   }
 

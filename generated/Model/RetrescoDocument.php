@@ -172,6 +172,10 @@ class RetrescoDocument
      * @var mixed
      */
     protected $innerHits;
+    /**
+     * @var mixed
+     */
+    protected $_score;
 
     /**
      * @return string
@@ -971,5 +975,24 @@ class RetrescoDocument
         $this->innerHits = $innerHits;
 
         return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getScore()
+    {
+      return $this->_score;
+    }
+
+    /**
+     * @param mixed $score
+     *
+     * @return self
+     */
+    public function setScore($score): self
+    {
+      $this->_score = $score;
+
+      return $this;
     }
 }
