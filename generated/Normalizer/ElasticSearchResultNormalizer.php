@@ -50,7 +50,7 @@ class ElasticSearchResultNormalizer implements DenormalizerInterface, Normalizer
             $object->setMaxScore($data->{'max_score'});
         }
         if (property_exists($data, 'total')) {
-            $object->setTotal($data->{'total'});
+            $object->setTotal($data->total->value);
         }
 
         return $object;
