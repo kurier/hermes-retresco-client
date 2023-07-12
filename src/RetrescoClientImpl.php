@@ -21,6 +21,7 @@ use telekurier\RetrescoClient\Model\RetrescoEntityLinks;
 use telekurier\RetrescoClient\Model\RetrescoTopicPage;
 use telekurier\RetrescoClient\Model\RetrescoTopicPages;
 use telekurier\RetrescoClient\Normalizer\ElasticSearchResultWithDocumentHitsNormalizer;
+use telekurier\RetrescoClient\Normalizer\EmptyObjectNormalizer;
 use telekurier\RetrescoClient\Normalizer\NormalizerFactory;
 
 class RetrescoClientImpl implements RetrescoClient {
@@ -120,6 +121,7 @@ class RetrescoClientImpl implements RetrescoClient {
         new RawEncoder(),
       ];
       $normalizers = NormalizerFactory::create();
+      array_unshift($normalizers, new EmptyObjectNormalizer());
       array_unshift($normalizers, new ElasticSearchResultWithDocumentHitsNormalizer());
 
       $this->serializer = new Serializer($normalizers, $encoders);
