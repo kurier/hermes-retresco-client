@@ -40,6 +40,22 @@ class RetrescoClientImpl implements RetrescoClient {
 
   const TOPICS_TYPEHEAD_PATH = 'topicPagesTypeAheadPath';
 
+  const CONTENT_BULK_PATH = 'contentBulkPath';
+
+  /**
+   * Depending on data size and Elasticsearch configuration, these are the
+   * recommended numbers of bulk operations/actions.
+   *
+   * If you put data (index, update, create) using MIN is a safe bet.
+   * For delete action you can use MAX.
+   *
+   * If you wanna go over these recommendations you should test it with your
+   * data on the target environment as the success of the operation is highly
+   * dependent on server configuation.
+   */
+  const MIN_RECOMMENDED_BULK_OPERATIONS = 1000;
+  const MAX_RECOMMENDED_BULK_OPERATIONS = 5000;
+
   const DEFAULT_PATHS = [
     self::CONTENT_READ_PATH => '/api/content/%s',
     self::CONTENT_WRITE_PATH => '/api/content/%s',
@@ -152,6 +168,25 @@ class RetrescoClientImpl implements RetrescoClient {
   /**
    * @inheritdoc
    */
+  public function bulkOperation(array $actions) {
+    // NDJSON must terminate with a newline.
+    $body = implode("\n", $actions) . "\n";
+
+    $header = [
+      'Content-Type' => 'application/x-ndjson',
+    ];
+
+    $url = $this->_paths[self::CONTENT_BULK_PATH];
+
+    $request = new Request('POST', $url, $header, $body);
+    $response = $this->client->send($request);
+
+    return $response;
+  }
+
+  /**
+   * @inheritdoc
+   */
   public function putDocument(RetrescoDocument $document) {
     $body = $this->serialize($document);
 
@@ -166,6 +201,24 @@ class RetrescoClientImpl implements RetrescoClient {
     $response = $this->client->send($request);
 
     return $response;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function putDocuments(array $documents) {
+    $unique_documents = [];
+    foreach ($documents as $document) {
+      $unique_documents[$document->getDocId()] = $document;
+    }
+
+    $actions = [];
+    foreach ($unique_documents as $document) {
+      $actions[] = json_encode(['index' => ['_id' => $document->getDocId()]]);
+      $actions[] = $this->serialize($document);
+    }
+
+    return $this->bulkOperation($actions);
   }
 
   public function getDocumentById($id) {
@@ -185,9 +238,31 @@ class RetrescoClientImpl implements RetrescoClient {
   /**
    * @inheritdoc
    */
+  public function deleteDocuments(array $documents) {
+    $ids = [];
+    foreach ($documents as $document) {
+      $ids[$document->getDocId()] = $document->getDocId();
+    }
+    return $this->deleteDocumentsById($ids);
+  }
+
+  /**
+   * @inheritdoc
+   */
   public function deleteDocumentById($id) {
     $url = sprintf($this->_paths[self::CONTENT_WRITE_PATH], $id);
     return $this->client->delete($url);
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function deleteDocumentsById($ids) {
+    $actions = [];
+    foreach ($ids as $id) {
+      $actions[$id] = json_encode(['delete' => ['_id' => $id]]);
+    }
+    return $this->bulkOperation($actions);
   }
 
   /**
