@@ -43,6 +43,22 @@ interface RetrescoClient {
   public function enrichDocument(RetrescoDocument $document, $inTextLinks);
 
   /**
+   * Execute a bulk operation.
+   *
+   * @param array $actions
+   *   A list of actions to process in bulk. Split up data into chunks according
+   *   to recommended bulk operation size (see below).
+   *
+   * @return mixed|\Psr\Http\Message\ResponseInterface
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   *
+   * @see \telekurier\RetrescoClient\RetrescoClientImpl::MIN_RECOMMENDED_BULK_OPERATIONS
+   * @see \telekurier\RetrescoClient\RetrescoClientImpl::MAX_RECOMMENDED_BULK_OPERATIONS
+   */
+  public function bulkOperation(array $actions);
+
+  /**
    * Puts the document on the server.
    *
    * @param \telekurier\RetrescoClient\Model\RetrescoDocument $document
@@ -53,6 +69,25 @@ interface RetrescoClient {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function putDocument(RetrescoDocument $document);
+
+  /**
+   * Index documents in bulk.
+   *
+   * Recommended between 1000 and 5000 documents depending on the Elasticsearch
+   * server configuration.
+   *
+   * @param \telekurier\RetrescoClient\Model\RetrescoDocument[] $documents
+   *   The Retresco documents. Split up data into chunks according to
+   *    recommended bulk operation size (see below).
+   *
+   * @return mixed|\Psr\Http\Message\ResponseInterface
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   *
+   * @see \telekurier\RetrescoClient\RetrescoClientImpl::MIN_RECOMMENDED_BULK_OPERATIONS
+   * @see \telekurier\RetrescoClient\RetrescoClientImpl::MAX_RECOMMENDED_BULK_OPERATIONS
+   */
+  public function putDocuments(array $documents);
 
   /**
    * Gets the document for the given remote id.
@@ -81,6 +116,23 @@ interface RetrescoClient {
   public function deleteDocument(RetrescoDocument $document);
 
   /**
+   * Deletes documents in bulk.
+   *
+   * @param \telekurier\RetrescoClient\Model\RetrescoDocument[] $documents
+   *   The documents to delete. Split up data into chunks according to
+   *   recommended bulk operation size (see below).
+   *
+   *   @return \Psr\Http\Message\ResponseInterface
+   *   ResponseInterface
+   *
+   * @throws \GuzzleHttp\Exception\ClientException
+   *
+   * @see \telekurier\RetrescoClient\RetrescoClientImpl::MIN_RECOMMENDED_BULK_OPERATIONS
+   * @see \telekurier\RetrescoClient\RetrescoClientImpl::MAX_RECOMMENDED_BULK_OPERATIONS
+   */
+  public function deleteDocuments(array $documents);
+
+  /**
    * Deletes the document for the given remote id.
    *
    * @param int $id
@@ -92,6 +144,23 @@ interface RetrescoClient {
    * @throws \GuzzleHttp\Exception\ClientException
    */
   public function deleteDocumentById($id);
+
+  /**
+   * Deletes documents in bulk given the Elasticsearch document id.
+   *
+   * @param string[] $ids
+   *   List of Doc ids. Split up data into chunks according to recommended bulk
+   *   operation size (see below).
+   *
+   * @return \Psr\Http\Message\ResponseInterface
+   *   ResponseInterface
+   *
+   * @throws \GuzzleHttp\Exception\ClientException
+   *
+   * @see \telekurier\RetrescoClient\RetrescoClientImpl::MIN_RECOMMENDED_BULK_OPERATIONS
+   * @see \telekurier\RetrescoClient\RetrescoClientImpl::MAX_RECOMMENDED_BULK_OPERATIONS
+   */
+  public function deleteDocumentsById(array $ids);
 
   /**
    * Get Related Documents

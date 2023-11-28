@@ -17,7 +17,11 @@
             "telekurier\\Retresco\\Tests\\": "tests/",
             "telekurier\\RetrescoClient\\Model\\": "generated/Model/",
             "telekurier\\RetrescoClient\\Normalizer\\": "generated/Normalizer/"
-        }
+        },
+        "files": [
+            "src/Normalizer/ElasticSearchResultWithDocumentHitsNormalizer.php",
+            "src/Normalizer/EmptyObjectNormalizer.php"
+        ]
     },
     "scripts": {
         "outdated-direct": "composer show -o -D",
