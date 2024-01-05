@@ -4,12 +4,12 @@
         "php": ">=7.2",
         "jane-php/open-api-runtime": "^5.0",
         "guzzlehttp/guzzle": "^6.3",
-        "symfony/property-access": "^4.1"
+        "symfony/property-access": "^6.0"
     },
     "require-dev": {
         "jane-php/open-api": "^5.0",
         "friendsofphp/php-cs-fixer": "^2.7.3",
-        "phpunit/phpunit": "^7.2"
+        "phpunit/phpunit": "^10.5"
     },
     "autoload": {
         "psr-4": {
