@@ -2,12 +2,10 @@
     "name": "telekurier/hermes-retresco-client",
     "require": {
         "php": ">=7.2",
-        "jane-php/open-api-runtime": "^5.0",
         "guzzlehttp/guzzle": "^7.0",
         "symfony/property-access": "^6.0"
     },
     "require-dev": {
-        "jane-php/open-api": "^5.0",
         "friendsofphp/php-cs-fixer": "^2.7.3",
         "phpunit/phpunit": "^10.5"
     },
