@@ -4,7 +4,8 @@
         "php": ">=7.2",
         "guzzlehttp/guzzle": "^7.0",
         "symfony/property-access": "^6.0",
-        "symfony/serializer": "^6.3"
+        "symfony/serializer": "^6.3",
+        "psr/log": "^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.5",
@@ -15,12 +16,16 @@
         "psr-4": {
             "telekurier\\RetrescoClient\\": "src/",
             "telekurier\\Retresco\\Tests\\": "tests/",
+            "telekurier\\RetrescoClient\\Endpoint\\": "generated/Endpoint/",
+            "telekurier\\RetrescoClient\\Exception\\": "generated/Exception/",
             "telekurier\\RetrescoClient\\Model\\": "generated/Model/",
-            "telekurier\\RetrescoClient\\Normalizer\\": "generated/Normalizer/"
+            "telekurier\\RetrescoClient\\Normalizer\\": "generated/Normalizer/",
+            "telekurier\\RetrescoClient\\Runtime\\": "generated/Runtime/"
         },
         "files": [
             "src/Normalizer/ElasticSearchResultWithDocumentHitsNormalizer.php",
-            "src/Normalizer/EmptyObjectNormalizer.php"
+            "src/Normalizer/EmptyObjectNormalizer.php",
+            "generated/Client.php"
         ]
     },
     "scripts": {
