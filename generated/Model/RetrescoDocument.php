@@ -87,7 +87,7 @@ class RetrescoDocument
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $section;
     /**
@@ -513,20 +513,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getSection() : string
+    public function getSection() : ?string
     {
         return $this->section;
     }
     /**
      * 
      *
-     * @param string $section
+     * @param string|null $section
      *
      * @return self
      */
-    public function setSection(string $section) : self
+    public function setSection(?string $section) : self
     {
         $this->initialized['section'] = true;
         $this->section = $section;

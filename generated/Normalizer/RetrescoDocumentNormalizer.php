@@ -77,8 +77,11 @@ class RetrescoDocumentNormalizer implements DenormalizerInterface, NormalizerInt
         if (\array_key_exists('body', $data)) {
             $object->setBody($data['body']);
         }
-        if (\array_key_exists('section', $data)) {
+        if (\array_key_exists('section', $data) && $data['section'] !== null) {
             $object->setSection($data['section']);
+        }
+        elseif (\array_key_exists('section', $data) && $data['section'] === null) {
+            $object->setSection(null);
         }
         if (\array_key_exists('date', $data)) {
             $object->setDate($data['date']);

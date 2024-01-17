@@ -227,7 +227,8 @@
                     "type": "string"
                 },
                 "section": {
-                    "type": "string"
+                    "type": "string",
+                    "x-nullable": true
                 },
                 "date": {
                     "type": "date"
