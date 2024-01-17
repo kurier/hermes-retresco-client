@@ -11,7 +11,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
 use telekurier\RetrescoClient\Encoder\FieldDocumentEncoder;
-use telekurier\RetrescoClient\Encoder\RawEncoder;
 use telekurier\RetrescoClient\Model\ElasticSearchRawResult;
 use telekurier\RetrescoClient\Model\ElasticSearchResult;
 use telekurier\RetrescoClient\Model\RetrescoDocument;
@@ -133,7 +132,6 @@ class RetrescoClientImpl implements RetrescoClient {
       $encoders = [
         new FieldDocumentEncoder(),
         new JsonEncoder(),
-        new RawEncoder(),
       ];
       $normalizers = NormalizerFactory::create();
       array_unshift($normalizers, new EmptyObjectNormalizer());

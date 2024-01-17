@@ -26,7 +26,7 @@ class ElasticSearchResultWithDocumentHitsNormalizer implements DenormalizerInter
     // denormalize ElasticSearchResult without hits using generated ElasticSearchResultNormalizer
 
     /** @var \telekurier\RetrescoClient\Model\ElasticSearchResult $object */
-    $object = $this->serializer->deserialize($data, $class, 'raw', $context);
+    $object = $this->serializer->denormalize($data, $class, 'raw', $context);
 
     // append hits as RetrescoDocument
     $documents = [];
