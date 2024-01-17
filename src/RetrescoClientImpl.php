@@ -10,6 +10,7 @@ use GuzzleHttp\Psr7\Request;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use telekurier\RetrescoClient\Encoder\FieldDocumentEncoder;
 use telekurier\RetrescoClient\Model\ElasticSearchRawResult;
 use telekurier\RetrescoClient\Model\ElasticSearchResult;
@@ -18,9 +19,20 @@ use telekurier\RetrescoClient\Model\RetrescoDocuments;
 use telekurier\RetrescoClient\Model\RetrescoEntityLinks;
 use telekurier\RetrescoClient\Model\RetrescoTopicPage;
 use telekurier\RetrescoClient\Model\RetrescoTopicPages;
+use telekurier\RetrescoClient\Normalizer\ElasticSearchAggregationNormalizer;
+use telekurier\RetrescoClient\Normalizer\ElasticSearchRawResultNormalizer;
+use telekurier\RetrescoClient\Normalizer\ElasticSearchResultNormalizer;
 use telekurier\RetrescoClient\Normalizer\ElasticSearchResultWithDocumentHitsNormalizer;
 use telekurier\RetrescoClient\Normalizer\EmptyObjectNormalizer;
-use telekurier\RetrescoClient\Normalizer\NormalizerFactory;
+use telekurier\RetrescoClient\Normalizer\LocationNormalizer;
+use telekurier\RetrescoClient\Normalizer\PinNormalizer;
+use telekurier\RetrescoClient\Normalizer\RetrescoClientErrorNormalizer;
+use telekurier\RetrescoClient\Normalizer\RetrescoDocumentNormalizer;
+use telekurier\RetrescoClient\Normalizer\RetrescoDocumentsNormalizer;
+use telekurier\RetrescoClient\Normalizer\RetrescoEntityLinksNormalizer;
+use telekurier\RetrescoClient\Normalizer\RetrescoSearchQueryNormalizer;
+use telekurier\RetrescoClient\Normalizer\RetrescoTopicPageNormalizer;
+use telekurier\RetrescoClient\Normalizer\RetrescoTopicPagesNormalizer;
 
 class RetrescoClientImpl implements RetrescoClient {
 
@@ -133,9 +145,22 @@ class RetrescoClientImpl implements RetrescoClient {
         new FieldDocumentEncoder(),
         new JsonEncoder(),
       ];
-      $normalizers = NormalizerFactory::create();
-      array_unshift($normalizers, new EmptyObjectNormalizer());
-      array_unshift($normalizers, new ElasticSearchResultWithDocumentHitsNormalizer());
+      $normalizers = [];
+      $normalizers[] = new EmptyObjectNormalizer();
+      $normalizers[] = new ElasticSearchResultWithDocumentHitsNormalizer();
+      $normalizers[] = new ArrayDenormalizer();
+      $normalizers[] = new LocationNormalizer();
+      $normalizers[] = new PinNormalizer();
+      $normalizers[] = new RetrescoDocumentNormalizer();
+      $normalizers[] = new RetrescoDocumentsNormalizer();
+      $normalizers[] = new RetrescoEntityLinksNormalizer();
+      $normalizers[] = new RetrescoSearchQueryNormalizer();
+      $normalizers[] = new RetrescoClientErrorNormalizer();
+      $normalizers[] = new RetrescoTopicPageNormalizer();
+      $normalizers[] = new RetrescoTopicPagesNormalizer();
+      $normalizers[] = new ElasticSearchRawResultNormalizer();
+      $normalizers[] = new ElasticSearchAggregationNormalizer();
+      $normalizers[] = new ElasticSearchResultNormalizer();
 
       $this->serializer = new Serializer($normalizers, $encoders);
     }
