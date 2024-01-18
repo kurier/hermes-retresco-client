@@ -249,6 +249,12 @@ class RetrescoDocument
     /**
      * 
      *
+     * @var float|null
+     */
+    protected $score;
+    /**
+     * 
+     *
      * @return string|null
      */
     public function getDocId() : ?string
@@ -1102,6 +1108,28 @@ class RetrescoDocument
     {
         $this->initialized['payload'] = true;
         $this->payload = $payload;
+        return $this;
+    }
+    /**
+     * 
+     *
+     * @return float|null
+     */
+    public function getScore() : ?float
+    {
+        return $this->score;
+    }
+    /**
+     * 
+     *
+     * @param float|null $score
+     *
+     * @return self
+     */
+    public function setScore(?float $score) : self
+    {
+        $this->initialized['score'] = true;
+        $this->score = $score;
         return $this;
     }
 }

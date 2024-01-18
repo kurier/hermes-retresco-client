@@ -38,6 +38,9 @@ class RetrescoDocumentNormalizer implements DenormalizerInterface, NormalizerInt
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \telekurier\RetrescoClient\Model\RetrescoDocument();
+        if (\array_key_exists('_score', $data) && \is_int($data['_score'])) {
+            $data['_score'] = (double) $data['_score'];
+        }
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -303,6 +306,12 @@ class RetrescoDocumentNormalizer implements DenormalizerInterface, NormalizerInt
         elseif (\array_key_exists('payload', $data) && $data['payload'] === null) {
             $object->setPayload(null);
         }
+        if (\array_key_exists('_score', $data) && $data['_score'] !== null) {
+            $object->setScore($data['_score']);
+        }
+        elseif (\array_key_exists('_score', $data) && $data['_score'] === null) {
+            $object->setScore(null);
+        }
         return $object;
     }
     /**
@@ -439,6 +448,9 @@ class RetrescoDocumentNormalizer implements DenormalizerInterface, NormalizerInt
         }
         if ($object->isInitialized('payload') && null !== $object->getPayload()) {
             $data['payload'] = $object->getPayload();
+        }
+        if ($object->isInitialized('score') && null !== $object->getScore()) {
+            $data['_score'] = $object->getScore();
         }
         return $data;
     }
