@@ -434,7 +434,7 @@ class RetrescoClientImpl implements RetrescoClient {
    * @inheritDoc
    */
   public function deserialize(string $data, string $type): object {
-    $context = ['json_decode_associative' => FALSE];
+    $context = ['json_decode_associative' => TRUE];
     return $this->getSerializer()
       ->deserialize($data, $type, 'json', $context);
   }

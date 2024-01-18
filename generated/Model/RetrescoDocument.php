@@ -123,7 +123,7 @@ class RetrescoDocument
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $source;
     /**
@@ -645,20 +645,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getSource() : string
+    public function getSource() : ?string
     {
         return $this->source;
     }
     /**
      * 
      *
-     * @param string $source
+     * @param string|null $source
      *
      * @return self
      */
-    public function setSource(string $source) : self
+    public function setSource(?string $source) : self
     {
         $this->initialized['source'] = true;
         $this->source = $source;
