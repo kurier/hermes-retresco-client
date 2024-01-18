@@ -227,8 +227,7 @@
                     "type": "string"
                 },
                 "section": {
-                    "type": "string",
-                    "x-nullable": true
+                    "type": "string"
                 },
                 "date": {
                     "type": "date"
@@ -246,8 +245,7 @@
                     "type": "date"
                 },
                 "source": {
-                    "type": "string",
-                    "x-nullable": true
+                    "type": "string"
                 },
                 "agentur": {
                     "type": "string"

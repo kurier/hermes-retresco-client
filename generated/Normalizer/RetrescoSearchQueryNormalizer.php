@@ -41,53 +41,101 @@ class RetrescoSearchQueryNormalizer implements DenormalizerInterface, Normalizer
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('q', $data)) {
+        if (\array_key_exists('q', $data) && $data['q'] !== null) {
             $object->setQ($data['q']);
         }
-        if (\array_key_exists('search_fields', $data)) {
+        elseif (\array_key_exists('q', $data) && $data['q'] === null) {
+            $object->setQ(null);
+        }
+        if (\array_key_exists('search_fields', $data) && $data['search_fields'] !== null) {
             $object->setSearchFields($data['search_fields']);
         }
-        if (\array_key_exists('result_size', $data)) {
+        elseif (\array_key_exists('search_fields', $data) && $data['search_fields'] === null) {
+            $object->setSearchFields(null);
+        }
+        if (\array_key_exists('result_size', $data) && $data['result_size'] !== null) {
             $object->setResultSize($data['result_size']);
         }
-        if (\array_key_exists('result_from', $data)) {
+        elseif (\array_key_exists('result_size', $data) && $data['result_size'] === null) {
+            $object->setResultSize(null);
+        }
+        if (\array_key_exists('result_from', $data) && $data['result_from'] !== null) {
             $object->setResultFrom($data['result_from']);
         }
-        if (\array_key_exists('sort_field', $data)) {
+        elseif (\array_key_exists('result_from', $data) && $data['result_from'] === null) {
+            $object->setResultFrom(null);
+        }
+        if (\array_key_exists('sort_field', $data) && $data['sort_field'] !== null) {
             $object->setSortField($data['sort_field']);
         }
-        if (\array_key_exists('authors', $data)) {
+        elseif (\array_key_exists('sort_field', $data) && $data['sort_field'] === null) {
+            $object->setSortField(null);
+        }
+        if (\array_key_exists('authors', $data) && $data['authors'] !== null) {
             $object->setAuthors($data['authors']);
         }
-        if (\array_key_exists('locations', $data)) {
+        elseif (\array_key_exists('authors', $data) && $data['authors'] === null) {
+            $object->setAuthors(null);
+        }
+        if (\array_key_exists('locations', $data) && $data['locations'] !== null) {
             $object->setLocations($data['locations']);
         }
-        if (\array_key_exists('persons', $data)) {
+        elseif (\array_key_exists('locations', $data) && $data['locations'] === null) {
+            $object->setLocations(null);
+        }
+        if (\array_key_exists('persons', $data) && $data['persons'] !== null) {
             $object->setPersons($data['persons']);
         }
-        if (\array_key_exists('products', $data)) {
+        elseif (\array_key_exists('persons', $data) && $data['persons'] === null) {
+            $object->setPersons(null);
+        }
+        if (\array_key_exists('products', $data) && $data['products'] !== null) {
             $object->setProducts($data['products']);
         }
-        if (\array_key_exists('organisations', $data)) {
+        elseif (\array_key_exists('products', $data) && $data['products'] === null) {
+            $object->setProducts(null);
+        }
+        if (\array_key_exists('organisations', $data) && $data['organisations'] !== null) {
             $object->setOrganisations($data['organisations']);
         }
-        if (\array_key_exists('keywords', $data)) {
+        elseif (\array_key_exists('organisations', $data) && $data['organisations'] === null) {
+            $object->setOrganisations(null);
+        }
+        if (\array_key_exists('keywords', $data) && $data['keywords'] !== null) {
             $object->setKeywords($data['keywords']);
         }
-        if (\array_key_exists('sources', $data)) {
+        elseif (\array_key_exists('keywords', $data) && $data['keywords'] === null) {
+            $object->setKeywords(null);
+        }
+        if (\array_key_exists('sources', $data) && $data['sources'] !== null) {
             $object->setSources($data['sources']);
         }
-        if (\array_key_exists('doc_types', $data)) {
+        elseif (\array_key_exists('sources', $data) && $data['sources'] === null) {
+            $object->setSources(null);
+        }
+        if (\array_key_exists('doc_types', $data) && $data['doc_types'] !== null) {
             $object->setDocTypes($data['doc_types']);
         }
-        if (\array_key_exists('published', $data)) {
+        elseif (\array_key_exists('doc_types', $data) && $data['doc_types'] === null) {
+            $object->setDocTypes(null);
+        }
+        if (\array_key_exists('published', $data) && $data['published'] !== null) {
             $object->setPublished($data['published']);
         }
-        if (\array_key_exists('date_from', $data)) {
+        elseif (\array_key_exists('published', $data) && $data['published'] === null) {
+            $object->setPublished(null);
+        }
+        if (\array_key_exists('date_from', $data) && $data['date_from'] !== null) {
             $object->setDateFrom($data['date_from']);
         }
-        if (\array_key_exists('date_to', $data)) {
+        elseif (\array_key_exists('date_from', $data) && $data['date_from'] === null) {
+            $object->setDateFrom(null);
+        }
+        if (\array_key_exists('date_to', $data) && $data['date_to'] !== null) {
             $object->setDateTo($data['date_to']);
+        }
+        elseif (\array_key_exists('date_to', $data) && $data['date_to'] === null) {
+            $object->setDateTo(null);
         }
         return $object;
     }

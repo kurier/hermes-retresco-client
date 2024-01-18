@@ -41,21 +41,33 @@ class ElasticSearchRawResultNormalizer implements DenormalizerInterface, Normali
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('took', $data)) {
+        if (\array_key_exists('took', $data) && $data['took'] !== null) {
             $object->setTook($data['took']);
         }
-        if (\array_key_exists('timed_out', $data)) {
+        elseif (\array_key_exists('took', $data) && $data['took'] === null) {
+            $object->setTook(null);
+        }
+        if (\array_key_exists('timed_out', $data) && $data['timed_out'] !== null) {
             $object->setTimedOut($data['timed_out']);
         }
-        if (\array_key_exists('aggregations', $data)) {
+        elseif (\array_key_exists('timed_out', $data) && $data['timed_out'] === null) {
+            $object->setTimedOut(null);
+        }
+        if (\array_key_exists('aggregations', $data) && $data['aggregations'] !== null) {
             $values = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['aggregations'] as $key => $value) {
                 $values[$key] = $this->denormalizer->denormalize($value, 'telekurier\\RetrescoClient\\Model\\ElasticSearchAggregation', 'json', $context);
             }
             $object->setAggregations($values);
         }
-        if (\array_key_exists('hits', $data)) {
+        elseif (\array_key_exists('aggregations', $data) && $data['aggregations'] === null) {
+            $object->setAggregations(null);
+        }
+        if (\array_key_exists('hits', $data) && $data['hits'] !== null) {
             $object->setHits($this->denormalizer->denormalize($data['hits'], 'telekurier\\RetrescoClient\\Model\\ElasticSearchResult', 'json', $context));
+        }
+        elseif (\array_key_exists('hits', $data) && $data['hits'] === null) {
+            $object->setHits(null);
         }
         return $object;
     }

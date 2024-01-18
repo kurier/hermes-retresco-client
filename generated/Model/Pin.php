@@ -15,26 +15,26 @@ class Pin
     /**
      * 
      *
-     * @var Location
+     * @var Location|null
      */
     protected $location;
     /**
      * 
      *
-     * @return Location
+     * @return Location|null
      */
-    public function getLocation() : Location
+    public function getLocation() : ?Location
     {
         return $this->location;
     }
     /**
      * 
      *
-     * @param Location $location
+     * @param Location|null $location
      *
      * @return self
      */
-    public function setLocation(Location $location) : self
+    public function setLocation(?Location $location) : self
     {
         $this->initialized['location'] = true;
         $this->location = $location;

@@ -15,26 +15,26 @@ class RetrescoEntityLinks
     /**
      * 
      *
-     * @var array<string, string>
+     * @var array<string, string>|null
      */
     protected $links;
     /**
      * 
      *
-     * @return array<string, string>
+     * @return array<string, string>|null
      */
-    public function getLinks() : iterable
+    public function getLinks() : ?iterable
     {
         return $this->links;
     }
     /**
      * 
      *
-     * @param array<string, string> $links
+     * @param array<string, string>|null $links
      *
      * @return self
      */
-    public function setLinks(iterable $links) : self
+    public function setLinks(?iterable $links) : self
     {
         $this->initialized['links'] = true;
         $this->links = $links;

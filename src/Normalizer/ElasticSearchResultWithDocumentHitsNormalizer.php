@@ -20,8 +20,8 @@ class ElasticSearchResultWithDocumentHitsNormalizer implements DenormalizerInter
                               $class,
                               $format = NULL,
                               array $context = []) {
-    $hits = $data->hits ?? [];
-    unset($data->hits);
+    $hits = $data['hits'] ?? [];
+    unset($data['hits']);
 
     // denormalize ElasticSearchResult without hits using generated ElasticSearchResultNormalizer
 
@@ -42,6 +42,6 @@ class ElasticSearchResultWithDocumentHitsNormalizer implements DenormalizerInter
    * {@inheritdoc}
    */
   public function supportsDenormalization($data, $type, $format = NULL) {
-    return $type === 'telekurier\\RetrescoClient\\Model\\ElasticSearchResult' && property_exists($data, 'hits');
+    return $type === 'telekurier\\RetrescoClient\\Model\\ElasticSearchResult' && !empty($data['hits']);
   }
 }

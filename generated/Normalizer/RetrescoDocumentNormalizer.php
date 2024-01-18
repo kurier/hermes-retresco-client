@@ -41,41 +41,77 @@ class RetrescoDocumentNormalizer implements DenormalizerInterface, NormalizerInt
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('doc_id', $data)) {
+        if (\array_key_exists('doc_id', $data) && $data['doc_id'] !== null) {
             $object->setDocId($data['doc_id']);
         }
-        if (\array_key_exists('doc_type', $data)) {
+        elseif (\array_key_exists('doc_id', $data) && $data['doc_id'] === null) {
+            $object->setDocId(null);
+        }
+        if (\array_key_exists('doc_type', $data) && $data['doc_type'] !== null) {
             $object->setDocType($data['doc_type']);
         }
-        if (\array_key_exists('url', $data)) {
+        elseif (\array_key_exists('doc_type', $data) && $data['doc_type'] === null) {
+            $object->setDocType(null);
+        }
+        if (\array_key_exists('url', $data) && $data['url'] !== null) {
             $object->setUrl($data['url']);
         }
-        if (\array_key_exists('published', $data)) {
+        elseif (\array_key_exists('url', $data) && $data['url'] === null) {
+            $object->setUrl(null);
+        }
+        if (\array_key_exists('published', $data) && $data['published'] !== null) {
             $object->setPublished($data['published']);
         }
-        if (\array_key_exists('lifecycle', $data)) {
+        elseif (\array_key_exists('published', $data) && $data['published'] === null) {
+            $object->setPublished(null);
+        }
+        if (\array_key_exists('lifecycle', $data) && $data['lifecycle'] !== null) {
             $object->setLifecycle($data['lifecycle']);
         }
-        if (\array_key_exists('title', $data)) {
+        elseif (\array_key_exists('lifecycle', $data) && $data['lifecycle'] === null) {
+            $object->setLifecycle(null);
+        }
+        if (\array_key_exists('title', $data) && $data['title'] !== null) {
             $object->setTitle($data['title']);
         }
-        if (\array_key_exists('supertitle', $data)) {
+        elseif (\array_key_exists('title', $data) && $data['title'] === null) {
+            $object->setTitle(null);
+        }
+        if (\array_key_exists('supertitle', $data) && $data['supertitle'] !== null) {
             $object->setSupertitle($data['supertitle']);
         }
-        if (\array_key_exists('author', $data)) {
+        elseif (\array_key_exists('supertitle', $data) && $data['supertitle'] === null) {
+            $object->setSupertitle(null);
+        }
+        if (\array_key_exists('author', $data) && $data['author'] !== null) {
             $object->setAuthor($data['author']);
         }
-        if (\array_key_exists('teaser', $data)) {
+        elseif (\array_key_exists('author', $data) && $data['author'] === null) {
+            $object->setAuthor(null);
+        }
+        if (\array_key_exists('teaser', $data) && $data['teaser'] !== null) {
             $object->setTeaser($data['teaser']);
         }
-        if (\array_key_exists('teaser_img_url', $data)) {
+        elseif (\array_key_exists('teaser', $data) && $data['teaser'] === null) {
+            $object->setTeaser(null);
+        }
+        if (\array_key_exists('teaser_img_url', $data) && $data['teaser_img_url'] !== null) {
             $object->setTeaserImgUrl($data['teaser_img_url']);
         }
-        if (\array_key_exists('teaser_img_subline', $data)) {
+        elseif (\array_key_exists('teaser_img_url', $data) && $data['teaser_img_url'] === null) {
+            $object->setTeaserImgUrl(null);
+        }
+        if (\array_key_exists('teaser_img_subline', $data) && $data['teaser_img_subline'] !== null) {
             $object->setTeaserImgSubline($data['teaser_img_subline']);
         }
-        if (\array_key_exists('body', $data)) {
+        elseif (\array_key_exists('teaser_img_subline', $data) && $data['teaser_img_subline'] === null) {
+            $object->setTeaserImgSubline(null);
+        }
+        if (\array_key_exists('body', $data) && $data['body'] !== null) {
             $object->setBody($data['body']);
+        }
+        elseif (\array_key_exists('body', $data) && $data['body'] === null) {
+            $object->setBody(null);
         }
         if (\array_key_exists('section', $data) && $data['section'] !== null) {
             $object->setSection($data['section']);
@@ -83,20 +119,35 @@ class RetrescoDocumentNormalizer implements DenormalizerInterface, NormalizerInt
         elseif (\array_key_exists('section', $data) && $data['section'] === null) {
             $object->setSection(null);
         }
-        if (\array_key_exists('date', $data)) {
+        if (\array_key_exists('date', $data) && $data['date'] !== null) {
             $object->setDate($data['date']);
         }
-        if (\array_key_exists('startdate', $data)) {
+        elseif (\array_key_exists('date', $data) && $data['date'] === null) {
+            $object->setDate(null);
+        }
+        if (\array_key_exists('startdate', $data) && $data['startdate'] !== null) {
             $object->setStartdate($data['startdate']);
         }
-        if (\array_key_exists('enddate', $data)) {
+        elseif (\array_key_exists('startdate', $data) && $data['startdate'] === null) {
+            $object->setStartdate(null);
+        }
+        if (\array_key_exists('enddate', $data) && $data['enddate'] !== null) {
             $object->setEnddate($data['enddate']);
         }
-        if (\array_key_exists('published_date', $data)) {
+        elseif (\array_key_exists('enddate', $data) && $data['enddate'] === null) {
+            $object->setEnddate(null);
+        }
+        if (\array_key_exists('published_date', $data) && $data['published_date'] !== null) {
             $object->setPublishedDate($data['published_date']);
         }
-        if (\array_key_exists('updated_date', $data)) {
+        elseif (\array_key_exists('published_date', $data) && $data['published_date'] === null) {
+            $object->setPublishedDate(null);
+        }
+        if (\array_key_exists('updated_date', $data) && $data['updated_date'] !== null) {
             $object->setUpdatedDate($data['updated_date']);
+        }
+        elseif (\array_key_exists('updated_date', $data) && $data['updated_date'] === null) {
+            $object->setUpdatedDate(null);
         }
         if (\array_key_exists('source', $data) && $data['source'] !== null) {
             $object->setSource($data['source']);
@@ -104,93 +155,153 @@ class RetrescoDocumentNormalizer implements DenormalizerInterface, NormalizerInt
         elseif (\array_key_exists('source', $data) && $data['source'] === null) {
             $object->setSource(null);
         }
-        if (\array_key_exists('agentur', $data)) {
+        if (\array_key_exists('agentur', $data) && $data['agentur'] !== null) {
             $object->setAgentur($data['agentur']);
         }
-        if (\array_key_exists('channel', $data)) {
+        elseif (\array_key_exists('agentur', $data) && $data['agentur'] === null) {
+            $object->setAgentur(null);
+        }
+        if (\array_key_exists('channel', $data) && $data['channel'] !== null) {
             $object->setChannel($data['channel']);
         }
-        if (\array_key_exists('article_score', $data)) {
+        elseif (\array_key_exists('channel', $data) && $data['channel'] === null) {
+            $object->setChannel(null);
+        }
+        if (\array_key_exists('article_score', $data) && $data['article_score'] !== null) {
             $object->setArticleScore($data['article_score']);
         }
-        if (\array_key_exists('pi_last_72h', $data)) {
+        elseif (\array_key_exists('article_score', $data) && $data['article_score'] === null) {
+            $object->setArticleScore(null);
+        }
+        if (\array_key_exists('pi_last_72h', $data) && $data['pi_last_72h'] !== null) {
             $object->setPiLast72h($data['pi_last_72h']);
         }
-        if (\array_key_exists('ga_last_seen', $data)) {
+        elseif (\array_key_exists('pi_last_72h', $data) && $data['pi_last_72h'] === null) {
+            $object->setPiLast72h(null);
+        }
+        if (\array_key_exists('ga_last_seen', $data) && $data['ga_last_seen'] !== null) {
             $object->setGaLastSeen($data['ga_last_seen']);
         }
-        if (\array_key_exists('comments_count', $data)) {
+        elseif (\array_key_exists('ga_last_seen', $data) && $data['ga_last_seen'] === null) {
+            $object->setGaLastSeen(null);
+        }
+        if (\array_key_exists('comments_count', $data) && $data['comments_count'] !== null) {
             $object->setCommentsCount($data['comments_count']);
         }
-        if (\array_key_exists('socialmedia_shares', $data)) {
+        elseif (\array_key_exists('comments_count', $data) && $data['comments_count'] === null) {
+            $object->setCommentsCount(null);
+        }
+        if (\array_key_exists('socialmedia_shares', $data) && $data['socialmedia_shares'] !== null) {
             $object->setSocialmediaShares($data['socialmedia_shares']);
         }
-        if (\array_key_exists('socialmedia_traffic', $data)) {
+        elseif (\array_key_exists('socialmedia_shares', $data) && $data['socialmedia_shares'] === null) {
+            $object->setSocialmediaShares(null);
+        }
+        if (\array_key_exists('socialmedia_traffic', $data) && $data['socialmedia_traffic'] !== null) {
             $object->setSocialmediaTraffic($data['socialmedia_traffic']);
         }
-        if (\array_key_exists('retention_period', $data)) {
+        elseif (\array_key_exists('socialmedia_traffic', $data) && $data['socialmedia_traffic'] === null) {
+            $object->setSocialmediaTraffic(null);
+        }
+        if (\array_key_exists('retention_period', $data) && $data['retention_period'] !== null) {
             $object->setRetentionPeriod($data['retention_period']);
         }
-        if (\array_key_exists('video_views', $data)) {
+        elseif (\array_key_exists('retention_period', $data) && $data['retention_period'] === null) {
+            $object->setRetentionPeriod(null);
+        }
+        if (\array_key_exists('video_views', $data) && $data['video_views'] !== null) {
             $object->setVideoViews($data['video_views']);
         }
-        if (\array_key_exists('bounce_rate', $data)) {
+        elseif (\array_key_exists('video_views', $data) && $data['video_views'] === null) {
+            $object->setVideoViews(null);
+        }
+        if (\array_key_exists('bounce_rate', $data) && $data['bounce_rate'] !== null) {
             $object->setBounceRate($data['bounce_rate']);
         }
-        if (\array_key_exists('pin', $data)) {
+        elseif (\array_key_exists('bounce_rate', $data) && $data['bounce_rate'] === null) {
+            $object->setBounceRate(null);
+        }
+        if (\array_key_exists('pin', $data) && $data['pin'] !== null) {
             $object->setPin($this->denormalizer->denormalize($data['pin'], 'telekurier\\RetrescoClient\\Model\\Pin', 'json', $context));
         }
-        if (\array_key_exists('rtr_persons', $data)) {
+        elseif (\array_key_exists('pin', $data) && $data['pin'] === null) {
+            $object->setPin(null);
+        }
+        if (\array_key_exists('rtr_persons', $data) && $data['rtr_persons'] !== null) {
             $values = array();
             foreach ($data['rtr_persons'] as $value) {
                 $values[] = $value;
             }
             $object->setRtrPersons($values);
         }
-        if (\array_key_exists('rtr_locations', $data)) {
+        elseif (\array_key_exists('rtr_persons', $data) && $data['rtr_persons'] === null) {
+            $object->setRtrPersons(null);
+        }
+        if (\array_key_exists('rtr_locations', $data) && $data['rtr_locations'] !== null) {
             $values_1 = array();
             foreach ($data['rtr_locations'] as $value_1) {
                 $values_1[] = $value_1;
             }
             $object->setRtrLocations($values_1);
         }
-        if (\array_key_exists('rtr_organisations', $data)) {
+        elseif (\array_key_exists('rtr_locations', $data) && $data['rtr_locations'] === null) {
+            $object->setRtrLocations(null);
+        }
+        if (\array_key_exists('rtr_organisations', $data) && $data['rtr_organisations'] !== null) {
             $values_2 = array();
             foreach ($data['rtr_organisations'] as $value_2) {
                 $values_2[] = $value_2;
             }
             $object->setRtrOrganisations($values_2);
         }
-        if (\array_key_exists('rtr_products', $data)) {
+        elseif (\array_key_exists('rtr_organisations', $data) && $data['rtr_organisations'] === null) {
+            $object->setRtrOrganisations(null);
+        }
+        if (\array_key_exists('rtr_products', $data) && $data['rtr_products'] !== null) {
             $values_3 = array();
             foreach ($data['rtr_products'] as $value_3) {
                 $values_3[] = $value_3;
             }
             $object->setRtrProducts($values_3);
         }
-        if (\array_key_exists('rtr_events', $data)) {
+        elseif (\array_key_exists('rtr_products', $data) && $data['rtr_products'] === null) {
+            $object->setRtrProducts(null);
+        }
+        if (\array_key_exists('rtr_events', $data) && $data['rtr_events'] !== null) {
             $values_4 = array();
             foreach ($data['rtr_events'] as $value_4) {
                 $values_4[] = $value_4;
             }
             $object->setRtrEvents($values_4);
         }
-        if (\array_key_exists('rtr_keywords', $data)) {
+        elseif (\array_key_exists('rtr_events', $data) && $data['rtr_events'] === null) {
+            $object->setRtrEvents(null);
+        }
+        if (\array_key_exists('rtr_keywords', $data) && $data['rtr_keywords'] !== null) {
             $values_5 = array();
             foreach ($data['rtr_keywords'] as $value_5) {
                 $values_5[] = $value_5;
             }
             $object->setRtrKeywords($values_5);
         }
-        if (\array_key_exists('rtr_tags', $data)) {
+        elseif (\array_key_exists('rtr_keywords', $data) && $data['rtr_keywords'] === null) {
+            $object->setRtrKeywords(null);
+        }
+        if (\array_key_exists('rtr_tags', $data) && $data['rtr_tags'] !== null) {
             $values_6 = array();
             foreach ($data['rtr_tags'] as $value_6) {
                 $values_6[] = $value_6;
             }
             $object->setRtrTags($values_6);
         }
-        if (\array_key_exists('payload', $data)) {
+        elseif (\array_key_exists('rtr_tags', $data) && $data['rtr_tags'] === null) {
+            $object->setRtrTags(null);
+        }
+        if (\array_key_exists('payload', $data) && $data['payload'] !== null) {
             $object->setPayload($data['payload']);
+        }
+        elseif (\array_key_exists('payload', $data) && $data['payload'] === null) {
+            $object->setPayload(null);
         }
         return $object;
     }

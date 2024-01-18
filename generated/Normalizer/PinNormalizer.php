@@ -41,8 +41,11 @@ class PinNormalizer implements DenormalizerInterface, NormalizerInterface, Denor
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('location', $data)) {
+        if (\array_key_exists('location', $data) && $data['location'] !== null) {
             $object->setLocation($this->denormalizer->denormalize($data['location'], 'telekurier\\RetrescoClient\\Model\\Location', 'json', $context));
+        }
+        elseif (\array_key_exists('location', $data) && $data['location'] === null) {
+            $object->setLocation(null);
         }
         return $object;
     }

@@ -41,18 +41,27 @@ class ElasticSearchAggregationNormalizer implements DenormalizerInterface, Norma
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('buckets', $data)) {
+        if (\array_key_exists('buckets', $data) && $data['buckets'] !== null) {
             $values = array();
             foreach ($data['buckets'] as $value) {
                 $values[] = $value;
             }
             $object->setBuckets($values);
         }
-        if (\array_key_exists('doc_count', $data)) {
+        elseif (\array_key_exists('buckets', $data) && $data['buckets'] === null) {
+            $object->setBuckets(null);
+        }
+        if (\array_key_exists('doc_count', $data) && $data['doc_count'] !== null) {
             $object->setDocCount($data['doc_count']);
         }
-        if (\array_key_exists('value', $data)) {
+        elseif (\array_key_exists('doc_count', $data) && $data['doc_count'] === null) {
+            $object->setDocCount(null);
+        }
+        if (\array_key_exists('value', $data) && $data['value'] !== null) {
             $object->setValue($data['value']);
+        }
+        elseif (\array_key_exists('value', $data) && $data['value'] === null) {
+            $object->setValue(null);
         }
         return $object;
     }

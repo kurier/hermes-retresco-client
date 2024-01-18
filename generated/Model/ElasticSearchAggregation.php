@@ -15,38 +15,38 @@ class ElasticSearchAggregation
     /**
      * 
      *
-     * @var mixed[]
+     * @var mixed[]|null
      */
     protected $buckets;
     /**
      * 
      *
-     * @var int
+     * @var int|null
      */
     protected $docCount;
     /**
      * 
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $value;
     /**
      * 
      *
-     * @return mixed[]
+     * @return mixed[]|null
      */
-    public function getBuckets() : array
+    public function getBuckets() : ?array
     {
         return $this->buckets;
     }
     /**
      * 
      *
-     * @param mixed[] $buckets
+     * @param mixed[]|null $buckets
      *
      * @return self
      */
-    public function setBuckets(array $buckets) : self
+    public function setBuckets(?array $buckets) : self
     {
         $this->initialized['buckets'] = true;
         $this->buckets = $buckets;
@@ -55,20 +55,20 @@ class ElasticSearchAggregation
     /**
      * 
      *
-     * @return int
+     * @return int|null
      */
-    public function getDocCount() : int
+    public function getDocCount() : ?int
     {
         return $this->docCount;
     }
     /**
      * 
      *
-     * @param int $docCount
+     * @param int|null $docCount
      *
      * @return self
      */
-    public function setDocCount(int $docCount) : self
+    public function setDocCount(?int $docCount) : self
     {
         $this->initialized['docCount'] = true;
         $this->docCount = $docCount;

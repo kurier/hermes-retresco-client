@@ -44,18 +44,27 @@ class ElasticSearchResultNormalizer implements DenormalizerInterface, Normalizer
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('hits', $data)) {
+        if (\array_key_exists('hits', $data) && $data['hits'] !== null) {
             $values = array();
             foreach ($data['hits'] as $value) {
                 $values[] = $this->denormalizer->denormalize($value, 'telekurier\\RetrescoClient\\Model\\RetrescoDocument', 'json', $context);
             }
             $object->setHits($values);
         }
-        if (\array_key_exists('max_score', $data)) {
+        elseif (\array_key_exists('hits', $data) && $data['hits'] === null) {
+            $object->setHits(null);
+        }
+        if (\array_key_exists('max_score', $data) && $data['max_score'] !== null) {
             $object->setMaxScore($data['max_score']);
         }
-        if (\array_key_exists('total', $data)) {
+        elseif (\array_key_exists('max_score', $data) && $data['max_score'] === null) {
+            $object->setMaxScore(null);
+        }
+        if (\array_key_exists('total', $data) && $data['total'] !== null) {
             $object->setTotal($data['total']);
+        }
+        elseif (\array_key_exists('total', $data) && $data['total'] === null) {
+            $object->setTotal(null);
         }
         return $object;
     }

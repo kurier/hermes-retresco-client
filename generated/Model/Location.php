@@ -15,13 +15,13 @@ class Location
     /**
      * 
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $lat;
     /**
      * 
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $lon;
     /**

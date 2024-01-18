@@ -15,32 +15,32 @@ class RetrescoDocuments
     /**
      * 
      *
-     * @var RetrescoDocument[]
+     * @var RetrescoDocument[]|null
      */
     protected $docs;
     /**
      * 
      *
-     * @var int
+     * @var int|null
      */
     protected $numFound;
     /**
      * 
      *
-     * @return RetrescoDocument[]
+     * @return RetrescoDocument[]|null
      */
-    public function getDocs() : array
+    public function getDocs() : ?array
     {
         return $this->docs;
     }
     /**
      * 
      *
-     * @param RetrescoDocument[] $docs
+     * @param RetrescoDocument[]|null $docs
      *
      * @return self
      */
-    public function setDocs(array $docs) : self
+    public function setDocs(?array $docs) : self
     {
         $this->initialized['docs'] = true;
         $this->docs = $docs;
@@ -49,20 +49,20 @@ class RetrescoDocuments
     /**
      * 
      *
-     * @return int
+     * @return int|null
      */
-    public function getNumFound() : int
+    public function getNumFound() : ?int
     {
         return $this->numFound;
     }
     /**
      * 
      *
-     * @param int $numFound
+     * @param int|null $numFound
      *
      * @return self
      */
-    public function setNumFound(int $numFound) : self
+    public function setNumFound(?int $numFound) : self
     {
         $this->initialized['numFound'] = true;
         $this->numFound = $numFound;

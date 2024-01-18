@@ -41,15 +41,21 @@ class RetrescoDocumentsNormalizer implements DenormalizerInterface, NormalizerIn
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('docs', $data)) {
+        if (\array_key_exists('docs', $data) && $data['docs'] !== null) {
             $values = array();
             foreach ($data['docs'] as $value) {
                 $values[] = $this->denormalizer->denormalize($value, 'telekurier\\RetrescoClient\\Model\\RetrescoDocument', 'json', $context);
             }
             $object->setDocs($values);
         }
-        if (\array_key_exists('num_found', $data)) {
+        elseif (\array_key_exists('docs', $data) && $data['docs'] === null) {
+            $object->setDocs(null);
+        }
+        if (\array_key_exists('num_found', $data) && $data['num_found'] !== null) {
             $object->setNumFound($data['num_found']);
+        }
+        elseif (\array_key_exists('num_found', $data) && $data['num_found'] === null) {
+            $object->setNumFound(null);
         }
         return $object;
     }

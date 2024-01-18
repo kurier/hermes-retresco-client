@@ -41,53 +41,101 @@ class RetrescoTopicPageNormalizer implements DenormalizerInterface, NormalizerIn
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('canonical_tag', $data)) {
+        if (\array_key_exists('canonical_tag', $data) && $data['canonical_tag'] !== null) {
             $object->setCanonicalTag($data['canonical_tag']);
         }
-        if (\array_key_exists('doc_id', $data)) {
+        elseif (\array_key_exists('canonical_tag', $data) && $data['canonical_tag'] === null) {
+            $object->setCanonicalTag(null);
+        }
+        if (\array_key_exists('doc_id', $data) && $data['doc_id'] !== null) {
             $object->setDocId($data['doc_id']);
         }
-        if (\array_key_exists('items_per_page', $data)) {
+        elseif (\array_key_exists('doc_id', $data) && $data['doc_id'] === null) {
+            $object->setDocId(null);
+        }
+        if (\array_key_exists('items_per_page', $data) && $data['items_per_page'] !== null) {
             $object->setItemsPerPage($data['items_per_page']);
         }
-        if (\array_key_exists('meta_description', $data)) {
+        elseif (\array_key_exists('items_per_page', $data) && $data['items_per_page'] === null) {
+            $object->setItemsPerPage(null);
+        }
+        if (\array_key_exists('meta_description', $data) && $data['meta_description'] !== null) {
             $object->setMetaDescription($data['meta_description']);
         }
-        if (\array_key_exists('meta_title', $data)) {
+        elseif (\array_key_exists('meta_description', $data) && $data['meta_description'] === null) {
+            $object->setMetaDescription(null);
+        }
+        if (\array_key_exists('meta_title', $data) && $data['meta_title'] !== null) {
             $object->setMetaTitle($data['meta_title']);
         }
-        if (\array_key_exists('name', $data)) {
+        elseif (\array_key_exists('meta_title', $data) && $data['meta_title'] === null) {
+            $object->setMetaTitle(null);
+        }
+        if (\array_key_exists('name', $data) && $data['name'] !== null) {
             $object->setName($data['name']);
         }
-        if (\array_key_exists('query', $data)) {
+        elseif (\array_key_exists('name', $data) && $data['name'] === null) {
+            $object->setName(null);
+        }
+        if (\array_key_exists('query', $data) && $data['query'] !== null) {
             $object->setQuery($data['query']);
         }
-        if (\array_key_exists('redirect', $data)) {
+        elseif (\array_key_exists('query', $data) && $data['query'] === null) {
+            $object->setQuery(null);
+        }
+        if (\array_key_exists('redirect', $data) && $data['redirect'] !== null) {
             $object->setRedirect($data['redirect']);
         }
-        if (\array_key_exists('section', $data)) {
+        elseif (\array_key_exists('redirect', $data) && $data['redirect'] === null) {
+            $object->setRedirect(null);
+        }
+        if (\array_key_exists('section', $data) && $data['section'] !== null) {
             $object->setSection($data['section']);
         }
-        if (\array_key_exists('super_title', $data)) {
+        elseif (\array_key_exists('section', $data) && $data['section'] === null) {
+            $object->setSection(null);
+        }
+        if (\array_key_exists('super_title', $data) && $data['super_title'] !== null) {
             $object->setSuperTitle($data['super_title']);
         }
-        if (\array_key_exists('teaser', $data)) {
+        elseif (\array_key_exists('super_title', $data) && $data['super_title'] === null) {
+            $object->setSuperTitle(null);
+        }
+        if (\array_key_exists('teaser', $data) && $data['teaser'] !== null) {
             $object->setTeaser($data['teaser']);
         }
-        if (\array_key_exists('teaser_img', $data)) {
+        elseif (\array_key_exists('teaser', $data) && $data['teaser'] === null) {
+            $object->setTeaser(null);
+        }
+        if (\array_key_exists('teaser_img', $data) && $data['teaser_img'] !== null) {
             $object->setTeaserImg($data['teaser_img']);
         }
-        if (\array_key_exists('teaser_img_subline', $data)) {
+        elseif (\array_key_exists('teaser_img', $data) && $data['teaser_img'] === null) {
+            $object->setTeaserImg(null);
+        }
+        if (\array_key_exists('teaser_img_subline', $data) && $data['teaser_img_subline'] !== null) {
             $object->setTeaserImgSubline($data['teaser_img_subline']);
         }
-        if (\array_key_exists('title', $data)) {
+        elseif (\array_key_exists('teaser_img_subline', $data) && $data['teaser_img_subline'] === null) {
+            $object->setTeaserImgSubline(null);
+        }
+        if (\array_key_exists('title', $data) && $data['title'] !== null) {
             $object->setTitle($data['title']);
         }
-        if (\array_key_exists('topic_type', $data)) {
+        elseif (\array_key_exists('title', $data) && $data['title'] === null) {
+            $object->setTitle(null);
+        }
+        if (\array_key_exists('topic_type', $data) && $data['topic_type'] !== null) {
             $object->setTopicType($data['topic_type']);
         }
-        if (\array_key_exists('url', $data)) {
+        elseif (\array_key_exists('topic_type', $data) && $data['topic_type'] === null) {
+            $object->setTopicType(null);
+        }
+        if (\array_key_exists('url', $data) && $data['url'] !== null) {
             $object->setUrl($data['url']);
+        }
+        elseif (\array_key_exists('url', $data) && $data['url'] === null) {
+            $object->setUrl(null);
         }
         return $object;
     }

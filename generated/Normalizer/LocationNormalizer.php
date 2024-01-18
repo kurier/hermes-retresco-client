@@ -41,11 +41,17 @@ class LocationNormalizer implements DenormalizerInterface, NormalizerInterface, 
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('lat', $data)) {
+        if (\array_key_exists('lat', $data) && $data['lat'] !== null) {
             $object->setLat($data['lat']);
         }
-        if (\array_key_exists('lon', $data)) {
+        elseif (\array_key_exists('lat', $data) && $data['lat'] === null) {
+            $object->setLat(null);
+        }
+        if (\array_key_exists('lon', $data) && $data['lon'] !== null) {
             $object->setLon($data['lon']);
+        }
+        elseif (\array_key_exists('lon', $data) && $data['lon'] === null) {
+            $object->setLon(null);
         }
         return $object;
     }

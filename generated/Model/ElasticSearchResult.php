@@ -15,38 +15,38 @@ class ElasticSearchResult
     /**
      * 
      *
-     * @var RetrescoDocument[]
+     * @var RetrescoDocument[]|null
      */
     protected $hits;
     /**
      * 
      *
-     * @var float
+     * @var float|null
      */
     protected $maxScore;
     /**
      * 
      *
-     * @var int
+     * @var int|null
      */
     protected $total;
     /**
      * 
      *
-     * @return RetrescoDocument[]
+     * @return RetrescoDocument[]|null
      */
-    public function getHits() : array
+    public function getHits() : ?array
     {
         return $this->hits;
     }
     /**
      * 
      *
-     * @param RetrescoDocument[] $hits
+     * @param RetrescoDocument[]|null $hits
      *
      * @return self
      */
-    public function setHits(array $hits) : self
+    public function setHits(?array $hits) : self
     {
         $this->initialized['hits'] = true;
         $this->hits = $hits;
@@ -55,20 +55,20 @@ class ElasticSearchResult
     /**
      * 
      *
-     * @return float
+     * @return float|null
      */
-    public function getMaxScore() : float
+    public function getMaxScore() : ?float
     {
         return $this->maxScore;
     }
     /**
      * 
      *
-     * @param float $maxScore
+     * @param float|null $maxScore
      *
      * @return self
      */
-    public function setMaxScore(float $maxScore) : self
+    public function setMaxScore(?float $maxScore) : self
     {
         $this->initialized['maxScore'] = true;
         $this->maxScore = $maxScore;
@@ -77,20 +77,20 @@ class ElasticSearchResult
     /**
      * 
      *
-     * @return int
+     * @return int|null
      */
-    public function getTotal() : int
+    public function getTotal() : ?int
     {
         return $this->total;
     }
     /**
      * 
      *
-     * @param int $total
+     * @param int|null $total
      *
      * @return self
      */
-    public function setTotal(int $total) : self
+    public function setTotal(?int $total) : self
     {
         $this->initialized['total'] = true;
         $this->total = $total;

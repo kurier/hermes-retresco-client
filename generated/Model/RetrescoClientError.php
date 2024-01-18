@@ -15,32 +15,32 @@ class RetrescoClientError
     /**
      * 
      *
-     * @var int
+     * @var int|null
      */
     protected $status;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $message;
     /**
      * 
      *
-     * @return int
+     * @return int|null
      */
-    public function getStatus() : int
+    public function getStatus() : ?int
     {
         return $this->status;
     }
     /**
      * 
      *
-     * @param int $status
+     * @param int|null $status
      *
      * @return self
      */
-    public function setStatus(int $status) : self
+    public function setStatus(?int $status) : self
     {
         $this->initialized['status'] = true;
         $this->status = $status;
@@ -49,20 +49,20 @@ class RetrescoClientError
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getMessage() : string
+    public function getMessage() : ?string
     {
         return $this->message;
     }
     /**
      * 
      *
-     * @param string $message
+     * @param string|null $message
      *
      * @return self
      */
-    public function setMessage(string $message) : self
+    public function setMessage(?string $message) : self
     {
         $this->initialized['message'] = true;
         $this->message = $message;

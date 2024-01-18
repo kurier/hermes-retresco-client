@@ -15,73 +15,73 @@ class RetrescoDocument
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $docId;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $docType;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $url;
     /**
      * 
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $published;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $lifecycle;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $title;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $supertitle;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $author;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $teaser;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $teaserImgUrl;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $teaserImgSubline;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $body;
     /**
@@ -93,31 +93,31 @@ class RetrescoDocument
     /**
      * 
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $date;
     /**
      * 
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $startdate;
     /**
      * 
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $enddate;
     /**
      * 
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $publishedDate;
     /**
      * 
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $updatedDate;
     /**
@@ -129,140 +129,140 @@ class RetrescoDocument
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $agentur;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $channel;
     /**
      * 
      *
-     * @var int
+     * @var int|null
      */
     protected $articleScore;
     /**
      * 
      *
-     * @var int
+     * @var int|null
      */
     protected $piLast72h;
     /**
      * 
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $gaLastSeen;
     /**
      * 
      *
-     * @var int
+     * @var int|null
      */
     protected $commentsCount;
     /**
      * 
      *
-     * @var int
+     * @var int|null
      */
     protected $socialmediaShares;
     /**
      * 
      *
-     * @var int
+     * @var int|null
      */
     protected $socialmediaTraffic;
     /**
      * 
      *
-     * @var int
+     * @var int|null
      */
     protected $retentionPeriod;
     /**
      * 
      *
-     * @var int
+     * @var int|null
      */
     protected $videoViews;
     /**
      * 
      *
-     * @var int
+     * @var int|null
      */
     protected $bounceRate;
     /**
      * 
      *
-     * @var Pin
+     * @var Pin|null
      */
     protected $pin;
     /**
      * 
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $rtrPersons;
     /**
      * 
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $rtrLocations;
     /**
      * 
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $rtrOrganisations;
     /**
      * 
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $rtrProducts;
     /**
      * 
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $rtrEvents;
     /**
      * 
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $rtrKeywords;
     /**
      * 
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $rtrTags;
     /**
      * 
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $payload;
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getDocId() : string
+    public function getDocId() : ?string
     {
         return $this->docId;
     }
     /**
      * 
      *
-     * @param string $docId
+     * @param string|null $docId
      *
      * @return self
      */
-    public function setDocId(string $docId) : self
+    public function setDocId(?string $docId) : self
     {
         $this->initialized['docId'] = true;
         $this->docId = $docId;
@@ -271,20 +271,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getDocType() : string
+    public function getDocType() : ?string
     {
         return $this->docType;
     }
     /**
      * 
      *
-     * @param string $docType
+     * @param string|null $docType
      *
      * @return self
      */
-    public function setDocType(string $docType) : self
+    public function setDocType(?string $docType) : self
     {
         $this->initialized['docType'] = true;
         $this->docType = $docType;
@@ -293,20 +293,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getUrl() : string
+    public function getUrl() : ?string
     {
         return $this->url;
     }
     /**
      * 
      *
-     * @param string $url
+     * @param string|null $url
      *
      * @return self
      */
-    public function setUrl(string $url) : self
+    public function setUrl(?string $url) : self
     {
         $this->initialized['url'] = true;
         $this->url = $url;
@@ -337,20 +337,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getLifecycle() : string
+    public function getLifecycle() : ?string
     {
         return $this->lifecycle;
     }
     /**
      * 
      *
-     * @param string $lifecycle
+     * @param string|null $lifecycle
      *
      * @return self
      */
-    public function setLifecycle(string $lifecycle) : self
+    public function setLifecycle(?string $lifecycle) : self
     {
         $this->initialized['lifecycle'] = true;
         $this->lifecycle = $lifecycle;
@@ -359,20 +359,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getTitle() : string
+    public function getTitle() : ?string
     {
         return $this->title;
     }
     /**
      * 
      *
-     * @param string $title
+     * @param string|null $title
      *
      * @return self
      */
-    public function setTitle(string $title) : self
+    public function setTitle(?string $title) : self
     {
         $this->initialized['title'] = true;
         $this->title = $title;
@@ -381,20 +381,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getSupertitle() : string
+    public function getSupertitle() : ?string
     {
         return $this->supertitle;
     }
     /**
      * 
      *
-     * @param string $supertitle
+     * @param string|null $supertitle
      *
      * @return self
      */
-    public function setSupertitle(string $supertitle) : self
+    public function setSupertitle(?string $supertitle) : self
     {
         $this->initialized['supertitle'] = true;
         $this->supertitle = $supertitle;
@@ -403,20 +403,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getAuthor() : string
+    public function getAuthor() : ?string
     {
         return $this->author;
     }
     /**
      * 
      *
-     * @param string $author
+     * @param string|null $author
      *
      * @return self
      */
-    public function setAuthor(string $author) : self
+    public function setAuthor(?string $author) : self
     {
         $this->initialized['author'] = true;
         $this->author = $author;
@@ -425,20 +425,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getTeaser() : string
+    public function getTeaser() : ?string
     {
         return $this->teaser;
     }
     /**
      * 
      *
-     * @param string $teaser
+     * @param string|null $teaser
      *
      * @return self
      */
-    public function setTeaser(string $teaser) : self
+    public function setTeaser(?string $teaser) : self
     {
         $this->initialized['teaser'] = true;
         $this->teaser = $teaser;
@@ -447,20 +447,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getTeaserImgUrl() : string
+    public function getTeaserImgUrl() : ?string
     {
         return $this->teaserImgUrl;
     }
     /**
      * 
      *
-     * @param string $teaserImgUrl
+     * @param string|null $teaserImgUrl
      *
      * @return self
      */
-    public function setTeaserImgUrl(string $teaserImgUrl) : self
+    public function setTeaserImgUrl(?string $teaserImgUrl) : self
     {
         $this->initialized['teaserImgUrl'] = true;
         $this->teaserImgUrl = $teaserImgUrl;
@@ -469,20 +469,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getTeaserImgSubline() : string
+    public function getTeaserImgSubline() : ?string
     {
         return $this->teaserImgSubline;
     }
     /**
      * 
      *
-     * @param string $teaserImgSubline
+     * @param string|null $teaserImgSubline
      *
      * @return self
      */
-    public function setTeaserImgSubline(string $teaserImgSubline) : self
+    public function setTeaserImgSubline(?string $teaserImgSubline) : self
     {
         $this->initialized['teaserImgSubline'] = true;
         $this->teaserImgSubline = $teaserImgSubline;
@@ -491,20 +491,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getBody() : string
+    public function getBody() : ?string
     {
         return $this->body;
     }
     /**
      * 
      *
-     * @param string $body
+     * @param string|null $body
      *
      * @return self
      */
-    public function setBody(string $body) : self
+    public function setBody(?string $body) : self
     {
         $this->initialized['body'] = true;
         $this->body = $body;
@@ -667,20 +667,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getAgentur() : string
+    public function getAgentur() : ?string
     {
         return $this->agentur;
     }
     /**
      * 
      *
-     * @param string $agentur
+     * @param string|null $agentur
      *
      * @return self
      */
-    public function setAgentur(string $agentur) : self
+    public function setAgentur(?string $agentur) : self
     {
         $this->initialized['agentur'] = true;
         $this->agentur = $agentur;
@@ -689,20 +689,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getChannel() : string
+    public function getChannel() : ?string
     {
         return $this->channel;
     }
     /**
      * 
      *
-     * @param string $channel
+     * @param string|null $channel
      *
      * @return self
      */
-    public function setChannel(string $channel) : self
+    public function setChannel(?string $channel) : self
     {
         $this->initialized['channel'] = true;
         $this->channel = $channel;
@@ -711,20 +711,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return int
+     * @return int|null
      */
-    public function getArticleScore() : int
+    public function getArticleScore() : ?int
     {
         return $this->articleScore;
     }
     /**
      * 
      *
-     * @param int $articleScore
+     * @param int|null $articleScore
      *
      * @return self
      */
-    public function setArticleScore(int $articleScore) : self
+    public function setArticleScore(?int $articleScore) : self
     {
         $this->initialized['articleScore'] = true;
         $this->articleScore = $articleScore;
@@ -733,20 +733,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return int
+     * @return int|null
      */
-    public function getPiLast72h() : int
+    public function getPiLast72h() : ?int
     {
         return $this->piLast72h;
     }
     /**
      * 
      *
-     * @param int $piLast72h
+     * @param int|null $piLast72h
      *
      * @return self
      */
-    public function setPiLast72h(int $piLast72h) : self
+    public function setPiLast72h(?int $piLast72h) : self
     {
         $this->initialized['piLast72h'] = true;
         $this->piLast72h = $piLast72h;
@@ -777,20 +777,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return int
+     * @return int|null
      */
-    public function getCommentsCount() : int
+    public function getCommentsCount() : ?int
     {
         return $this->commentsCount;
     }
     /**
      * 
      *
-     * @param int $commentsCount
+     * @param int|null $commentsCount
      *
      * @return self
      */
-    public function setCommentsCount(int $commentsCount) : self
+    public function setCommentsCount(?int $commentsCount) : self
     {
         $this->initialized['commentsCount'] = true;
         $this->commentsCount = $commentsCount;
@@ -799,20 +799,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return int
+     * @return int|null
      */
-    public function getSocialmediaShares() : int
+    public function getSocialmediaShares() : ?int
     {
         return $this->socialmediaShares;
     }
     /**
      * 
      *
-     * @param int $socialmediaShares
+     * @param int|null $socialmediaShares
      *
      * @return self
      */
-    public function setSocialmediaShares(int $socialmediaShares) : self
+    public function setSocialmediaShares(?int $socialmediaShares) : self
     {
         $this->initialized['socialmediaShares'] = true;
         $this->socialmediaShares = $socialmediaShares;
@@ -821,20 +821,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return int
+     * @return int|null
      */
-    public function getSocialmediaTraffic() : int
+    public function getSocialmediaTraffic() : ?int
     {
         return $this->socialmediaTraffic;
     }
     /**
      * 
      *
-     * @param int $socialmediaTraffic
+     * @param int|null $socialmediaTraffic
      *
      * @return self
      */
-    public function setSocialmediaTraffic(int $socialmediaTraffic) : self
+    public function setSocialmediaTraffic(?int $socialmediaTraffic) : self
     {
         $this->initialized['socialmediaTraffic'] = true;
         $this->socialmediaTraffic = $socialmediaTraffic;
@@ -843,20 +843,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return int
+     * @return int|null
      */
-    public function getRetentionPeriod() : int
+    public function getRetentionPeriod() : ?int
     {
         return $this->retentionPeriod;
     }
     /**
      * 
      *
-     * @param int $retentionPeriod
+     * @param int|null $retentionPeriod
      *
      * @return self
      */
-    public function setRetentionPeriod(int $retentionPeriod) : self
+    public function setRetentionPeriod(?int $retentionPeriod) : self
     {
         $this->initialized['retentionPeriod'] = true;
         $this->retentionPeriod = $retentionPeriod;
@@ -865,20 +865,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return int
+     * @return int|null
      */
-    public function getVideoViews() : int
+    public function getVideoViews() : ?int
     {
         return $this->videoViews;
     }
     /**
      * 
      *
-     * @param int $videoViews
+     * @param int|null $videoViews
      *
      * @return self
      */
-    public function setVideoViews(int $videoViews) : self
+    public function setVideoViews(?int $videoViews) : self
     {
         $this->initialized['videoViews'] = true;
         $this->videoViews = $videoViews;
@@ -887,20 +887,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return int
+     * @return int|null
      */
-    public function getBounceRate() : int
+    public function getBounceRate() : ?int
     {
         return $this->bounceRate;
     }
     /**
      * 
      *
-     * @param int $bounceRate
+     * @param int|null $bounceRate
      *
      * @return self
      */
-    public function setBounceRate(int $bounceRate) : self
+    public function setBounceRate(?int $bounceRate) : self
     {
         $this->initialized['bounceRate'] = true;
         $this->bounceRate = $bounceRate;
@@ -909,20 +909,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return Pin
+     * @return Pin|null
      */
-    public function getPin() : Pin
+    public function getPin() : ?Pin
     {
         return $this->pin;
     }
     /**
      * 
      *
-     * @param Pin $pin
+     * @param Pin|null $pin
      *
      * @return self
      */
-    public function setPin(Pin $pin) : self
+    public function setPin(?Pin $pin) : self
     {
         $this->initialized['pin'] = true;
         $this->pin = $pin;
@@ -931,20 +931,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getRtrPersons() : array
+    public function getRtrPersons() : ?array
     {
         return $this->rtrPersons;
     }
     /**
      * 
      *
-     * @param string[] $rtrPersons
+     * @param string[]|null $rtrPersons
      *
      * @return self
      */
-    public function setRtrPersons(array $rtrPersons) : self
+    public function setRtrPersons(?array $rtrPersons) : self
     {
         $this->initialized['rtrPersons'] = true;
         $this->rtrPersons = $rtrPersons;
@@ -953,20 +953,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getRtrLocations() : array
+    public function getRtrLocations() : ?array
     {
         return $this->rtrLocations;
     }
     /**
      * 
      *
-     * @param string[] $rtrLocations
+     * @param string[]|null $rtrLocations
      *
      * @return self
      */
-    public function setRtrLocations(array $rtrLocations) : self
+    public function setRtrLocations(?array $rtrLocations) : self
     {
         $this->initialized['rtrLocations'] = true;
         $this->rtrLocations = $rtrLocations;
@@ -975,20 +975,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getRtrOrganisations() : array
+    public function getRtrOrganisations() : ?array
     {
         return $this->rtrOrganisations;
     }
     /**
      * 
      *
-     * @param string[] $rtrOrganisations
+     * @param string[]|null $rtrOrganisations
      *
      * @return self
      */
-    public function setRtrOrganisations(array $rtrOrganisations) : self
+    public function setRtrOrganisations(?array $rtrOrganisations) : self
     {
         $this->initialized['rtrOrganisations'] = true;
         $this->rtrOrganisations = $rtrOrganisations;
@@ -997,20 +997,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getRtrProducts() : array
+    public function getRtrProducts() : ?array
     {
         return $this->rtrProducts;
     }
     /**
      * 
      *
-     * @param string[] $rtrProducts
+     * @param string[]|null $rtrProducts
      *
      * @return self
      */
-    public function setRtrProducts(array $rtrProducts) : self
+    public function setRtrProducts(?array $rtrProducts) : self
     {
         $this->initialized['rtrProducts'] = true;
         $this->rtrProducts = $rtrProducts;
@@ -1019,20 +1019,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getRtrEvents() : array
+    public function getRtrEvents() : ?array
     {
         return $this->rtrEvents;
     }
     /**
      * 
      *
-     * @param string[] $rtrEvents
+     * @param string[]|null $rtrEvents
      *
      * @return self
      */
-    public function setRtrEvents(array $rtrEvents) : self
+    public function setRtrEvents(?array $rtrEvents) : self
     {
         $this->initialized['rtrEvents'] = true;
         $this->rtrEvents = $rtrEvents;
@@ -1041,20 +1041,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getRtrKeywords() : array
+    public function getRtrKeywords() : ?array
     {
         return $this->rtrKeywords;
     }
     /**
      * 
      *
-     * @param string[] $rtrKeywords
+     * @param string[]|null $rtrKeywords
      *
      * @return self
      */
-    public function setRtrKeywords(array $rtrKeywords) : self
+    public function setRtrKeywords(?array $rtrKeywords) : self
     {
         $this->initialized['rtrKeywords'] = true;
         $this->rtrKeywords = $rtrKeywords;
@@ -1063,20 +1063,20 @@ class RetrescoDocument
     /**
      * 
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getRtrTags() : array
+    public function getRtrTags() : ?array
     {
         return $this->rtrTags;
     }
     /**
      * 
      *
-     * @param string[] $rtrTags
+     * @param string[]|null $rtrTags
      *
      * @return self
      */
-    public function setRtrTags(array $rtrTags) : self
+    public function setRtrTags(?array $rtrTags) : self
     {
         $this->initialized['rtrTags'] = true;
         $this->rtrTags = $rtrTags;

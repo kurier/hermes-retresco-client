@@ -15,44 +15,44 @@ class ElasticSearchRawResult
     /**
      * 
      *
-     * @var int
+     * @var int|null
      */
     protected $took;
     /**
      * 
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $timedOut;
     /**
      * 
      *
-     * @var array<string, ElasticSearchAggregation>
+     * @var array<string, ElasticSearchAggregation>|null
      */
     protected $aggregations;
     /**
      * 
      *
-     * @var ElasticSearchResult
+     * @var ElasticSearchResult|null
      */
     protected $hits;
     /**
      * 
      *
-     * @return int
+     * @return int|null
      */
-    public function getTook() : int
+    public function getTook() : ?int
     {
         return $this->took;
     }
     /**
      * 
      *
-     * @param int $took
+     * @param int|null $took
      *
      * @return self
      */
-    public function setTook(int $took) : self
+    public function setTook(?int $took) : self
     {
         $this->initialized['took'] = true;
         $this->took = $took;
@@ -83,20 +83,20 @@ class ElasticSearchRawResult
     /**
      * 
      *
-     * @return array<string, ElasticSearchAggregation>
+     * @return array<string, ElasticSearchAggregation>|null
      */
-    public function getAggregations() : iterable
+    public function getAggregations() : ?iterable
     {
         return $this->aggregations;
     }
     /**
      * 
      *
-     * @param array<string, ElasticSearchAggregation> $aggregations
+     * @param array<string, ElasticSearchAggregation>|null $aggregations
      *
      * @return self
      */
-    public function setAggregations(iterable $aggregations) : self
+    public function setAggregations(?iterable $aggregations) : self
     {
         $this->initialized['aggregations'] = true;
         $this->aggregations = $aggregations;
@@ -105,20 +105,20 @@ class ElasticSearchRawResult
     /**
      * 
      *
-     * @return ElasticSearchResult
+     * @return ElasticSearchResult|null
      */
-    public function getHits() : ElasticSearchResult
+    public function getHits() : ?ElasticSearchResult
     {
         return $this->hits;
     }
     /**
      * 
      *
-     * @param ElasticSearchResult $hits
+     * @param ElasticSearchResult|null $hits
      *
      * @return self
      */
-    public function setHits(ElasticSearchResult $hits) : self
+    public function setHits(?ElasticSearchResult $hits) : self
     {
         $this->initialized['hits'] = true;
         $this->hits = $hits;

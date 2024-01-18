@@ -15,116 +15,116 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $canonicalTag;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $docId;
     /**
      * 
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $itemsPerPage;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $metaDescription;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $metaTitle;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $name;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $query;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $redirect;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $section;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $superTitle;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $teaser;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $teaserImg;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $teaserImgSubline;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $title;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $topicType;
     /**
      * 
      *
-     * @var string
+     * @var string|null
      */
     protected $url;
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getCanonicalTag() : string
+    public function getCanonicalTag() : ?string
     {
         return $this->canonicalTag;
     }
     /**
      * 
      *
-     * @param string $canonicalTag
+     * @param string|null $canonicalTag
      *
      * @return self
      */
-    public function setCanonicalTag(string $canonicalTag) : self
+    public function setCanonicalTag(?string $canonicalTag) : self
     {
         $this->initialized['canonicalTag'] = true;
         $this->canonicalTag = $canonicalTag;
@@ -133,20 +133,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getDocId() : string
+    public function getDocId() : ?string
     {
         return $this->docId;
     }
     /**
      * 
      *
-     * @param string $docId
+     * @param string|null $docId
      *
      * @return self
      */
-    public function setDocId(string $docId) : self
+    public function setDocId(?string $docId) : self
     {
         $this->initialized['docId'] = true;
         $this->docId = $docId;
@@ -177,20 +177,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getMetaDescription() : string
+    public function getMetaDescription() : ?string
     {
         return $this->metaDescription;
     }
     /**
      * 
      *
-     * @param string $metaDescription
+     * @param string|null $metaDescription
      *
      * @return self
      */
-    public function setMetaDescription(string $metaDescription) : self
+    public function setMetaDescription(?string $metaDescription) : self
     {
         $this->initialized['metaDescription'] = true;
         $this->metaDescription = $metaDescription;
@@ -199,20 +199,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getMetaTitle() : string
+    public function getMetaTitle() : ?string
     {
         return $this->metaTitle;
     }
     /**
      * 
      *
-     * @param string $metaTitle
+     * @param string|null $metaTitle
      *
      * @return self
      */
-    public function setMetaTitle(string $metaTitle) : self
+    public function setMetaTitle(?string $metaTitle) : self
     {
         $this->initialized['metaTitle'] = true;
         $this->metaTitle = $metaTitle;
@@ -221,20 +221,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getName() : string
+    public function getName() : ?string
     {
         return $this->name;
     }
     /**
      * 
      *
-     * @param string $name
+     * @param string|null $name
      *
      * @return self
      */
-    public function setName(string $name) : self
+    public function setName(?string $name) : self
     {
         $this->initialized['name'] = true;
         $this->name = $name;
@@ -243,20 +243,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getQuery() : string
+    public function getQuery() : ?string
     {
         return $this->query;
     }
     /**
      * 
      *
-     * @param string $query
+     * @param string|null $query
      *
      * @return self
      */
-    public function setQuery(string $query) : self
+    public function setQuery(?string $query) : self
     {
         $this->initialized['query'] = true;
         $this->query = $query;
@@ -265,20 +265,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getRedirect() : string
+    public function getRedirect() : ?string
     {
         return $this->redirect;
     }
     /**
      * 
      *
-     * @param string $redirect
+     * @param string|null $redirect
      *
      * @return self
      */
-    public function setRedirect(string $redirect) : self
+    public function setRedirect(?string $redirect) : self
     {
         $this->initialized['redirect'] = true;
         $this->redirect = $redirect;
@@ -287,20 +287,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getSection() : string
+    public function getSection() : ?string
     {
         return $this->section;
     }
     /**
      * 
      *
-     * @param string $section
+     * @param string|null $section
      *
      * @return self
      */
-    public function setSection(string $section) : self
+    public function setSection(?string $section) : self
     {
         $this->initialized['section'] = true;
         $this->section = $section;
@@ -309,20 +309,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getSuperTitle() : string
+    public function getSuperTitle() : ?string
     {
         return $this->superTitle;
     }
     /**
      * 
      *
-     * @param string $superTitle
+     * @param string|null $superTitle
      *
      * @return self
      */
-    public function setSuperTitle(string $superTitle) : self
+    public function setSuperTitle(?string $superTitle) : self
     {
         $this->initialized['superTitle'] = true;
         $this->superTitle = $superTitle;
@@ -331,20 +331,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getTeaser() : string
+    public function getTeaser() : ?string
     {
         return $this->teaser;
     }
     /**
      * 
      *
-     * @param string $teaser
+     * @param string|null $teaser
      *
      * @return self
      */
-    public function setTeaser(string $teaser) : self
+    public function setTeaser(?string $teaser) : self
     {
         $this->initialized['teaser'] = true;
         $this->teaser = $teaser;
@@ -353,20 +353,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getTeaserImg() : string
+    public function getTeaserImg() : ?string
     {
         return $this->teaserImg;
     }
     /**
      * 
      *
-     * @param string $teaserImg
+     * @param string|null $teaserImg
      *
      * @return self
      */
-    public function setTeaserImg(string $teaserImg) : self
+    public function setTeaserImg(?string $teaserImg) : self
     {
         $this->initialized['teaserImg'] = true;
         $this->teaserImg = $teaserImg;
@@ -375,20 +375,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getTeaserImgSubline() : string
+    public function getTeaserImgSubline() : ?string
     {
         return $this->teaserImgSubline;
     }
     /**
      * 
      *
-     * @param string $teaserImgSubline
+     * @param string|null $teaserImgSubline
      *
      * @return self
      */
-    public function setTeaserImgSubline(string $teaserImgSubline) : self
+    public function setTeaserImgSubline(?string $teaserImgSubline) : self
     {
         $this->initialized['teaserImgSubline'] = true;
         $this->teaserImgSubline = $teaserImgSubline;
@@ -397,20 +397,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getTitle() : string
+    public function getTitle() : ?string
     {
         return $this->title;
     }
     /**
      * 
      *
-     * @param string $title
+     * @param string|null $title
      *
      * @return self
      */
-    public function setTitle(string $title) : self
+    public function setTitle(?string $title) : self
     {
         $this->initialized['title'] = true;
         $this->title = $title;
@@ -419,20 +419,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getTopicType() : string
+    public function getTopicType() : ?string
     {
         return $this->topicType;
     }
     /**
      * 
      *
-     * @param string $topicType
+     * @param string|null $topicType
      *
      * @return self
      */
-    public function setTopicType(string $topicType) : self
+    public function setTopicType(?string $topicType) : self
     {
         $this->initialized['topicType'] = true;
         $this->topicType = $topicType;
@@ -441,20 +441,20 @@ class RetrescoTopicPage
     /**
      * 
      *
-     * @return string
+     * @return string|null
      */
-    public function getUrl() : string
+    public function getUrl() : ?string
     {
         return $this->url;
     }
     /**
      * 
      *
-     * @param string $url
+     * @param string|null $url
      *
      * @return self
      */
-    public function setUrl(string $url) : self
+    public function setUrl(?string $url) : self
     {
         $this->initialized['url'] = true;
         $this->url = $url;

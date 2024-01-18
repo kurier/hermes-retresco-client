@@ -41,12 +41,15 @@ class RetrescoEntityLinksNormalizer implements DenormalizerInterface, Normalizer
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('links', $data)) {
+        if (\array_key_exists('links', $data) && $data['links'] !== null) {
             $values = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['links'] as $key => $value) {
                 $values[$key] = $value;
             }
             $object->setLinks($values);
+        }
+        elseif (\array_key_exists('links', $data) && $data['links'] === null) {
+            $object->setLinks(null);
         }
         return $object;
     }
