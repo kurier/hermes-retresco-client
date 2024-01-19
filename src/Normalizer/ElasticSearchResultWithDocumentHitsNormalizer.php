@@ -24,7 +24,6 @@ class ElasticSearchResultWithDocumentHitsNormalizer implements DenormalizerInter
                               array $context = []) {
     $hits = $data['hits'] ?? [];
     unset($data['hits']);
-    $data['total'] = is_array($data['total']) && !empty($data["total"]["value"]) ? $data["total"]["value"] : $data['total'];
 
     // Denormalize ElasticSearchResult without hits using generated ElasticSearchResultNormalizer
 
@@ -34,11 +33,10 @@ class ElasticSearchResultWithDocumentHitsNormalizer implements DenormalizerInter
     // Append hits as RetrescoDocument
     $documents = [];
     foreach ($hits as $hit) {
-      $mappedHit = $this->mapHit($hit);
+      $mappedHit = $this->mapDocument($hit);
       $documents[] = $this->serializer->denormalize($mappedHit, 'telekurier\\RetrescoClient\\Model\\RetrescoDocument', NULL, $context);
     }
     $object->setHits($documents);
-
     return $object;
   }
 
@@ -54,15 +52,23 @@ class ElasticSearchResultWithDocumentHitsNormalizer implements DenormalizerInter
    *
    * @return array
    */
-  public function mapHit(array $data) : array {
+  public function mapDocument(array $data) : array {
     $result = [];
+    $source = [];
 
     if (isset($data['_source'])) {
-      $this->mapNestedArray($data['_source'], $result);
+      $source = $data['_source'];
     }
     elseif (isset($data['fields'])) {
       $source = $data['fields'];
-      $this->mapNestedArray($source, $result);
+    }
+
+    if (is_array($source)) {
+      foreach ($source as $field => $value) {
+        if (isset($value)) {
+          $result[$field] = $this->mapNestedObject($field, $value);
+        }
+      }
     }
 
     if (isset($data['inner_hits'])) {
@@ -77,38 +83,32 @@ class ElasticSearchResultWithDocumentHitsNormalizer implements DenormalizerInter
   }
 
   /**
-   * @param $source
-   * @param $array
+   * @param $field
+   * @param $value
    *
-   * @return void
+   * @return array|bool|float|int|mixed|string|null
    */
-  protected function mapNestedArray($source, &$array) {
-    foreach ($source as $fqField => $value) {
-      if (isset($value)) {
-        $localfields = explode('.', $fqField);
-        $property = array_pop($localfields);
-        $a = &$array;
+  protected function mapNestedObject($field, $value) {
+    if (is_array($value)) {
+      return json_decode(json_encode($value));
+    }
 
-        while ($localfield = array_shift($localfields)) {
-          if (!isset($a[$localfield])) {
-            $a[$localfield] = [];
-          }
-          $a = &$a[$localfield];
-        }
-
-        if (substr($property, 0, 4) == 'rtr_') {
-          $a[$property] = $value;
-        } else {
-          if (is_scalar($value)) {
-            $a[$property] = $value;
-          } elseif (is_array($value)) {
-            $a[$property] = $value;
-          } elseif (count($value) > 1) {
-            $a[$property] = $value;
-          } else {
-            $a[$property] = $value;
-          }
-        }
+    if (substr($field, 0, 4) == 'rtr_') {
+      return $value;
+    }
+    else {
+      if (
+        is_scalar($value)
+        || is_object($value)
+        || count($value) > 1
+      ) {
+        return $value;
+      }
+      elseif (is_array($value)) {
+        return array_shift($value);
+      }
+      else {
+        return $value;
       }
     }
   }

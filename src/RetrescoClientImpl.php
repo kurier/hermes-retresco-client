@@ -22,6 +22,7 @@ use telekurier\RetrescoClient\Normalizer\ElasticSearchAggregationNormalizer;
 use telekurier\RetrescoClient\Normalizer\ElasticSearchRawResultNormalizer;
 use telekurier\RetrescoClient\Normalizer\ElasticSearchResultNormalizer;
 use telekurier\RetrescoClient\Normalizer\ElasticSearchResultWithDocumentHitsNormalizer;
+use telekurier\RetrescoClient\Normalizer\ElasticSearchTotalResultNormalizer;
 use telekurier\RetrescoClient\Normalizer\EmptyObjectNormalizer;
 use telekurier\RetrescoClient\Normalizer\LocationNormalizer;
 use telekurier\RetrescoClient\Normalizer\PinNormalizer;
@@ -146,6 +147,7 @@ class RetrescoClientImpl implements RetrescoClient {
       $normalizers = [];
       $normalizers[] = new EmptyObjectNormalizer();
       $normalizers[] = new ElasticSearchResultWithDocumentHitsNormalizer();
+      $normalizers[] = new ElasticSearchTotalResultNormalizer();
       $normalizers[] = new ArrayDenormalizer();
       $normalizers[] = new LocationNormalizer();
       $normalizers[] = new PinNormalizer();
