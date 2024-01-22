@@ -27,7 +27,7 @@ use telekurier\RetrescoClient\Normalizer\EmptyObjectNormalizer;
 use telekurier\RetrescoClient\Normalizer\LocationNormalizer;
 use telekurier\RetrescoClient\Normalizer\PinNormalizer;
 use telekurier\RetrescoClient\Normalizer\RetrescoClientErrorNormalizer;
-use telekurier\RetrescoClient\Normalizer\RetrescoDocumentNormalizer;
+use telekurier\RetrescoClient\Normalizer\RetrescoDocumentObjectNormalizer;
 use telekurier\RetrescoClient\Normalizer\RetrescoDocumentsNormalizer;
 use telekurier\RetrescoClient\Normalizer\RetrescoEntityLinksNormalizer;
 use telekurier\RetrescoClient\Normalizer\RetrescoSearchQueryNormalizer;
@@ -151,7 +151,7 @@ class RetrescoClientImpl implements RetrescoClient {
       $normalizers[] = new ArrayDenormalizer();
       $normalizers[] = new LocationNormalizer();
       $normalizers[] = new PinNormalizer();
-      $normalizers[] = new RetrescoDocumentNormalizer();
+      $normalizers[] = new RetrescoDocumentObjectNormalizer();
       $normalizers[] = new RetrescoDocumentsNormalizer();
       $normalizers[] = new RetrescoEntityLinksNormalizer();
       $normalizers[] = new RetrescoSearchQueryNormalizer();
