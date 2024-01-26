@@ -62,28 +62,15 @@ class RetrescoDocumentObjectNormalizer extends RetrescoDocumentNormalizer {
    * @return array|bool|float|int|mixed|string|null
    */
   protected static function mapNestedObjects($field, $value) {
+    if (is_array($value) && key($value) === "0" && count($value) == 1) {
+      $value = array_shift($value);
+    }
+
     if (is_array($value)) {
       return json_decode(json_encode($value));
     }
 
-    if (substr($field, 0, 4) == 'rtr_') {
-      return $value;
-    }
-    else {
-      if (
-        is_scalar($value)
-        || is_object($value)
-        || count($value) > 1
-      ) {
-        return $value;
-      }
-      elseif (is_array($value)) {
-        return array_shift($value);
-      }
-      else {
-        return $value;
-      }
-    }
+    return $value;
   }
 
 }
