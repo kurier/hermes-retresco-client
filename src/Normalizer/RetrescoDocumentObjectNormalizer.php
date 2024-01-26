@@ -39,7 +39,7 @@ class RetrescoDocumentObjectNormalizer extends RetrescoDocumentNormalizer {
     if (is_array($source)) {
       foreach ($source as $field => $value) {
         if (isset($value)) {
-          $result[$field] =static::mapNestedObjects($field, $value);
+          $result[$field] = static::mapNestedObjects($value);
         }
       }
     }
@@ -56,16 +56,11 @@ class RetrescoDocumentObjectNormalizer extends RetrescoDocumentNormalizer {
   }
 
   /**
-   * @param $field
-   * @param $value
+   * @param mixed $value
    *
    * @return array|bool|float|int|mixed|string|null
    */
-  protected static function mapNestedObjects($field, $value) {
-    if (is_array($value) && key($value) === "0" && count($value) == 1) {
-      $value = array_shift($value);
-    }
-
+  protected static function mapNestedObjects($value) {
     if (is_array($value)) {
       return json_decode(json_encode($value));
     }
