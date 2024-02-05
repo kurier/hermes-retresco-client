@@ -330,6 +330,9 @@
                     "items": {
                         "type": "string"
                     }
+                },
+                "_score": {
+                    "type": "number"
                 }
             },
             "required": [

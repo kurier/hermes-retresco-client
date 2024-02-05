@@ -43,7 +43,7 @@ abstract class RetrescoClientImplTest extends TestCase {
   /**
    * {@inheritdoc}
    */
-  public static function setUpBeforeClass() {
+  public static function setUpBeforeClass(): void {
     $logger = new NullLogger();
     $clientConfig = [
       'base_uri' => $_ENV['RETRESCO_BASE_URI'],
@@ -58,7 +58,7 @@ abstract class RetrescoClientImplTest extends TestCase {
     self::$retrescoClient = new RetrescoClientImpl($logger, $client);
   }
 
-  protected function setUp() {
+  protected function setUp(): void {
     $testFile = dirname(__FILE__) . '/data/putFile01.yml';
     $this->testDocument = $this->createRetrescoDocumentFromFile($testFile);
     $testDocid = 'test-' . floor(microtime(TRUE));
@@ -86,7 +86,7 @@ abstract class RetrescoClientImplTest extends TestCase {
     return NULL;
   }
 
-  protected function tearDown() {
+  protected function tearDown(): void {
     try {
       self::$retrescoClient->deleteDocument($this->testDocument);
     }

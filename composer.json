@@ -2,25 +2,30 @@
     "name": "telekurier/hermes-retresco-client",
     "require": {
         "php": ">=7.2",
-        "jane-php/open-api-runtime": "^5.0",
-        "guzzlehttp/guzzle": "^6.3",
-        "symfony/property-access": "^4.1"
+        "guzzlehttp/guzzle": "^7.0",
+        "symfony/property-access": "^6.0",
+        "symfony/serializer": "^6.3",
+        "psr/log": "^3.0"
     },
     "require-dev": {
-        "jane-php/open-api": "^5.0",
-        "friendsofphp/php-cs-fixer": "^2.7.3",
-        "phpunit/phpunit": "^7.2"
+        "phpunit/phpunit": "^10.5",
+        "jane-php/open-api-2": "^7.5",
+        "http-interop/http-factory-guzzle": "^1.2"
     },
     "autoload": {
         "psr-4": {
             "telekurier\\RetrescoClient\\": "src/",
             "telekurier\\Retresco\\Tests\\": "tests/",
+            "telekurier\\RetrescoClient\\Endpoint\\": "generated/Endpoint/",
+            "telekurier\\RetrescoClient\\Exception\\": "generated/Exception/",
             "telekurier\\RetrescoClient\\Model\\": "generated/Model/",
-            "telekurier\\RetrescoClient\\Normalizer\\": "generated/Normalizer/"
+            "telekurier\\RetrescoClient\\Normalizer\\": "generated/Normalizer/",
+            "telekurier\\RetrescoClient\\Runtime\\": "generated/Runtime/"
         },
         "files": [
             "src/Normalizer/ElasticSearchResultWithDocumentHitsNormalizer.php",
-            "src/Normalizer/EmptyObjectNormalizer.php"
+            "src/Normalizer/EmptyObjectNormalizer.php",
+            "generated/Client.php"
         ]
     },
     "scripts": {
@@ -36,6 +41,9 @@
         }
     },
     "config": {
-        "process-timout": 0
+        "process-timout": 0,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }

@@ -30,7 +30,7 @@ class LocationNormalizerTest extends TestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     $this->normalizer = new LocationNormalizer();
     $this->location = new Location();
     parent::setUp();
