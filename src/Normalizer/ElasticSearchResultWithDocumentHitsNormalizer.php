@@ -7,8 +7,10 @@ namespace telekurier\RetrescoClient\Normalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
-use telekurier\RetrescoClient\Encoder\FieldDocumentEncoder;
 
+/**
+ *
+ */
 class ElasticSearchResultWithDocumentHitsNormalizer implements DenormalizerInterface, SerializerAwareInterface {
 
   use SerializerAwareTrait;
@@ -20,21 +22,20 @@ class ElasticSearchResultWithDocumentHitsNormalizer implements DenormalizerInter
                               $class,
                               $format = NULL,
                               array $context = []) {
-    $hits = $data->hits ?? [];
-    unset($data->hits);
+    $hits = $data['hits'] ?? [];
+    unset($data['hits']);
 
-    // denormalize ElasticSearchResult without hits using generated ElasticSearchResultNormalizer
+    // Denormalize ElasticSearchResult without hits using generated ElasticSearchResultNormalizer
 
     /** @var \telekurier\RetrescoClient\Model\ElasticSearchResult $object */
-    $object = $this->serializer->deserialize($data, $class, 'raw', $context);
+    $object = $this->serializer->denormalize($data, $class, 'raw', $context);
 
-    // append hits as RetrescoDocument
+    // Append hits as RetrescoDocument
     $documents = [];
     foreach ($hits as $hit) {
-      $documents[] = $this->serializer->deserialize($hit, 'telekurier\\RetrescoClient\\Model\\RetrescoDocument', FieldDocumentEncoder::FORMAT, $context);
+      $documents[] = $this->serializer->denormalize($hit, 'telekurier\\RetrescoClient\\Model\\RetrescoDocument', NULL, $context);
     }
     $object->setHits($documents);
-
     return $object;
   }
 
@@ -42,6 +43,7 @@ class ElasticSearchResultWithDocumentHitsNormalizer implements DenormalizerInter
    * {@inheritdoc}
    */
   public function supportsDenormalization($data, $type, $format = NULL) {
-    return $type === 'telekurier\\RetrescoClient\\Model\\ElasticSearchResult' && property_exists($data, 'hits');
+    return $type === 'telekurier\\RetrescoClient\\Model\\ElasticSearchResult' && !empty($data['hits']);
   }
+
 }

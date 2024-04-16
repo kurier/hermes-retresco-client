@@ -54,7 +54,7 @@ class RetrescoPinNormalizerTest extends TestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     $this->normalizer = new PinNormalizer();
 
     $encoders = [new JsonEncoder()];
