@@ -20,7 +20,7 @@ class EmptyObjectNormalizer extends ObjectNormalizer {
    * {@inheritDoc}
    */
   public function normalize($object, $format = NULL, array $context = []) {
-    return (object) [];
+    return new \ArrayObject();
   }
 
   /**
