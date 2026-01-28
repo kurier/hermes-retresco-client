@@ -1,3 +1,6 @@
+# IMPORTANT
+# THIS REPO IS DEPRECATED. CODE WAS MOVED TO HERMES REPO IN TKT-6353
+
 # Retresco Client Library
 REST client library based on Guzzle.
 
